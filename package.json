@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "errorhandler": "^1.5.1",
     "express": "^4.18.2",
     "mysql": "github:mysqljs/mysql",
     "pug": "^3.0.2"

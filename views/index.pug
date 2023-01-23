@@ -1,0 +1,13 @@
+include header.pug
+div.col-md-10
+        if(itemList.length > 0)
+            each item in itemList
+                div.col-md-3
+                    img(src=item.imgSrc).img-thumbnail
+                    h4=item.productName
+                    p=item.price
+        else
+            div.container
+                h1 No items!
+
+include footer.pug
