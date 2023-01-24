@@ -4,8 +4,8 @@ const app = express();
 const path = require('path');
 const router = express.Router();
 
-const mysql = require('mysql2');
-const sshCon = require('./routes/sshConnector.js');
+const mysql = require('mysql');
+//const sshCon = require('./routes/sshConnector.js');
 
 const errorhandler = require('errorhandler');
 const bodyParser = require('body-parser');
@@ -41,17 +41,15 @@ const product4 = new productTest("D0012E", "49kr", "./img/D0012E.png", "compsci"
 const product5 = new productTest("Mekanik", "59kr", "./img/F0060T.png", "Physics" );
 const product6 = new productTest("FYSIKA formelblad", "79kr", "./img/FYSIKA.png", "Math" );
 //const myDBConnectionClient = require('./SSHDBConfig');
-var itemList = [];
 
-const dbCall = (res) => {
-	console.log('Entering DBCall()');
+/*
+const dbCall = () => {
    	sshCon.then((conn) => {
-		console.log("sshCon");
         conn.query(`SELECT * FROM product`, (err, result, fields) => {
             if (err) throw err;
             console.log("SQL Query Result-- ", result);
             if (result.length !== 0) {  //considering SQL Select statement
-                //result = result[0];
+                result = result[0];
                 //perform your required work on result
 				
 				for (var i = 0; i < result.length; i++) {
@@ -66,17 +64,69 @@ const dbCall = (res) => {
 						// Lägg till hämtad data i en array
 						itemList.push(items);
 				}
-				res.render('index', {itemList: itemList});
             }
 
         });
     })
 
 }
+*/
+const execSync = require('child_process').execSync;
+// import { execSync } from 'child_process';  // replace ^ if using ES modules
+
+const sshCon = execSync('ssh -p 26880 karruc-9@130.240.207.20 -L 33306:localhost:3306', { encoding: 'utf-8' });  // the default is 'buffer'
+
+//const pwd = execSync('BucOpPwcgHSsiVso', { encoding: 'utf-8' });
+
+const db = mysql.createConnection ({
+    host: 'localhost',
+	port: 33306,
+    user: 'root',
+    password: '',
+    database: 'D0018E'
+});
+
+
+// Koppla till db
+db.connect((err) => {
+    if (err) {
+        throw err;
+    }
+    console.log('Connected to database');
+});
+global.db = db;
+
 //Hämta Index-sidan
 app.get('/', function(req, res) {
-	dbCall(res)
-	//res.render('index', {itemList: itemList});
+	var itemList = [];
+	
+
+
+	// Hämta alla julklappar och rendera på index-sidan
+	db.query('SELECT * FROM product', function(err, rows, fields) {
+	  	if (err) {
+	  		res.status(500).json({"status_code": 500,"status_message": "internal server error"});
+	  	} else {
+			//console.log(rows);
+	  		// Kolla igenom all data i tabellen
+			  for (var i = 0; i < rows.length; i++) {
+			
+				// Skapa ett objekt för datan
+				var items = {
+					'productName': rows[i].productName,
+					'price': rows[i].price,
+					'imgSrc': rows[i].imgSrc,
+					'category': rows[i].category
+				}
+					// Lägg till hämtad data i en array
+					itemList.push(items);
+			}
+
+	  	// Rendera index.pug med objekten i listan
+	  	res.render('index', {itemList: itemList});
+	  	}
+	});
+	
 	/*
 	const arr = [product1, product2, product3, product4, product5, product6];
 	var itemList = [];

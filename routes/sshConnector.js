@@ -1,10 +1,11 @@
+/*
 const mysql = require('mysql2');
 const Client = require('ssh2').Client;
 const sshClient = new Client();
 
 const dbServer = {
 	host: '130.240.207.20',
-	port: '3306',
+	port: 3306,
     user: 'root',
     //password: 'BucOpPwcgHSsiVso',
     database: 'D0018E'
@@ -12,15 +13,15 @@ const dbServer = {
 
 const tunnelConfig = {
     host: '130.240.207.20',
-	port: '26880',
+	port: 26880,
     user: 'karruc-9',
     password: 'BucOpPwcgHSsiVso'
 }
 
 const forwardConfig = {
-    srcHost: '127.0.0.1', // any valid address
-    srcPort: 3306, // any valid port
-    dstHost: dbServer.host, // destination database
+    srcHost: 'localhost', // any valid address
+    srcPort: 22, // any valid port
+    dstHost: '130.240.207.20', // destination database
     dstPort: '26880' // destination port
 };
 
@@ -43,6 +44,7 @@ const SSHDBConnection = new Promise((resolve, reject) => {
                     stream
                 };
                 const connection = mysql.createConnection(updatedDbServer);
+                console.log('create con');
                 connection.connect((error) => {
                     if (error) {
                         console.log("error---", error);
@@ -55,4 +57,6 @@ const SSHDBConnection = new Promise((resolve, reject) => {
             console.log('Tunnel');
     }).connect(tunnelConfig);
 });
+
 module.exports = SSHDBConnection;
+*/

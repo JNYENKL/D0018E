@@ -19,7 +19,7 @@ module.exports = {
       let category = req.body.category;
 
       let query = "INSERT INTO `items` (`name`, `image`, `link`, `descrip`) VALUES ('" +
-              productName + "', '" + price + "', '" + imgSrc + "', '" + descrip + "','"+ imgSrc+ "')";
+              productName + "', '" + price + "', '" + imgSrc + "', '" + descrip + "','"+ cat + "')";
         db.query(query, (err, result) => {
             if (err) {
                 console.log('An error occured');
