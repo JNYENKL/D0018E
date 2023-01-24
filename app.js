@@ -3,34 +3,16 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const router = express.Router();
-const mysql = require('mysql');
+
+const mysql = require('mysql2');
+const sshCon = require('./routes/sshConnector.js');
+
 const errorhandler = require('errorhandler');
 const bodyParser = require('body-parser');
 
-//Import functions for ligon and user creation
+//Import functions for login and user creation
 const {loginUser, createUser} = require('./login.js');
-
-/*
-//Database
-const db = mysql.createConnection ({
-    host: '',
-    user: 'root',
-    password: '',
-    database: 'D0018E'
-});
-
-//Connect to db
-db.connect((err) => {
-    if (err) {
-        throw err;
-    }
-    console.log('Connected to database');
-});
-global.db = db;
-
-*/
-
-
+const{getNP} = require('./routes/newProduct.js');
 
 //Set view engine
 app.set("view engine", "pug");
@@ -58,9 +40,44 @@ const product3 = new productTest("Derivator, integraler och sånt...", "399kr", 
 const product4 = new productTest("D0012E", "49kr", "./img/D0012E.png", "compsci" );
 const product5 = new productTest("Mekanik", "59kr", "./img/F0060T.png", "Physics" );
 const product6 = new productTest("FYSIKA formelblad", "79kr", "./img/FYSIKA.png", "Math" );
+//const myDBConnectionClient = require('./SSHDBConfig');
+var itemList = [];
 
+const dbCall = (res) => {
+	console.log('Entering DBCall()');
+   	sshCon.then((conn) => {
+		console.log("sshCon");
+        conn.query(`SELECT * FROM product`, (err, result, fields) => {
+            if (err) throw err;
+            console.log("SQL Query Result-- ", result);
+            if (result.length !== 0) {  //considering SQL Select statement
+                //result = result[0];
+                //perform your required work on result
+				
+				for (var i = 0; i < result.length; i++) {
+			
+					// Skapa ett objekt för datan
+					var items = {
+						'productName': result[i].productName,
+						'price': result[i].price,
+						'imgSrc': result[i].imgSrc,
+						'category': result[i].category
+					}
+						// Lägg till hämtad data i en array
+						itemList.push(items);
+				}
+				res.render('index', {itemList: itemList});
+            }
+
+        });
+    })
+
+}
 //Hämta Index-sidan
 app.get('/', function(req, res) {
+	dbCall(res)
+	//res.render('index', {itemList: itemList});
+	/*
 	const arr = [product1, product2, product3, product4, product5, product6];
 	var itemList = [];
 	for (var i = 0; i < arr.length; i++) {
@@ -74,42 +91,46 @@ app.get('/', function(req, res) {
 		}
 		// Lägg till hämtad data i en array
 		itemList.push(items);
-}
+		
+	}
+	
 	res.render('index', {itemList: itemList});
-	/*
-	db.query('SELECT * FROM items', function(err, rows, fields) {
+	
+	dbServer.query('SELECT * FROM items', function(err, rows, fields) {
 	  	if (err) {
 	  		res.status(500).json({"status_code": 500,"status_message": "internal server error"});
 	  	} else {
 
-	  		// Kolla igenom all data i tabellen
-	  		for (var i = 0; i < rows.length; i++) {
-
-	  			// Skapa ett objekt för datan
-		  		var items = {
-		  			'productName':rows[i].productName,
-					'price':rows[i].price,
-		  			'imgSrc':rows[i].imgSrc,
-					'category':rows[i].category
-		  		}
+			var itemList = [];
+			for (var i = 0; i < arr.length; i++) {
+		
+				// Skapa ett objekt för datan
+				var items = {
+					'productName': res[i].productName,
+					'price': res[i].price,
+					'imgSrc': res[i].imgSrc,
+					'category': res[i].category
+				}
 		  		// Lägg till hämtad data i en array
 		  		itemList.push(items);
 	  	}
 
 	  	// Rendera index.pug med objekten i listan
-	  	res.render('index', {itemList: itemList});
+	  	
 	  	}
 	});
 
 	// Stäng MySQL
-	db.end();
+	dbServer.end();
 	*/
+	//SSHDBConnection.close();
 });
 
 
-app.get("/index", (req,res) => { frontPage(req,res)});
-app.get("/login", (req,res) => { loginPage(req,res)});
-app.post("/cart", (req,res) => { shoppingCart(req,res)});
+//app.get("/index", (req,res) => { frontPage(req,res)});
+//app.get("/login", (req,res) => { loginPage(req,res)});
+//app.get("/cart", (req,res) => { shoppingCart(req,res)});
+app.get("/newProduct", (req,res) => { getNP(req,res)});
 
 //Sätt views som default-mapp för rendering
 app.use(express.static(__dirname + '/views'));

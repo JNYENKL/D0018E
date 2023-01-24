@@ -1,0 +1,29 @@
+include header.pug
+div.col-md-10
+  form.inputForm(action='/postProduct', method='post')
+    p
+    | Produktnamn:
+    br
+    input(type='text', name='pn', value='')
+    br
+    | Pris
+    br
+    input(type='text', name='pr', value='')
+    br
+    | Produktbild
+    br 
+    input(type='file', name='imgSrc', value='')
+    br
+    | Beskrivning:
+    br
+    input.descInpt(type='text', name='descrip', value='')
+    br
+    | Kategori
+    br
+    select(name="category")#category
+      option(value="math") Matematik
+      option(value="physics") Fysik
+      option(value="tech") Datorer och programmering
+    br
+    input.btnInpt(type='submit', value='Submit')
+include footer.pug

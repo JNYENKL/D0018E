@@ -1,6 +1,5 @@
-.navBar{
-    color: #ffcc11;
-    height: 5%;
+#navBar{
+    background: linear-gradient(90deg, rgba(255,105,171,1) 0%, rgba(148,187,233,1) 100%);
 }
 
 .productDiv{
