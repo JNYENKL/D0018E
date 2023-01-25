@@ -4,7 +4,7 @@ const app = express();
 const path = require('path');
 const router = express.Router();
 
-const mysql = require('mysql');
+const mysql = require('mysql2');
 //const sshCon = require('./routes/sshConnector.js');
 
 const errorhandler = require('errorhandler');
@@ -71,15 +71,14 @@ const dbCall = () => {
 
 }
 */
+
 const execSync = require('child_process').execSync;
-// import { execSync } from 'child_process';  // replace ^ if using ES modules
 
-const sshCon = execSync('ssh -p 26880 karruc-9@130.240.207.20 -L 33306:localhost:3306', { encoding: 'utf-8' });  // the default is 'buffer'
+const sshCon = execSync('ssh -p 26880 -T karruc-9@130.240.207.20 -L 33306:localhost:3306', { encoding: 'utf-8' });  // the default is 'buffer'
 
-//const pwd = execSync('BucOpPwcgHSsiVso', { encoding: 'utf-8' });
 
 const db = mysql.createConnection ({
-    host: 'localhost',
+    host: '127.0.0.1',
 	port: 33306,
     user: 'root',
     password: '',
