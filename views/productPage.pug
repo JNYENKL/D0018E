@@ -1,0 +1,14 @@
+include header.pug
+div.col-md-10
+        if(asset)
+            img(src=asset.imgSrc, alt="Product")
+            h1=asset.name 
+            h2=asset.price
+            p=asset.stock
+            a(href="" action="") 
+            p=asset.description
+        else
+            div.container
+                h1 No items!
+
+include footer.pug
