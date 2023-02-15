@@ -1,1 +1,1 @@
-python -m robot connect.robot
+python -m robot -i Connection connect.robot
