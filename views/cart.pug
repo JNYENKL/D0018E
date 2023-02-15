@@ -1,0 +1,17 @@
+include header.pug
+div.col-md-10
+    if(shoppingCart.length > 0)
+        table.table
+            th(scope="col")
+            th(scope="col")
+            th(scope="col")
+            th(scope="col")
+            tbody
+            each item in shoppingCart
+                tr(scope="row")
+                    td=item.productName
+                    td       
+    else
+        div.container
+            h1 Cart is empty.
+include footer.pug

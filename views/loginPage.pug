@@ -1,9 +1,28 @@
 include header.pug
-            div #loginDiv
-                form(action="loginUser()")
-                    label(for="username") User name
-                    input(type="text")#username
-                    label(for="pwd") Password 
-                    input(type="text")#pwd
-                    input(type="submit" value="submit")
+div.col-md-10
+    div.col-md-6
+        form.inputForm(action='/loginUser', method='POST')
+            p
+            | E-mail:
+            br
+            input(type='text', name='email', value='')
+            br
+            | Password
+            br
+            input(type='text', name='pw', value='')
+            br
+            input.btnInpt(type='submit', value='Login')
+
+    div.col-md-6
+        form.inputForm(action='/createUser', method='POST')
+            p
+            | E-mail:
+            br
+            input(type='text', name='email', value='')
+            br
+            | Password
+            br
+            input(type='text', name='pw', value='')
+            br
+            input.btnInpt(type='submit', value='create account')
 include footer.pug
