@@ -13,3 +13,4 @@ Note that in order to run the tests you must have installed:
   - [Selenium Library](https://github.com/robotframework/SeleniumLibrary)
   - [Database Library](https://franz-see.github.io/Robotframework-Database-Library/api/1.2.2/DatabaseLibrary.html)
   - [SSH Library](http://robotframework.org/SSHLibrary/SSHLibrary.html)
+- [pymysql](https://pypi.org/project/PyMySQL/)
