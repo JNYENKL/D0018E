@@ -18,4 +18,4 @@ Note that in order to run the tests you must have installed:
 - [pymysql](https://pypi.org/project/PyMySQL/)
 
 ### How to run
-In order to run a single test, open a terminal of your choice. Navigate to the folder that has the test. Type `python -m robot filename.robot`
+In order to run a single test, double click the bat file related to it.
