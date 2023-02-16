@@ -3,8 +3,9 @@ div.col-md-10
         if(itemList.length > 0)
             each item in itemList
                 div.col-md-3
-                    img(src=item.imgSrc).img-thumbnail
-                    h4=item.productName
+                    //img(src=item.imgSrc).img-thumbnail
+                    a(href='/p?product='+ item.link+'')
+                        h4=item.productName
                     p=item.price
         else
             div.container
