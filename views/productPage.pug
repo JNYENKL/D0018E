@@ -1,14 +1,14 @@
 include header.pug
 div.col-md-10
-        if(asset)
-            img(src=asset.imgSrc, alt="Product")
-            h1=asset.name 
-            h2=asset.price
-            p=asset.stock
-            a(href="" action="") 
-            p=asset.description
-        else
-            div.container
-                h1 No items!
+    if(items.length > 0)
+        each item in items
+            h1=item.productName 
+            h2=item.price
+            p=item.stock
+            a(href="" action="") länk
+            p=item.description
+    else
+        div.container
+            h1 No items!
 
 include footer.pug

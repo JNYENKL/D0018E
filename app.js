@@ -67,7 +67,7 @@ const db = mysql.createConnection ({
 	port: 33306,
     user: 'root',
     password: '',
-    database: 'D0018E'
+    database: 'd0018e_store'
 });
 
 
@@ -82,14 +82,14 @@ global.db = db;
 
 //Hämta Index-sidan
 app.get('/', function(req, res) {
+
+	//console.log(req);
 	var itemList = [];
 	
-
-
 	//Get all products
 	db.query('SELECT * FROM asset', function(err, rows, fields) {
 	  	if (err) {
-	  		res.status(500).json({"status_code": 500,"status_message": "internal server error"});
+	  		res.status(500).json({"status_code": 500,"status_message": "internal server error"+ err});
 	  	} else {
 			//console.log(rows);
 	  		// Kolla igenom all data i tabellen
@@ -97,10 +97,11 @@ app.get('/', function(req, res) {
 			
 				// Skapa ett objekt för datan
 				var items = {
-					'productName': rows[i].productName,
+					'productName': rows[i].title,
+					'link': rows[i].asset_id,
 					'price': rows[i].price,
-					'imgSrc': rows[i].imgSrc,
-					'category': rows[i].category
+					//'imgSrc': rows[i].imgSrc,
+					//'category': rows[i].category
 				}
 					// Lägg till hämtad data i en array
 					itemList.push(items);
@@ -111,53 +112,7 @@ app.get('/', function(req, res) {
 	  	}
 	});
 	
-	/*
-	const arr = [product1, product2, product3, product4, product5, product6];
-	var itemList = [];
-	for (var i = 0; i < arr.length; i++) {
 
-		// Skapa ett objekt för datan
-		var items = {
-			'productName': arr[i].pn,
-		  	'price': arr[i].price,
-			'imgSrc': arr[i].imgSrc,
-		  	'category': arr[i].category
-		}
-		// Lägg till hämtad data i en array
-		itemList.push(items);
-		
-	}
-	
-	res.render('index', {itemList: itemList});
-	
-	dbServer.query('SELECT * FROM items', function(err, rows, fields) {
-	  	if (err) {
-	  		res.status(500).json({"status_code": 500,"status_message": "internal server error"});
-	  	} else {
-
-			var itemList = [];
-			for (var i = 0; i < arr.length; i++) {
-		
-				// Skapa ett objekt för datan
-				var items = {
-					'productName': res[i].productName,
-					'price': res[i].price,
-					'imgSrc': res[i].imgSrc,
-					'category': res[i].category
-				}
-		  		// Lägg till hämtad data i en array
-		  		itemList.push(items);
-	  	}
-
-	  	// Rendera index.pug med objekten i listan
-	  	
-	  	}
-	});
-
-	// Stäng MySQL
-	dbServer.end();
-	*/
-	//SSHDBConnection.close();
 });
 
 //Login with email, password and session
@@ -194,6 +149,34 @@ app.post('/createUser', (req,res)=> {
 
 	res.redirect('/');
 
+});
+
+
+app.get('/p', (req, res)=> {
+		var items = [];
+		//Get all products
+		db.query('SELECT * FROM asset WHERE asset_id ='+ req.query.product , function(err, row, fields) {
+			if (err) {
+				res.status(500).json({"status_code": 500,"status_message": "internal server error"});
+			} else {
+			  //console.log(rows);
+				// Kolla igenom all data i tabellen
+				console.log(row);
+				var product = {
+					'productName': row[0].title,
+					'price': row[0].price,
+					'stock': row[0].amount,
+					'description': row[0].description
+				}
+
+				console.log(row[0].title);
+
+				items.push(product);
+  
+			// Rendera index.pug med objekten i listan
+			res.render('productPage.pug', {items: items});
+			}
+	  });
 });
 
 //app.get("/index", (req,res) => { frontPage(req,res)});
