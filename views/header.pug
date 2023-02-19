@@ -14,7 +14,8 @@ html
         div.container
           div.row
             div.col-md-9
-              h1.logo D0018E Webbshop
+              a#headerText(href="/")
+                h1.logo D0018E Webbshop
             div.col-md-3.justify-content-center.my-auto
               a(href="/loginPage", action="getLoginPage()").btn.btn-default Login
               if(login)
