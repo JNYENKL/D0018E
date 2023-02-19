@@ -18,6 +18,7 @@ const sessions = require('express-session');
 
 //Import functions for login and user creation
 const {loginUser, createUser, getLogin} = require('./routes/login.js');
+
 const{getNP} = require('./routes/newProduct.js');
 const{getCart} = require('./routes/shoppingCart.js');
 
@@ -115,12 +116,12 @@ app.get('/', function(req, res) {
 				}
 					// Lägg till hämtad data i en array
 					itemList.push(items);
-
-					if(sessions.uid != null){
+					session = req.session;
+					if(session.uid != null){
 						loggedIn = true;
 					}
 
-					if(sessions.admin == true){
+					if(session.admin == true){
 						adminFlag = true;
 					}
 			}
@@ -137,35 +138,40 @@ app.get('/', function(req, res) {
 
 
 //Login with email, password and session
-app.post('/loginUser', (req,res)=> {
+app.post('/loginUser', (req, res) => {
 	//var hashedInput = bcrypt.hash(req.body.pw);
-	db.query('SELECT user_id, email, password FROM user WHERE email = '+ req.body.email, 
+	console.log("logging in");
+	console.log(req.body.email);
+	db.query('SELECT * FROM user WHERE email=?', [req.body.email], 
 				function(err, row, fields){
 					if(err){
-						res.status(500).json({"status_code": 500,"status_message": "internal server error"}); //This should be a failed login by username message, not 500
+						res.status(500).json({"status_code": 500,"status_message": "internal server error: db"}); //This should be a failed login by username message, not 500
 					} 
 					else{
-						var plain = req.body.pw;
-						var check = bcrypt.compareSync(plain, res.row[0].password);
+						console.log(row[0]);
+						var plain = toString(req.body.pw);
+						console.log(row[0].user_id);
+						console.log(row[0].password); 
+						var check = bcrypt.compareSync(plain, row[0].password);
 
 						if(!check){
-								res.status(500).json({"status_code": 500,"status_message": "internal server error"}); //This should be a failed login by username message, not 500
+								res.status(500).json({"status_code": 500,"status_message": "internal server error: wrong password"}); //This should be a failed login by username message, not 500
 						} else {
 							console.log('password correct');
-
-							sessions.uid = res.row[0].user_id;
+							
+							sessions.uid = row[0].user_id;
 							if(sessions.uid == 1){
 								sessions.admin = true;
 							}
-
+							console.log("here");
 							res.redirect('/');
-							}
-							
 						}
+							
 					}
+				}
 				
 			)
-			res.render('/loginPage', {message: "Wrong email or password"})
+			//res.render('/loginPage', {message: "Wrong email or password"})
 	});
 //New user with email and password
 app.post('/createUser', (req,res)=> {
@@ -236,9 +242,9 @@ app.get('/cart', function(req, res) {
 	//console.log(req);
 	var itemList = [];
 	var totalPrice = 0;
-	
+	userID = req.session.uid;
 	//Get all products from the cart
-	db.query('SELECT * FROM shopping_basket_asset WHERE user_id='+ sessions.uid +'', function(err, rows, fields) {
+	db.query('SELECT * FROM shopping_basket_asset WHERE user_id='+ userID +'', function(err, rows, fields) {
 	  	if (err) {
 	  		res.status(500).json({"status_code": 500,"status_message": "internal server error"+ err});
 	  	} else {
@@ -268,6 +274,7 @@ app.get('/cart', function(req, res) {
 });
 
 //app.get("/index", (req,res) => { frontPage(req,res)});
+app.get("/loginUser", (req,res) => { loginUser(req, res)});
 app.get("/loginPage", (req,res) => { getLogin(req,res)});
 app.get("/cart", (req,res) => { getCart(req,res)});
 app.get("/newProduct", (req,res) => { getNP(req,res)});

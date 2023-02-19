@@ -11,3 +11,8 @@
     height: 10%;
 
 }
+
+#headerText{
+    text-decoration: none;
+    color:black;
+}
