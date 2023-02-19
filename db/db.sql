@@ -127,7 +127,7 @@ create table d0018e_store.comment(
 
 INSERT INTO d0018e_store.user 
 (first_name,  last_name,  email,                        password) VALUES 
-('janne',     'jansson',  'janne_jansson@coldmail.com', 'd539c3fc39720e54ede1d1bd5081b82b34fd00f755a70fcd73685ff41cae3f15');
+('admin',     'admin',  'admin@d0018e.com', '$2b$10$z.jgEUKenhqZX7bRizy6qOIGhLmJ4q1n96HaOLYARnvDirAAzzh.2');
 
 INSERT INTO d0018e_store.shopping_basket 
 (user_id) VALUES 

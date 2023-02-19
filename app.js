@@ -4,6 +4,9 @@ const app = express();
 const path = require('path');
 const router = express.Router();
 
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+
 const mysql = require('mysql2');
 
 const errorhandler = require('errorhandler');
@@ -36,7 +39,9 @@ app.use(sessions({
     secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
     saveUninitialized:true,
     cookie: { maxAge: oneDay },
-    resave: false 
+    resave: false,
+	admin: false, 
+	uid: null
 }));
 
 //Manually create products for testing without DB
@@ -61,6 +66,7 @@ const execSync = require('child_process').execSync;
 
 const sshCon = execSync('ssh -p 26880 karruc-9@130.240.207.20 -L 33306:localhost:3306', { encoding: 'utf-8' });  // the default is 'buffer'
 
+//var loggedInUser_id;
 
 const db = mysql.createConnection ({
     host: 'localhost',
@@ -83,8 +89,12 @@ global.db = db;
 //Hämta Index-sidan
 app.get('/', function(req, res) {
 
+	console.log(bcrypt.hashSync('p4ssw0rd', saltRounds));
+
 	//console.log(req);
 	var itemList = [];
+	var adminFlag = false;
+	var loggedIn = false;
 	
 	//Get all products
 	db.query('SELECT * FROM asset', function(err, rows, fields) {
@@ -105,44 +115,85 @@ app.get('/', function(req, res) {
 				}
 					// Lägg till hämtad data i en array
 					itemList.push(items);
+
+					if(sessions.uid != null){
+						loggedIn = true;
+					}
+
+					if(sessions.admin == true){
+						adminFlag = true;
+					}
 			}
 
 	  	// Rendera index.pug med objekten i listan
-	  	res.render('index', {itemList: itemList});
+	  	res.render('index', {itemList: itemList, af: adminFlag, login: loggedIn});
 	  	}
 	});
 	
 
 });
 
+// admin, admin@d0018e.com, p4ssw0rd
+
+
 //Login with email, password and session
 app.post('/loginUser', (req,res)=> {
-	db.query('SELECT email, password FROM user WHERE email = '+ req.body.email +'', 
+	//var hashedInput = bcrypt.hash(req.body.pw);
+	db.query('SELECT user_id, email, password FROM user WHERE email = '+ req.body.email, 
 				function(err, row, fields){
 					if(err){
 						res.status(500).json({"status_code": 500,"status_message": "internal server error"}); //This should be a failed login by username message, not 500
-					} else if(res.row.adminFlag){ //If user is admin
-							//Login user as admin
-					} else{
-						if(req.body.pw == res.row.password){
-							session=req.session;
-							res.render('/');
+					} 
+					else{
+						var plain = req.body.pw;
+						var check = bcrypt.compareSync(plain, res.row[0].password);
+
+						if(!check){
+								res.status(500).json({"status_code": 500,"status_message": "internal server error"}); //This should be a failed login by username message, not 500
+						} else {
+							console.log('password correct');
+
+							sessions.uid = res.row[0].user_id;
+							if(sessions.uid == 1){
+								sessions.admin = true;
+							}
+
+							res.redirect('/');
+							}
+							
 						}
+					}
+				
+			)
+			res.render('/loginPage', {message: "Wrong email or password"})
+	});
+//New user with email and password
+app.post('/createUser', (req,res)=> {
+	
+	db.query('INSERT INTO user(first_name, last_name, email, password) VALUES('+ req.body.fn +','+ req.body.ln +','+ req.body.email +','+ req.body.pw+')', 
+				function(err, row, fields){
+					if(err){
+						res.status(500).json({"status_code": 500,"status_message": "internal server error"}); //This should be a failed login by username message, not 500
+					} else{
+						res.redirect('loginPage');
 					}
 				}
 	)
+
 	res.redirect('/');
 
 });
-//New user with email and password
-app.post('/createUser', (req,res)=> {
-	db.query('This should be something like: if mail does not exist in table users -> insert mail and password'+ req.body.mail, 
+
+//Lay an order
+app.post('/createOrder', (req,res)=> {
+	db.query('Call a procedure which moves cart to order', 
 				function(err, row, fields){
 					if(err){
 						res.status(500).json({"status_code": 500,"status_message": "internal server error"}); //This should be a failed login by username message, not 500
 					} else{
 						//Update table users
 						//Login new user with session
+						res.redirect('/');
 					}
 				}
 	)
@@ -177,6 +228,43 @@ app.get('/p', (req, res)=> {
 			res.render('productPage.pug', {items: items});
 			}
 	  });
+});
+
+//Get logged in users shopping cart
+app.get('/cart', function(req, res) {
+
+	//console.log(req);
+	var itemList = [];
+	var totalPrice = 0;
+	
+	//Get all products from the cart
+	db.query('SELECT * FROM shopping_basket_asset WHERE user_id='+ sessions.uid +'', function(err, rows, fields) {
+	  	if (err) {
+	  		res.status(500).json({"status_code": 500,"status_message": "internal server error"+ err});
+	  	} else {
+			//console.log(rows);
+	  		// Kolla igenom all data i tabellen
+			  for (var i = 0; i < rows.length; i++) {
+			
+				// Skapa ett objekt för datan
+				var items = {
+					'productName': rows[i].title,
+					'link': rows[i].asset_id,
+					'price': rows[i].price,
+					'totalPrice': totalPrice+rows[i].price
+					//'imgSrc': rows[i].imgSrc,
+					//'category': rows[i].category
+				}
+					// Lägg till hämtad data i en array
+					itemList.push(items);
+			}
+
+	  	// Rendera index.pug med objekten i listan
+	  	res.render('cart', {shoppingCart: itemList});
+	  	}
+	});
+	
+
 });
 
 //app.get("/index", (req,res) => { frontPage(req,res)});
