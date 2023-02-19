@@ -17,8 +17,10 @@ html
               h1.logo D0018E Webbshop
             div.col-md-3.justify-content-center.my-auto
               a(href="/loginPage", action="getLoginPage()").btn.btn-default Login
-              a(href="/cart", action="getCart()").btn.btn-default Shopping Cart
-              a(href="/newProduct", action="getNP()").btn.btn-default Add Products
+              if(login)
+                a(href="/cart", action="getCart()").btn.btn-default Shopping Cart
+              if(af)
+                a(href="/newProduct", action="getNP()").btn.btn-default Add Products
 
       div.col-md-2
         p Kategorier
@@ -29,4 +31,3 @@ html
             a(href="") Programmering
           li
             a(href="") Fysik
-

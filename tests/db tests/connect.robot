@@ -1,5 +1,6 @@
 *** Settings ***
 Documentation     		Connecting to the DB
+Resource				./resources/vm.resource
 Resource				./resources/db.resource
 Test Setup				Set Log Level		TRACE
 

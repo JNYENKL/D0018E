@@ -1,0 +1,1 @@
+powershell -Command "& {node ./../../app.js}"
