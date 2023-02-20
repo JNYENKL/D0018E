@@ -7,7 +7,11 @@ Test Setup				Set Log Level		TRACE
 
 *** Test Cases ***	
 Initialize Connection
-	[tags]				Connection	UpdateDB	Tables	Procedures
+	[tags]				Connection	UpdateDB	Tables	Procedures	Admin
+	Disconnect from VM
+	Disconnect from VM
+	Disconnect from VM
+	Disconnect from VM
     Connect to VM
 	Log 				\n\nConnection to VM established!		console=yes
 	Connect to DB
@@ -20,6 +24,10 @@ Update and re-run DB
 	Run DB file
 	Log					\ndb.sql executed!			console=yes
 	
+Admin@d0018e.com With Password 'password' exists
+	[tags]				Admin
+	Check Admin
+	
 Tables
 	[tags]				Tables	Procedures
 	Check If All Tables Exist
@@ -29,5 +37,5 @@ Procedures
 	Call Each Procedure
 	
 Disconnect
-	[tags]				Connection	UpdateDB	Tables	Procedures
+	[tags]				Connection	UpdateDB	Tables	Procedures	Admin
 	Disconnect from VM

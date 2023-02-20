@@ -55,3 +55,9 @@ Check If All Tables Exist
 	
 Call Each Procedure	
 	Execute Sql String		CALL ${addUser}(${addUser_p});
+	
+Check Admin
+	Table Must Exist		${user}
+	${user_id_mail} =		Check If Exists In Database			select user_id from user where email = 'admin@d0018e.com'
+	${user_id_pw} =			Check If Exists In Database			select user_id from user where password = 'password'
+	Should Be Equal			${user_id_mail}			${user_id_pw}
