@@ -17,10 +17,7 @@ Note that in order to run the tests you must have installed:
   - [SSH Library](http://robotframework.org/SSHLibrary/SSHLibrary.html)
 - [pymysql](https://pypi.org/project/PyMySQL/)
 
-### Tests
-The tests are split into GUI and DB tests.
-
-#### DB tests
+### DB tests
 - AddUsers.bat, which connects to the VM, connects to DB, adds six pre-defined users,
 - Admin.bat, which connects to the VM, connects to DB, checks that an admin account with email admin@d0018e.com and password 'password' exists,
 - ConnectToDB.bat, which connects to the VM and to the DB,
@@ -29,7 +26,7 @@ The tests are split into GUI and DB tests.
 - UpdateDB.bat, which connects to the VM, connects DB, uploads the db.sql found in repository to the VM and runs it,
 - UserBasketRefusal.bat, which connects to the VM, connects to DB, tries to remove the six previously added users but expects not to be able to, since according to the database's structure, a shopping basket is automatically created upon creation of user, therefore in order to delete a user, first the shopping basket must be removed.
 
-#### GUI tests
+### GUI tests
 - ProductPage.bat. which checks for the pre-defined information about the specific product - matematik för nybörjare.
 
 ### How to run
