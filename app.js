@@ -145,6 +145,8 @@ app.post('/loginUser', (req, res) => {
 	db.query('SELECT * FROM user WHERE email=?', [req.body.email], 
 				function(err, row, fields){
 					if(err){
+						session = req.session;
+						session.uid=null;
 						res.status(500).json({"status_code": 500,"status_message": "internal server error: db"}); //This should be a failed login by username message, not 500
 					} 
 					else{
@@ -154,7 +156,7 @@ app.post('/loginUser', (req, res) => {
 						console.log(row[0].password); 
 						//var check = bcrypt.compareSync(plain, row[0].password);
 
-						if(req.body.pw == toString(row[0].password)){
+						if(req.body.pw != toString(row[0].password)){
 								res.status(500).json({"status_code": 500,"status_message": "internal server error: wrong password"}); //This should be a failed login by username message, not 500
 						} else {
 							console.log('password correct');
@@ -224,6 +226,7 @@ app.get('/p', (req, res)=> {
 					'productName': row[0].title,
 					'price': row[0].price,
 					'stock': row[0].amount,
+					'assId': row[0].asset_id,
 					'description': row[0].description
 				}
 

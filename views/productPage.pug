@@ -2,11 +2,20 @@ include header.pug
 div.col-md-10
     if(items.length > 0)
         each item in items
-            h1=item.productName 
-            h2=item.price
-            p=item.stock
-            a(href="" action="") länk
-            p=item.description
+            div#layout
+                div#up
+                    h1#bookName=item.productName
+                div#middle
+                    div#left
+                        img#bookPic(src=("" + "./img/" + item.assId + ".png"))
+                    div#right
+                        h2#bookPrice=item.price +"kr"
+                        p#bookStock= "I lager: " +item.stock
+                        button#addToBasket Add to basket
+                div#bottom
+                    p#bookDesc1= "Om " + item.productName + ":"
+                    p#bookDesc2= item.description
+                //a(href="" action="") länk
     else
         div.container
             h1 No items!
