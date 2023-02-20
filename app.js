@@ -149,19 +149,20 @@ app.post('/loginUser', (req, res) => {
 					} 
 					else{
 						console.log(row[0]);
-						var plain = toString(req.body.pw);
+						//var plain = toString(req.body.pw);
 						console.log(row[0].user_id);
 						console.log(row[0].password); 
-						var check = bcrypt.compareSync(plain, row[0].password);
+						//var check = bcrypt.compareSync(plain, row[0].password);
 
-						if(!check){
+						if(req.body.pw == toString(row[0].password)){
 								res.status(500).json({"status_code": 500,"status_message": "internal server error: wrong password"}); //This should be a failed login by username message, not 500
 						} else {
 							console.log('password correct');
-							
-							sessions.uid = row[0].user_id;
-							if(sessions.uid == 1){
-								sessions.admin = true;
+							session = req.session;
+							session.uid = row[0].user_id;
+							console.log("user_id:"+session.uid);
+							if(session.uid == 1){
+								session.admin = true;
 							}
 							console.log("here");
 							res.redirect('/');

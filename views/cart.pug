@@ -10,7 +10,9 @@ div.col-md-10
             each item in shoppingCart
                 tr(scope="row")
                     td=item.productName
-                    td 
+                    td
+                        form(action="deleteFromCart()" method="UPDATE")
+                            input(type="submit" value="ta bort")
             td=item.totalPrice
             form.inputForm(action='/createOrder', method='POST')
                 input.btnInpt(type='submit', value='Bekräfta beställning')    
