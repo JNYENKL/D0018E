@@ -85,14 +85,6 @@ Add User Cant Remove User Cant Remove
 	${fail} = 		Run Keyword And Return Status			Execute Sql String		DELETE FROM ${user} WHERE email='${bU_mail}';
 	Should Be Equal As Strings		${fail}			False
 
-Delete Six Users
-	Execute Sql String		DELETE FROM ${user} WHERE email='${user1_mail}';
-	Execute Sql String		DELETE FROM ${user} WHERE email='${user2_mail}';
-	Execute Sql String		DELETE FROM ${user} WHERE email='${user3_mail}';
-	Execute Sql String		DELETE FROM ${user} WHERE email='${user4_mail}';
-	Execute Sql String		DELETE FROM ${user} WHERE email='${user5_mail}';
-	Execute Sql String		DELETE FROM ${user} WHERE email='${user6_mail}';
-	
 	
 Add Six Users
 	${user_counter_bef}=	Row Count							select * from user
