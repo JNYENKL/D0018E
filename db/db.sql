@@ -130,9 +130,15 @@ create table d0018e_store.comment(
   constraint uc_comment unique(user_id, order_asset_id)
 );
 
+<<<<<<< HEAD
+insert into d0018e_store.user 
+(first_name,  last_name,  email,                        password) values 
+('janne',     'jansson',  'janne_jansson@coldmail.com', 'd539c3fc39720e54ede1d1bd5081b82b34fd00f755a70fcd73685ff41cae3f15');
+=======
 INSERT INTO d0018e_store.user 
 (first_name,  last_name,  email,                        password) VALUES 
 ('admin',     'admin',  'admin@d0018e.com', '$2b$10$z.jgEUKenhqZX7bRizy6qOIGhLmJ4q1n96HaOLYARnvDirAAzzh.2');
+>>>>>>> ebe362a7ad5510af2004a04259cba3399960f5aa
 
 insert into d0018e_store.shopping_basket 
 (user_id) values 
