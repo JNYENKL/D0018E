@@ -1,91 +1,102 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 6.0.2 (Python 3.11.0 on win32)" generated="20230220 19:14:47.833" rpa="false" schemaversion="3">
+<robot generator="Robot 6.0.2 (Python 3.11.0 on win32)" generated="20230220 21:35:03.502" rpa="false" schemaversion="3">
 <suite id="s1" name="Connect" source="C:\Users\kruci\Desktop\d0018e\D0018E\tests\db tests\connect.robot">
 <test id="s1-t1" name="Initialize Connection" line="9">
 <kw name="Set Log Level" library="BuiltIn" type="SETUP">
 <arg>TRACE</arg>
 <doc>Sets the log threshold to the specified level and returns the old level.</doc>
-<msg timestamp="20230220 19:14:48.381" level="INFO">Log level changed from INFO to TRACE.</msg>
-<msg timestamp="20230220 19:14:48.381" level="TRACE">Return: 'INFO'</msg>
-<status status="PASS" starttime="20230220 19:14:48.380" endtime="20230220 19:14:48.381"/>
+<msg timestamp="20230220 21:35:03.988" level="INFO">Log level changed from INFO to TRACE.</msg>
+<msg timestamp="20230220 21:35:03.988" level="TRACE">Return: 'INFO'</msg>
+<status status="PASS" starttime="20230220 21:35:03.988" endtime="20230220 21:35:03.988"/>
 </kw>
 <kw name="Disconnect from VM" library="vm">
-<msg timestamp="20230220 19:14:48.382" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230220 21:35:03.989" level="TRACE">Arguments: [  ]</msg>
 <kw name="Close All Connections" library="SSHLibrary">
 <doc>Closes all open connections.</doc>
-<msg timestamp="20230220 19:14:48.382" level="TRACE">Arguments: [  ]</msg>
-<msg timestamp="20230220 19:14:48.382" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230220 19:14:48.382" endtime="20230220 19:14:48.382"/>
+<msg timestamp="20230220 21:35:03.989" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230220 21:35:03.990" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230220 21:35:03.989" endtime="20230220 21:35:03.990"/>
 </kw>
-<msg timestamp="20230220 19:14:48.383" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230220 19:14:48.381" endtime="20230220 19:14:48.383"/>
+<msg timestamp="20230220 21:35:03.990" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230220 21:35:03.989" endtime="20230220 21:35:03.990"/>
 </kw>
 <kw name="Disconnect from VM" library="vm">
-<msg timestamp="20230220 19:14:48.383" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230220 21:35:03.990" level="TRACE">Arguments: [  ]</msg>
 <kw name="Close All Connections" library="SSHLibrary">
 <doc>Closes all open connections.</doc>
-<msg timestamp="20230220 19:14:48.384" level="TRACE">Arguments: [  ]</msg>
-<msg timestamp="20230220 19:14:48.384" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230220 19:14:48.384" endtime="20230220 19:14:48.384"/>
+<msg timestamp="20230220 21:35:03.991" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230220 21:35:03.991" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230220 21:35:03.990" endtime="20230220 21:35:03.991"/>
 </kw>
-<msg timestamp="20230220 19:14:48.384" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230220 19:14:48.383" endtime="20230220 19:14:48.385"/>
+<msg timestamp="20230220 21:35:03.991" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230220 21:35:03.990" endtime="20230220 21:35:03.991"/>
 </kw>
 <kw name="Disconnect from VM" library="vm">
-<msg timestamp="20230220 19:14:48.385" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230220 21:35:03.991" level="TRACE">Arguments: [  ]</msg>
 <kw name="Close All Connections" library="SSHLibrary">
 <doc>Closes all open connections.</doc>
-<msg timestamp="20230220 19:14:48.386" level="TRACE">Arguments: [  ]</msg>
-<msg timestamp="20230220 19:14:48.386" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230220 19:14:48.386" endtime="20230220 19:14:48.386"/>
+<msg timestamp="20230220 21:35:03.992" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230220 21:35:03.992" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230220 21:35:03.992" endtime="20230220 21:35:03.992"/>
 </kw>
-<msg timestamp="20230220 19:14:48.386" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230220 19:14:48.385" endtime="20230220 19:14:48.386"/>
+<msg timestamp="20230220 21:35:03.992" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230220 21:35:03.991" endtime="20230220 21:35:03.992"/>
 </kw>
 <kw name="Disconnect from VM" library="vm">
-<msg timestamp="20230220 19:14:48.387" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230220 21:35:03.993" level="TRACE">Arguments: [  ]</msg>
 <kw name="Close All Connections" library="SSHLibrary">
 <doc>Closes all open connections.</doc>
-<msg timestamp="20230220 19:14:48.387" level="TRACE">Arguments: [  ]</msg>
-<msg timestamp="20230220 19:14:48.387" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230220 19:14:48.387" endtime="20230220 19:14:48.387"/>
+<msg timestamp="20230220 21:35:03.993" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230220 21:35:03.993" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230220 21:35:03.993" endtime="20230220 21:35:03.993"/>
 </kw>
-<msg timestamp="20230220 19:14:48.388" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230220 19:14:48.387" endtime="20230220 19:14:48.388"/>
+<msg timestamp="20230220 21:35:03.993" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230220 21:35:03.992" endtime="20230220 21:35:03.993"/>
+</kw>
+<kw name="Disconnect from VM" library="vm">
+<msg timestamp="20230220 21:35:03.993" level="TRACE">Arguments: [  ]</msg>
+<kw name="Close All Connections" library="SSHLibrary">
+<doc>Closes all open connections.</doc>
+<msg timestamp="20230220 21:35:03.994" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230220 21:35:03.994" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230220 21:35:03.994" endtime="20230220 21:35:03.994"/>
+</kw>
+<msg timestamp="20230220 21:35:03.994" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230220 21:35:03.993" endtime="20230220 21:35:03.994"/>
 </kw>
 <kw name="Connect to VM" library="vm">
-<msg timestamp="20230220 19:14:48.388" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230220 21:35:03.994" level="TRACE">Arguments: [  ]</msg>
 <kw name="Set Log Level" library="BuiltIn">
 <arg>NONE</arg>
 <doc>Sets the log threshold to the specified level and returns the old level.</doc>
-<msg timestamp="20230220 19:14:48.389" level="TRACE">Arguments: [ 'NONE' ]</msg>
-<status status="PASS" starttime="20230220 19:14:48.388" endtime="20230220 19:14:48.389"/>
+<msg timestamp="20230220 21:35:03.995" level="TRACE">Arguments: [ 'NONE' ]</msg>
+<status status="PASS" starttime="20230220 21:35:03.995" endtime="20230220 21:35:03.995"/>
 </kw>
 <kw name="Get Value From User" library="Dialogs">
 <var>${SSHPassword}</var>
 <arg>SSH password:</arg>
 <arg>hidden=yes</arg>
 <doc>Pauses execution and asks user to input a value.</doc>
-<status status="PASS" starttime="20230220 19:14:48.389" endtime="20230220 19:14:56.415"/>
+<status status="PASS" starttime="20230220 21:35:03.995" endtime="20230220 21:35:05.074"/>
 </kw>
 <kw name="Open Connection" library="SSHLibrary">
 <arg>${SSHHost}</arg>
 <arg>port=${SSHPort}</arg>
 <doc>Opens a new SSH connection to the given ``host`` and ``port``.</doc>
-<status status="PASS" starttime="20230220 19:14:56.415" endtime="20230220 19:14:56.416"/>
+<status status="PASS" starttime="20230220 21:35:05.074" endtime="20230220 21:35:05.075"/>
 </kw>
 <kw name="Login" library="SSHLibrary">
 <arg>${SSHUser}</arg>
 <arg>${SSHPassword}</arg>
 <doc>Logs into the SSH server with the given ``username`` and ``password``.</doc>
-<status status="PASS" starttime="20230220 19:14:56.416" endtime="20230220 19:14:58.535"/>
+<status status="PASS" starttime="20230220 21:35:05.075" endtime="20230220 21:35:06.918"/>
 </kw>
 <kw name="Set Log Level" library="BuiltIn">
 <arg>TRACE</arg>
 <doc>Sets the log threshold to the specified level and returns the old level.</doc>
-<msg timestamp="20230220 19:14:58.536" level="INFO">Log level changed from NONE to TRACE.</msg>
-<msg timestamp="20230220 19:14:58.536" level="TRACE">Return: 'NONE'</msg>
-<status status="PASS" starttime="20230220 19:14:58.535" endtime="20230220 19:14:58.536"/>
+<msg timestamp="20230220 21:35:06.919" level="INFO">Log level changed from NONE to TRACE.</msg>
+<msg timestamp="20230220 21:35:06.919" level="TRACE">Return: 'NONE'</msg>
+<status status="PASS" starttime="20230220 21:35:06.918" endtime="20230220 21:35:06.919"/>
 </kw>
 <kw name="Create Local Ssh Tunnel" library="SSHLibrary">
 <arg>${localPort}</arg>
@@ -94,27 +105,27 @@
 <doc>The keyword uses the existing connection to set up local port forwarding
 (the openssh -L option) from a local port through a tunneled
 connection to a destination reachable from the SSH server machine.</doc>
-<msg timestamp="20230220 19:14:58.536" level="TRACE">Arguments: [ '33306' | '127.0.0.1' | 3306 ]</msg>
-<msg timestamp="20230220 19:14:58.538" level="INFO">Now forwarding port 33306 to 127.0.0.1:3306 ...</msg>
-<msg timestamp="20230220 19:14:58.538" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230220 19:14:58.536" endtime="20230220 19:14:58.538"/>
+<msg timestamp="20230220 21:35:06.919" level="TRACE">Arguments: [ '33306' | '127.0.0.1' | 3306 ]</msg>
+<msg timestamp="20230220 21:35:06.921" level="INFO">Now forwarding port 33306 to 127.0.0.1:3306 ...</msg>
+<msg timestamp="20230220 21:35:06.921" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230220 21:35:06.919" endtime="20230220 21:35:06.921"/>
 </kw>
-<msg timestamp="20230220 19:14:58.538" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230220 19:14:48.388" endtime="20230220 19:14:58.538"/>
+<msg timestamp="20230220 21:35:06.921" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230220 21:35:03.994" endtime="20230220 21:35:06.921"/>
 </kw>
 <kw name="Log" library="BuiltIn">
 <arg>\n\nConnection to VM established!</arg>
 <arg>console=yes</arg>
 <doc>Logs the given message with the given level.</doc>
-<msg timestamp="20230220 19:14:58.539" level="TRACE">Arguments: [ '\n\nConnection to VM established!' | console=True ]</msg>
-<msg timestamp="20230220 19:14:58.539" level="INFO">
+<msg timestamp="20230220 21:35:06.923" level="TRACE">Arguments: [ '\n\nConnection to VM established!' | console=True ]</msg>
+<msg timestamp="20230220 21:35:06.923" level="INFO">
 
 Connection to VM established!</msg>
-<msg timestamp="20230220 19:14:58.539" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230220 19:14:58.539" endtime="20230220 19:14:58.539"/>
+<msg timestamp="20230220 21:35:06.923" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230220 21:35:06.922" endtime="20230220 21:35:06.923"/>
 </kw>
 <kw name="Connect to DB" library="db">
-<msg timestamp="20230220 19:14:58.540" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230220 21:35:06.924" level="TRACE">Arguments: [  ]</msg>
 <kw name="Connect To Database" library="DatabaseLibrary">
 <arg>pymysql</arg>
 <arg>${DBName}</arg>
@@ -124,139 +135,126 @@ Connection to VM established!</msg>
 <arg>${DBPort}</arg>
 <doc>Loads the DB API 2.0 module given `dbapiModuleName` then uses it to
 connect to the database using `dbName`, `dbUsername`, and `dbPassword`.</doc>
-<msg timestamp="20230220 19:14:58.540" level="TRACE">Arguments: [ 'pymysql' | 'd0018e_store' | 'root' | '' | '127.0.0.1' | '33306' ]</msg>
-<msg timestamp="20230220 19:14:58.580" level="INFO">Connecting using : pymysql.connect(db=d0018e_store, user=root, passwd=, host=127.0.0.1, port=33306, charset=None) </msg>
-<msg timestamp="20230220 19:14:58.629" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230220 19:14:58.540" endtime="20230220 19:14:58.629"/>
+<msg timestamp="20230220 21:35:06.925" level="TRACE">Arguments: [ 'pymysql' | 'd0018e_store' | 'root' | '' | '127.0.0.1' | '33306' ]</msg>
+<msg timestamp="20230220 21:35:06.965" level="INFO">Connecting using : pymysql.connect(db=d0018e_store, user=root, passwd=, host=127.0.0.1, port=33306, charset=None) </msg>
+<msg timestamp="20230220 21:35:07.011" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230220 21:35:06.924" endtime="20230220 21:35:07.011"/>
 </kw>
-<msg timestamp="20230220 19:14:58.630" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230220 19:14:58.540" endtime="20230220 19:14:58.630"/>
+<msg timestamp="20230220 21:35:07.012" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230220 21:35:06.924" endtime="20230220 21:35:07.012"/>
 </kw>
 <kw name="Log" library="BuiltIn">
 <arg>\nConnection to DB established!</arg>
 <arg>console=yes</arg>
 <doc>Logs the given message with the given level.</doc>
-<msg timestamp="20230220 19:14:58.631" level="TRACE">Arguments: [ '\nConnection to DB established!' | console=True ]</msg>
-<msg timestamp="20230220 19:14:58.632" level="INFO">
+<msg timestamp="20230220 21:35:07.013" level="TRACE">Arguments: [ '\nConnection to DB established!' | console=True ]</msg>
+<msg timestamp="20230220 21:35:07.014" level="INFO">
 Connection to DB established!</msg>
-<msg timestamp="20230220 19:14:58.632" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230220 19:14:58.631" endtime="20230220 19:14:58.632"/>
+<msg timestamp="20230220 21:35:07.014" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230220 21:35:07.013" endtime="20230220 21:35:07.014"/>
 </kw>
+<tag>Addusers</tag>
 <tag>Admin</tag>
 <tag>Connection</tag>
 <tag>Procedures</tag>
+<tag>Removeusers</tag>
 <tag>Tables</tag>
 <tag>UpdateDB</tag>
-<status status="PASS" starttime="20230220 19:14:48.379" endtime="20230220 19:14:58.633"/>
+<tag>UserBasketRefusal</tag>
+<status status="PASS" starttime="20230220 21:35:03.987" endtime="20230220 21:35:07.015"/>
 </test>
-<test id="s1-t2" name="Admin@d0018e.com With Password 'password' exists" line="27">
+<test id="s1-t2" name="Refuse To Delete User Due To Auto Basket" line="40">
 <kw name="Set Log Level" library="BuiltIn" type="SETUP">
 <arg>TRACE</arg>
 <doc>Sets the log threshold to the specified level and returns the old level.</doc>
-<msg timestamp="20230220 19:14:58.636" level="TRACE">Arguments: [ 'TRACE' ]</msg>
-<msg timestamp="20230220 19:14:58.636" level="INFO">Log level changed from TRACE to TRACE.</msg>
-<msg timestamp="20230220 19:14:58.636" level="TRACE">Return: 'TRACE'</msg>
-<status status="PASS" starttime="20230220 19:14:58.636" endtime="20230220 19:14:58.637"/>
+<msg timestamp="20230220 21:35:07.017" level="TRACE">Arguments: [ 'TRACE' ]</msg>
+<msg timestamp="20230220 21:35:07.017" level="INFO">Log level changed from TRACE to TRACE.</msg>
+<msg timestamp="20230220 21:35:07.017" level="TRACE">Return: 'TRACE'</msg>
+<status status="PASS" starttime="20230220 21:35:07.017" endtime="20230220 21:35:07.017"/>
 </kw>
-<kw name="Check Admin" library="db">
-<msg timestamp="20230220 19:14:58.638" level="TRACE">Arguments: [  ]</msg>
-<kw name="Table Must Exist" library="DatabaseLibrary">
-<arg>${user}</arg>
-<doc>Check if the table given exists in the database. Set optional input `sansTran` to True to run command without an
-explicit transaction commit or rollback.</doc>
-<msg timestamp="20230220 19:14:58.638" level="TRACE">Arguments: [ 'user' ]</msg>
-<msg timestamp="20230220 19:14:58.638" level="INFO">Executing : Table Must Exist  |  user </msg>
-<msg timestamp="20230220 19:14:58.638" level="INFO">Executing : Row Count  |  SELECT * FROM information_schema.tables WHERE table_name='user' </msg>
-<msg timestamp="20230220 19:14:58.672" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230220 19:14:58.638" endtime="20230220 19:14:58.673"/>
+<kw name="Add User Cant Remove User Cant Remove" library="db">
+<msg timestamp="20230220 21:35:07.018" level="TRACE">Arguments: [  ]</msg>
+<kw name="Run Keyword And Return Status" library="BuiltIn">
+<var>${fail}</var>
+<arg>Execute Sql String</arg>
+<arg>DELETE FROM ${user} WHERE email='${bU_mail}';</arg>
+<doc>Runs the given keyword with given arguments and returns the status as a Boolean value.</doc>
+<msg timestamp="20230220 21:35:07.019" level="TRACE">Arguments: [ 'Execute Sql String' | "DELETE FROM ${user} WHERE email='${bU_mail}';" ]</msg>
+<kw name="Execute Sql String" library="DatabaseLibrary">
+<arg>DELETE FROM ${user} WHERE email='${bU_mail}';</arg>
+<doc>Executes the sqlString as SQL commands. Useful to pass arguments to your sql. Set optional input `sansTran` to
+True to run command without an explicit transaction commit or rollback.</doc>
+<msg timestamp="20230220 21:35:07.019" level="TRACE">Arguments: [ "DELETE FROM user WHERE email='basket@bask.et';" ]</msg>
+<msg timestamp="20230220 21:35:07.020" level="INFO">Executing : Execute SQL String  |  DELETE FROM user WHERE email='basket@bask.et'; </msg>
+<msg timestamp="20230220 21:35:07.057" level="FAIL">IntegrityError: (1451, 'Cannot delete or update a parent row: a foreign key constraint fails (`d0018e_store`.`shopping_basket`, CONSTRAINT `fk_user_shopping_basket` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE CASCADE)')</msg>
+<msg timestamp="20230220 21:35:07.062" level="DEBUG">Traceback (most recent call last):
+  File "C:\Python311\Lib\site-packages\DatabaseLibrary\query.py", line 313, in execute_sql_string
+    self.__execute_sql(cur, sqlString)
+  File "C:\Python311\Lib\site-packages\DatabaseLibrary\query.py", line 371, in __execute_sql
+    return cur.execute(sqlStatement)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\pymysql\cursors.py", line 148, in execute
+    result = self._query(query)
+             ^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\pymysql\cursors.py", line 310, in _query
+    conn.query(q)
+  File "C:\Python311\Lib\site-packages\pymysql\connections.py", line 548, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\pymysql\connections.py", line 775, in _read_query_result
+    result.read()
+  File "C:\Python311\Lib\site-packages\pymysql\connections.py", line 1156, in read
+    first_packet = self.connection._read_packet()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\pymysql\connections.py", line 725, in _read_packet
+    packet.raise_for_error()
+  File "C:\Python311\Lib\site-packages\pymysql\protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "C:\Python311\Lib\site-packages\pymysql\err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.IntegrityError: (1451, 'Cannot delete or update a parent row: a foreign key constraint fails (`d0018e_store`.`shopping_basket`, CONSTRAINT `fk_user_shopping_basket` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE CASCADE)')</msg>
+<status status="FAIL" starttime="20230220 21:35:07.019" endtime="20230220 21:35:07.062"/>
 </kw>
-<kw name="Check If Exists In Database" library="DatabaseLibrary">
-<var>${user_id_mail}</var>
-<arg>select user_id from user where email = 'admin@d0018e.com'</arg>
-<doc>Check if any row would be returned by given the input `selectStatement`. If there are no results, then this will
-throw an AssertionError. Set optional input `sansTran` to True to run command without an explicit transaction
-commit or rollback.</doc>
-<msg timestamp="20230220 19:14:58.673" level="TRACE">Arguments: [ "select user_id from user where email = 'admin@d0018e.com'" ]</msg>
-<msg timestamp="20230220 19:14:58.673" level="INFO">Executing : Check If Exists In Database  |  select user_id from user where email = 'admin@d0018e.com' </msg>
-<msg timestamp="20230220 19:14:58.673" level="INFO">Executing : Query  |  select user_id from user where email = 'admin@d0018e.com' </msg>
-<msg timestamp="20230220 19:14:58.703" level="TRACE">Return: None</msg>
-<msg timestamp="20230220 19:14:58.703" level="INFO">${user_id_mail} = None</msg>
-<status status="PASS" starttime="20230220 19:14:58.673" endtime="20230220 19:14:58.703"/>
+<msg timestamp="20230220 21:35:07.062" level="TRACE">Return: False</msg>
+<msg timestamp="20230220 21:35:07.062" level="INFO">${fail} = False</msg>
+<status status="PASS" starttime="20230220 21:35:07.019" endtime="20230220 21:35:07.062"/>
 </kw>
-<kw name="Check If Exists In Database" library="DatabaseLibrary">
-<var>${user_id_pw}</var>
-<arg>select user_id from user where password = 'password'</arg>
-<doc>Check if any row would be returned by given the input `selectStatement`. If there are no results, then this will
-throw an AssertionError. Set optional input `sansTran` to True to run command without an explicit transaction
-commit or rollback.</doc>
-<msg timestamp="20230220 19:14:58.704" level="TRACE">Arguments: [ "select user_id from user where password = 'password'" ]</msg>
-<msg timestamp="20230220 19:14:58.704" level="INFO">Executing : Check If Exists In Database  |  select user_id from user where password = 'password' </msg>
-<msg timestamp="20230220 19:14:58.704" level="INFO">Executing : Query  |  select user_id from user where password = 'password' </msg>
-<msg timestamp="20230220 19:14:58.734" level="TRACE">Return: None</msg>
-<msg timestamp="20230220 19:14:58.735" level="INFO">${user_id_pw} = None</msg>
-<status status="PASS" starttime="20230220 19:14:58.703" endtime="20230220 19:14:58.735"/>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${fail}</arg>
+<arg>False</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20230220 21:35:07.063" level="TRACE">Arguments: [ False | 'False' ]</msg>
+<msg timestamp="20230220 21:35:07.063" level="INFO">Argument types are:
+&lt;class 'bool'&gt;
+&lt;class 'str'&gt;</msg>
+<msg timestamp="20230220 21:35:07.063" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230220 21:35:07.063" endtime="20230220 21:35:07.063"/>
 </kw>
-<kw name="Should Be Equal" library="BuiltIn">
-<arg>${user_id_mail}</arg>
-<arg>${user_id_pw}</arg>
-<doc>Fails if the given objects are unequal.</doc>
-<msg timestamp="20230220 19:14:58.736" level="TRACE">Arguments: [ None | None ]</msg>
-<msg timestamp="20230220 19:14:58.736" level="DEBUG">Argument types are:
-&lt;class 'NoneType'&gt;
-&lt;class 'NoneType'&gt;</msg>
-<msg timestamp="20230220 19:14:58.736" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230220 19:14:58.735" endtime="20230220 19:14:58.736"/>
+<msg timestamp="20230220 21:35:07.063" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230220 21:35:07.018" endtime="20230220 21:35:07.063"/>
 </kw>
-<msg timestamp="20230220 19:14:58.736" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230220 19:14:58.637" endtime="20230220 19:14:58.736"/>
-</kw>
-<tag>Admin</tag>
-<status status="PASS" starttime="20230220 19:14:58.635" endtime="20230220 19:14:58.737"/>
-</test>
-<test id="s1-t3" name="Disconnect" line="39">
-<kw name="Set Log Level" library="BuiltIn" type="SETUP">
-<arg>TRACE</arg>
-<doc>Sets the log threshold to the specified level and returns the old level.</doc>
-<msg timestamp="20230220 19:14:58.739" level="TRACE">Arguments: [ 'TRACE' ]</msg>
-<msg timestamp="20230220 19:14:58.739" level="INFO">Log level changed from TRACE to TRACE.</msg>
-<msg timestamp="20230220 19:14:58.739" level="TRACE">Return: 'TRACE'</msg>
-<status status="PASS" starttime="20230220 19:14:58.739" endtime="20230220 19:14:58.739"/>
-</kw>
-<kw name="Disconnect from VM" library="vm">
-<msg timestamp="20230220 19:14:58.740" level="TRACE">Arguments: [  ]</msg>
-<kw name="Close All Connections" library="SSHLibrary">
-<doc>Closes all open connections.</doc>
-<msg timestamp="20230220 19:14:58.740" level="TRACE">Arguments: [  ]</msg>
-<msg timestamp="20230220 19:14:59.100" level="DEBUG">[chan 0] EOF sent (0)</msg>
-<msg timestamp="20230220 19:14:59.104" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230220 19:14:58.740" endtime="20230220 19:14:59.105"/>
-</kw>
-<msg timestamp="20230220 19:14:59.105" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230220 19:14:58.740" endtime="20230220 19:14:59.105"/>
-</kw>
-<tag>Admin</tag>
-<tag>Connection</tag>
-<tag>Procedures</tag>
-<tag>Tables</tag>
-<tag>UpdateDB</tag>
-<status status="PASS" starttime="20230220 19:14:58.738" endtime="20230220 19:14:59.106"/>
+<tag>UserBasketRefusal</tag>
+<status status="PASS" starttime="20230220 21:35:07.016" endtime="20230220 21:35:07.064"/>
 </test>
 <doc>Connecting to the DB</doc>
-<status status="PASS" starttime="20230220 19:14:47.837" endtime="20230220 19:14:59.108"/>
+<status status="PASS" starttime="20230220 21:35:03.506" endtime="20230220 21:35:07.067"/>
 </suite>
 <statistics>
 <total>
-<stat pass="3" fail="0" skip="0">All Tests</stat>
+<stat pass="2" fail="0" skip="0">All Tests</stat>
 </total>
 <tag>
-<stat pass="3" fail="0" skip="0">Admin</stat>
-<stat pass="2" fail="0" skip="0">Connection</stat>
-<stat pass="2" fail="0" skip="0">Procedures</stat>
-<stat pass="2" fail="0" skip="0">Tables</stat>
-<stat pass="2" fail="0" skip="0">UpdateDB</stat>
+<stat pass="1" fail="0" skip="0">Addusers</stat>
+<stat pass="1" fail="0" skip="0">Admin</stat>
+<stat pass="1" fail="0" skip="0">Connection</stat>
+<stat pass="1" fail="0" skip="0">Procedures</stat>
+<stat pass="1" fail="0" skip="0">Removeusers</stat>
+<stat pass="1" fail="0" skip="0">Tables</stat>
+<stat pass="1" fail="0" skip="0">UpdateDB</stat>
+<stat pass="2" fail="0" skip="0">UserBasketRefusal</stat>
 </tag>
 <suite>
-<stat pass="3" fail="0" skip="0" id="s1" name="Connect">Connect</stat>
+<stat pass="2" fail="0" skip="0" id="s1" name="Connect">Connect</stat>
 </suite>
 </statistics>
 <errors>

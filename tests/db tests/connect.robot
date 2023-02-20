@@ -7,7 +7,8 @@ Test Setup				Set Log Level		TRACE
 
 *** Test Cases ***	
 Initialize Connection
-	[tags]				Connection	UpdateDB	Tables	Procedures	Admin
+	[tags]				Connection	UpdateDB	Tables	Procedures	Admin	Addusers	UserBasketRefusal
+	Disconnect from VM
 	Disconnect from VM
 	Disconnect from VM
 	Disconnect from VM
@@ -27,6 +28,14 @@ Update and re-run DB
 Admin@d0018e.com With Password 'password' exists
 	[tags]				Admin
 	Check Admin
+	
+Six More Users
+	[tags]				Addusers
+	Add Six Users
+		
+Refuse To Delete User Due To Auto Basket
+	[tags]				UserBasketRefusal
+	Add User Cant Remove User Cant Remove
 	
 Tables
 	[tags]				Tables	Procedures
