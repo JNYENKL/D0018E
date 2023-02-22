@@ -55,7 +55,8 @@ Update DB file
 	File Should Exist		${dbsql-file}
 	
 Run DB file
-	Execute Command			mysql < db.sql		sudo=true
+	${rc}					Execute Command			mysql < db.sql		return_rc=true		sudo=true
+	Should Be Equal As Integers			${rc[1]}		0
 		
 Check If All Tables Exist
 	Table Must Exist		${user}

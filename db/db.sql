@@ -30,6 +30,7 @@ create table d0018e_store.`order`(
   user_id               bigint            unsigned    not null,
   shopping_basket_id    bigint            unsigned    not null,
   order_date            datetime                      not null,
+  total_price           double            unsigned    not null,
 
   constraint pk_order primary key(order_id),
 
@@ -44,6 +45,8 @@ create table d0018e_store.`order`(
   on update cascade
 );
 
+alter table d0018e_store.`order` alter total_price set default 0;
+
 create table d0018e_store.subject(
   subject_id        serial,
   name              varchar(50)   unique    not null,
@@ -57,7 +60,7 @@ create table d0018e_store.asset(
   title         varchar(50)   unique,
   price         double        unsigned   not null,
   amount        bigint        unsigned   not null,
-  description   varchar(150),
+  description   varchar(300),
 
   constraint pk_asset primary key(asset_id),
 
@@ -130,7 +133,13 @@ create table d0018e_store.comment(
   constraint uc_comment unique(user_id, order_asset_id)
 );
 
-INSERT INTO d0018e_store.user 
+/*
+------------------------------------------------------------------------
+  insertion of data
+------------------------------------------------------------------------
+*/
+
+insert into d0018e_store.user 
 (first_name,  last_name,  email,                        password) VALUES 
 ('admin',     'admin',  'admin@d0018e.com', 'password');
 
@@ -140,15 +149,17 @@ insert into d0018e_store.shopping_basket
 
 insert into d0018e_store.subject 
 (name) values 
-("math");
+('matematik'), ('programmering'), ('fysik');
 
 insert into d0018e_store.asset
 (subject_id,  title,                        price,    amount,   description) values 
-(1,           "matematik för nybörjare",    10.50,    3,        "matematik för alla åldrar!");
+(1,           "matematik för nybörjare",    10.50,    3,        "matematik för alla åldrar!"),
+(2,           "python för modiga",          69,       6,        "Boken för dig som vill va med och bekanta dig med ormar och andra vilda djur!"),
+(2,           "algoritmer är vackra",    	119,	  16,        "Algoritmer som får dina knä å mjukna direkt. Rekommenderas varmt för dig som tycker om att inte förstå något överhuvudtaget. Vill du spendera resten av ditt liv på LTU så kör gärna på, den här boken lär egentligen inte behövas men den är iaf thiccc.");
 
 insert into d0018e_store.shopping_basket_asset
 (shopping_basket_id,  asset_id,   asset_amount,   when_added) values 
-(1,                   1,          1,              now());
+(1,                   1,          3,              now());
 
 /*
 ------------------------------------------------------------------------
@@ -195,8 +206,31 @@ before insert on d0018e_store.order_asset for each row
         signal sqlstate '45000' set message_text = 'error: the amount of items added to the shopping cart must be greater than zero';
       else
         update d0018e_store.shopping_basket_asset set asset_amount=asset_amount-new.asset_amount where asset_id=new.asset_id and shopping_basket_id=var_shopping_basket_id; 
+        set var_asset_amount := (select asset_amount from d0018e_store.shopping_basket_asset where asset_id=new.asset_id);
+        if (var_asset_amount <= 0) then
+          delete from d0018e_store.shopping_basket_asset where asset_id=new.asset_id;
+        end if;
       end if;
 end $$
+
+create trigger d0018e_store.revive_asset_amount_from_basket 
+after delete on d0018e_store.shopping_basket_asset for each row
+    begin
+
+    update asset a set a.amount=a.amount+old.asset_amount;
+
+    end $$
+
+create trigger d0018e_store.total_order_price 
+after insert on d0018e_store.order_asset for each row
+    begin
+      declare var_total_price double unsigned;
+
+    set var_total_price := (select sum(order_asset_price) from (select order_id, (asset_amount * price) order_asset_price from order_asset oa join `order` o using (order_id) join asset a using (asset_id) where order_id=new.order_id) x group by x.order_id);
+
+    update `order` o set o.total_price=var_total_price;
+
+    end $$
 
 /*
 ------------------------------------------------------------------------
@@ -261,7 +295,7 @@ create procedure d0018e_store.add_item_to_shopping_basket
 /*
 example:
 
-call d0018e_store.create_order('janne_jansson@coldmail.com');
+call d0018e_store.create_order('admin@d0018e.com');
 
 */
 create procedure d0018e_store.create_order 
@@ -315,5 +349,14 @@ set global event_scheduler = on;
 create event d0018e_store.clean_shopping_basket
     on schedule
       every 3 second
-    do
+    do        
         delete from d0018e_store.shopping_basket_asset where shopping_basket_asset_id in (select shopping_basket_asset_id from shopping_basket_asset where when_added < date_sub(now(), interval 30 minute));
+
+/*
+------------------------------------------------------------------------
+  views
+------------------------------------------------------------------------
+*/
+
+/* create view d0018e_store.order_info as select asset_id, order_id, order_asset_id, asset_amount, user_id, shopping_basket_id, order_date, subject_id, title, price, description, asset_amount*price total_order_asset_price from order_asset oa join `order` o using (order_id) join asset a using (asset_id);
+*/
