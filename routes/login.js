@@ -1,3 +1,4 @@
+const sessions = require('express-session');
 
 module.exports = {
 
@@ -6,6 +7,8 @@ module.exports = {
     },
 
     loginUser:(req,res) =>{
+        console.log("loginsession:"+ req.session);
+        //var session = req.session;
         res.render('loginPage.pug');
     },
 
