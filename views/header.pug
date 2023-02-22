@@ -31,12 +31,12 @@ html
                         a.btn.btn-default(href='/c?cat='+ c.subjectId +'')=c.catName
                 li 
                   a(href="/logout", action="GET").btn.btn-default Logout
+              else 
+                li
+                  a(href="/loginPage", action="GET").btn.btn-default Login
               if (login && af)
                 li
                   a(href="/newProduct", action="getNP()").btn.btn-default Add Products
-              else
-                li
-                  a(href="/loginPage", action="GET").btn.btn-default Login
 
 
 
