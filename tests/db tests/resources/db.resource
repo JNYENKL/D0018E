@@ -51,7 +51,7 @@ ${newBook1_tit}		Digital Stuff
 ${newBook2_tit}		Introduction To Life
 ${newBook3_tit}		Nightmares For Babies
 ${newBook_pic_path}	./../../views/img/
-${newBook1_pic}		D0011E.png
+${newBook1_pic}		82.png
 ${newBook2_pic}		D0015E.png
 ${newBook3_pic}		F0060T.png
 ${newBook1}			2,"${newBook1_tit}",160.89,24,"Diggy wiggy biggy piggy"
@@ -125,14 +125,20 @@ Add Pics To Books
 	${book1_ass_id}=		Query		select asset_id from ${asset} where title="${newBook1_tit}"
 	OperatingSystem.File Should Exist		${newBook_pic_path}${newBook1_pic}
 	Move File				${newBook_pic_path}${newBook1_pic}		${newBook_pic_path}${book1_ass_id[0][0]}.png
-	${book2_ass_id}=		Check If Exists In Database		select asset_id from ${asset} where title="${newBook2_tit}"
+	${book2_ass_id}=		Query		select asset_id from ${asset} where title="${newBook2_tit}"
 	OperatingSystem.File Should Exist		${newBook_pic_path}${newBook2_pic}
 	Move File				${newBook_pic_path}${newBook2_pic}		${newBook_pic_path}${book2_ass_id[0][0]}.png
-	${book3_ass_id}=		Check If Exists In Database		select asset_id from ${asset} where title="${newBook3_tit}"
+	${book3_ass_id}=		Query		select asset_id from ${asset} where title="${newBook3_tit}"
 	OperatingSystem.File Should Exist		${newBook_pic_path}${newBook3_pic}
 	Move File				${newBook_pic_path}${newBook3_pic}		${newBook_pic_path}${book3_ass_id[0][0]}.png
 	
 Delete Three Books
+	Table Must Exist		${asset}
+	${ass_count_bef}=		Row Count							select * from ${asset}
+	Execute Sql String		delete from ${asset} where title="${newBook1_tit}" or title="${newBook2_tit}" or title="${newBook3_tit}";
+	${ass_count_expect}=	Evaluate							${ass_count_bef} - 3
+	${ass_count_aft}=		Row Count							select * from ${asset}
+	Should Be Equal As Integers		${ass_count_expect}			${ass_count_aft}
 	
 	
 	
