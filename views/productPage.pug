@@ -11,7 +11,11 @@ div.col-md-10
                     div#right
                         h2#bookPrice=item.price +"kr"
                         p#bookStock= "I lager: " +item.stock
-                        button#addToBasket Add to basket
+                        if (login)
+                            a(href="/addToCart")
+                                button#addToBasket Add to basket
+                        else
+                            button#addToBasket(disabled="disabled") Login to purchase
                 div#bottom
                     p#bookDesc1= "Om " + item.productName + ":"
                     p#bookDesc2= item.description

@@ -4,7 +4,7 @@ const app = express();
 const path = require('path');
 const router = express.Router();
 
-const bcrypt = require('bcrypt');
+//const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 const mysql = require('mysql2');
@@ -35,33 +35,17 @@ app.use(cookieParser());
 
 //Session setup
 var session;
-const oneDay = 1000 * 60 * 60 * 24;
+const fiveMinutes = 1000 * 60 * 5;
 app.use(sessions({
     secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
     saveUninitialized:true,
-    cookie: { maxAge: oneDay },
+    cookie: { maxAge: fiveMinutes },
     resave: false,
 	admin: false, 
-	uid: null
+	uid: null,
+	loggedIn: false,
+	userMail: null
 }));
-
-//Manually create products for testing without DB
-class productTest {
-	constructor(_pn, _price, _imgSrc, _cat ){
-		this.pn = _pn;
-		this.price = _price;
-		this.imgSrc= _imgSrc;
-		this.category = _cat;
-	}
-}
-
-const product1 = new productTest("Calculus", "99kr", "./img/Calculus.png", "Math" );
-const product2 = new productTest("D0015E", "149kr", "./img/D0015E.png", "compsci" );
-const product3 = new productTest("Derivator, integraler och sånt...", "399kr", "./img/DIOS.png", "Math" );
-const product4 = new productTest("D0012E", "49kr", "./img/D0012E.png", "compsci" );
-const product5 = new productTest("Mekanik", "59kr", "./img/F0060T.png", "Physics" );
-const product6 = new productTest("FYSIKA formelblad", "79kr", "./img/FYSIKA.png", "Math" );
-
 
 const execSync = require('child_process').execSync;
 
@@ -89,20 +73,16 @@ global.db = db;
 
 //Hämta Index-sidan
 app.get('/', function(req, res) {
-
-	console.log(bcrypt.hashSync('p4ssw0rd', saltRounds));
-
-	//console.log(req);
+;
 	var itemList = [];
-	var adminFlag = false;
-	var loggedIn = false;
+	session = req.session;
 	
 	//Get all products
 	db.query('SELECT * FROM asset', function(err, rows, fields) {
 	  	if (err) {
 	  		res.status(500).json({"status_code": 500,"status_message": "internal server error"+ err});
 	  	} else {
-			//console.log(rows);
+
 	  		// Kolla igenom all data i tabellen
 			  for (var i = 0; i < rows.length; i++) {
 			
@@ -116,18 +96,12 @@ app.get('/', function(req, res) {
 				}
 					// Lägg till hämtad data i en array
 					itemList.push(items);
-					session = req.session;
-					if(session.uid != null){
-						loggedIn = true;
-					}
+					
 
-					if(session.admin == true){
-						adminFlag = true;
-					}
 			}
 
 	  	// Rendera index.pug med objekten i listan
-	  	res.render('index', {itemList: itemList, af: adminFlag, login: loggedIn});
+	  	res.render('index', {itemList: itemList, af: session.admin, login: session.loggedIn});
 	  	}
 	});
 	
@@ -139,15 +113,17 @@ app.get('/', function(req, res) {
 
 //Login with email, password and session
 app.post('/loginUser', (req, res) => {
-	//var hashedInput = bcrypt.hash(req.body.pw);
-	console.log("logging in");
-	console.log(req.body.email);
+
+	console.log("Entering login");
+
+	session = req.session;
+
 	db.query('SELECT * FROM user WHERE email=?', [req.body.email], 
 				function(err, row, fields){
 					if(err){
-						session = req.session;
 						session.uid=null;
-						res.status(500).json({"status_code": 500,"status_message": "internal server error: db"}); //This should be a failed login by username message, not 500
+						
+						//res.status(500).json({"status_code": 500,"status_message": "internal server error: db"}); //This should be a failed login by username message, not 500
 					} 
 					else{
 						console.log(row[0]);
@@ -156,12 +132,16 @@ app.post('/loginUser', (req, res) => {
 						console.log(row[0].password); 
 						//var check = bcrypt.compareSync(plain, row[0].password);
 
-						if(req.body.pw != toString(row[0].password)){
+						if(toString(req.body.pw) != toString(row[0].password)){
+								console.log(toString(req.body.pw) +'!='+ row[0].password);
 								res.status(500).json({"status_code": 500,"status_message": "internal server error: wrong password"}); //This should be a failed login by username message, not 500
 						} else {
+
 							console.log('password correct');
-							session = req.session;
 							session.uid = row[0].user_id;
+							session.loggedIn = true;
+							session.userMail = row[0].email;
+
 							console.log("user_id:"+session.uid);
 							if(session.uid == 1){
 								session.admin = true;
@@ -176,21 +156,33 @@ app.post('/loginUser', (req, res) => {
 			)
 			//res.render('/loginPage', {message: "Wrong email or password"})
 	});
-//New user with email and password
+
+//New user with first name, last name, email and password
 app.post('/createUser', (req,res)=> {
-	
-	db.query('INSERT INTO user(first_name, last_name, email, password) VALUES('+ req.body.fn +','+ req.body.ln +','+ req.body.email +','+ req.body.pw+')', 
-				function(err, row, fields){
+
+	var name = [[req.body.Cfn]];
+	var surname = [[req.body.Cln]];
+	var mail = [[req.body.Cemail]];
+	var pw = [[req.body.Cpw]];
+
+	let query = 'CALL d0018e_store.add_user(?, ?, ?, ?)';
+
+	db.query(query, [name, surname, mail, pw], function(err, row, fields){
 					if(err){
+						console.log('db error in create user:'+ err);
 						res.status(500).json({"status_code": 500,"status_message": "internal server error"}); //This should be a failed login by username message, not 500
 					} else{
-						res.redirect('loginPage');
+						console.log('Created user.');
+						res.redirect('/');
 					}
 				}
 	)
+});
 
-	res.redirect('/');
-
+//Destroy the session
+app.get('/logout',(req,res) => {
+    req.session.destroy();
+    res.redirect('/');
 });
 
 //Lay an order
@@ -213,6 +205,8 @@ app.post('/createOrder', (req,res)=> {
 
 
 app.get('/p', (req, res)=> {
+
+		session = req.session;
 		var items = [];
 		//Get all products
 		db.query('SELECT * FROM asset WHERE asset_id ='+ req.query.product , function(err, row, fields) {
@@ -235,7 +229,7 @@ app.get('/p', (req, res)=> {
 				items.push(product);
   
 			// Rendera index.pug med objekten i listan
-			res.render('productPage.pug', {items: items});
+			res.render('productPage.pug', {items: items, login: session.loggedIn});
 			}
 	  });
 });
@@ -246,13 +240,19 @@ app.get('/cart', function(req, res) {
 	//console.log(req);
 	var itemList = [];
 	var totalPrice = 0;
-	userID = req.session.uid;
+
+	session = req.session;
+	userID = session.uid;
+
+	console.log('uid:'+userID);
 	//Get all products from the cart
-	db.query('SELECT * FROM shopping_basket_asset WHERE user_id='+ userID +'', function(err, rows, fields) {
+	db.query('SELECT * FROM shopping_basket WHERE user_id=?', [[userID]], function(err, rows, fields) {
 	  	if (err) {
+			console.log('Error in cart')
 	  		res.status(500).json({"status_code": 500,"status_message": "internal server error"+ err});
 	  	} else {
-			//console.log(rows);
+
+			console.log(rows);
 	  		// Kolla igenom all data i tabellen
 			  for (var i = 0; i < rows.length; i++) {
 			
@@ -261,7 +261,7 @@ app.get('/cart', function(req, res) {
 					'productName': rows[i].title,
 					'link': rows[i].asset_id,
 					'price': rows[i].price,
-					'totalPrice': totalPrice+rows[i].price
+					//'totalPrice': totalPrice+rows[i].price
 					//'imgSrc': rows[i].imgSrc,
 					//'category': rows[i].category
 				}
@@ -270,12 +270,64 @@ app.get('/cart', function(req, res) {
 			}
 
 	  	// Rendera index.pug med objekten i listan
-	  	res.render('cart', {shoppingCart: itemList});
+	  	res.render('cart', {shoppingCart: [], login: session.loggedIn});
 	  	}
 	});
 	
 
 });
+
+//IN PROGRESS
+//Add an item to the cart of the logged in user
+app.get('/addToCart', function(req, res) {
+
+	ses = req.session;
+
+	var user = [[ses.uid]];
+	var productId = [[req.body.item.assId]];
+	//var amount = [[req.body.item.stock]];
+	var email = [[session.userMail]]; 
+
+	var query = 'CALL d0018e_store.add_item_to_shopping_basket(?, ?, ?)';
+
+	db.query(query, [productId, 1, email], function(err, rows, fields) {
+	  	if (err) {
+			console.log('Error in addToCart');
+	  		res.status(500).json({"status_code": 500,"status_message": "internal server error"+ err});
+	  	} else {
+			var path = '/p?product='+ toString(productId);
+			res.redirect(path);
+	  	}
+	});
+	
+
+});
+
+//IN PROGRESS
+//Get logged in users shopping cart
+app.get('/removeFromCart', function(req, res) {
+
+	ses = req.session;
+
+	var user = ses.uid;
+	var productId = req.body.item.assId;
+
+	var query = 'INSERT INTO shopping_basket '
+
+	db.query(query, values, function(err, rows, fields) {
+	  	if (err) {
+			console.log('Error in addToCart');
+	  		res.status(500).json({"status_code": 500,"status_message": "internal server error"+ err});
+	  	} else {
+			var path = '/p?product='+ toString(productId);
+			res.redirect(path);
+	  	}
+	});
+	
+
+});
+
+
 
 //app.get("/index", (req,res) => { frontPage(req,res)});
 app.get("/loginUser", (req,res) => { loginUser(req, res)});
