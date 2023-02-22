@@ -4,7 +4,7 @@ const app = express();
 const path = require('path');
 const router = express.Router();
 
-//const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 const mysql = require('mysql2');
@@ -94,7 +94,7 @@ app.get('/', function(req, res) {
 				var items = {
 					'productName': rows[i].title,
 					'link': rows[i].asset_id,
-					'price': rows[i].price + " kr",
+					'price': rows[i].price,
 					//'imgSrc': rows[i].imgSrc,
 					//'category': rows[i].category
 				}
@@ -208,7 +208,7 @@ app.post('/loginUser', (req, res) => {
 					}
 					else{
 
-						if(toString(req.body.pw) != toString(row[0].password)){
+						if(!bcrypt.compareSync(req.body.pw, row[0].password)){
 								console.log(toString(req.body.pw) +'!='+ row[0].password);
 								session.message = "Wrong password";
 								res.render('loginPage', {cat: cats, message: session.message});
@@ -243,7 +243,8 @@ app.post('/createUser', (req,res)=> {
 	var name = [[req.body.Cfn]];
 	var surname = [[req.body.Cln]];
 	var mail = [[req.body.Cemail]];
-	var pw = [[req.body.Cpw]];
+	var session = req.session;
+	var pw = bcrypt.hashSync(req.body.Cpw, saltRounds);
 
 	let query = 'CALL d0018e_store.add_user(?, ?, ?, ?)';
 
@@ -256,50 +257,10 @@ app.post('/createUser', (req,res)=> {
 					} else{
 						console.log('Created user.');
 						session.message = "";
-						//res.redirect('/');
+						res.redirect('/');
 					}
 				}
 	)
-
-	db.query('SELECT * FROM user WHERE email=?', [mail], 
-	function(err, row, fields){
-		console.log("Redirecting to login for new user.");
-		if(err) {
-			session.uid=null;
-			session.message = "Something went wrong.";
-			res.render('loginPage', {cat: cats, message: session.message});
-
-		} else if(typeof row[0] == 'undefined'){
-			session.uid=null;
-			session.message = "Wrong username.";
-			res.render('loginPage', {cat: cats, message: session.message});
-		}
-		else{
-
-			if(toString(req.body.pw) != toString(row[0].password)){
-					console.log(toString(req.body.pw) +'!='+ row[0].password);
-					session.message = "Wrong password";
-					res.render('loginPage', {cat: cats, message: session.message});
-					//res.status(500).json({"status_code": 500,"status_message": "internal server error: wrong password"}); //This should be a failed login by username message, not 500
-			} else {
-
-				console.log('password correct');
-
-				session.uid = row[0].user_id;
-				session.loggedIn = true;
-				session.userMail = row[0].email;
-				session.message = "";
-
-				console.log("user_id:"+session.uid);
-				if(session.uid == 1){
-					session.admin = true;
-				}
-				console.log("here");
-				res.redirect('/');
-			}
-				
-		}
-	});
 });
 
 //Destroy the session
@@ -342,7 +303,7 @@ app.get('/p', (req, res)=> {
 				console.log(row);
 				var product = {
 					'productName': row[0].title,
-					'price': row[0].price + " kr",
+					'price': row[0].price + "kr",
 					'stock': row[0].amount + " in stock",
 					'assId': row[0].asset_id,
 					'description': row[0].description
