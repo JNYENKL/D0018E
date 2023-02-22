@@ -6,7 +6,7 @@ create table d0018e_store.user(
   first_name  varchar(15)             not null,
   last_name   varchar(15)             not null,
   email       varchar(50)   unique    not null,
-  password    varchar(20)                not null,
+  password    varchar(70)                not null,
 
   constraint pk_user primary key(user_id),
 
@@ -249,7 +249,7 @@ create procedure d0018e_store.add_user
   in par_first_name varchar(15), 
   in par_last_name varchar(15),
   in par_email varchar(50),
-  in par_password varchar(20)
+  in par_password varchar(70)
 )
   begin
     declare var_user_id bigint; 
