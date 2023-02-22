@@ -302,8 +302,8 @@ app.get('/p', (req, res)=> {
 				console.log(row);
 				var product = {
 					'productName': row[0].title,
-					'price': row[0].price,
-					'stock': row[0].amount,
+					'price': row[0].price + "kr",
+					'stock': row[0].amount + " in stock",
 					'assId': row[0].asset_id,
 					'description': row[0].description
 				}
@@ -402,6 +402,7 @@ app.get('/cart', function(req, res) {
 	//console.log(req);
 	var itemList = [];
 	var totalPrice = 0;
+	var cats =[];
 
 	session = req.session;
 	userID = session.uid;

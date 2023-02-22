@@ -1,25 +1,22 @@
 include header.pug
 div.col-md-10
-    if(items.length > 0)
+    if (items.length > 0)
         each item in items
-            div#layout
-                div#up
-                    h1#bookName=item.productName
-                div#middle
-                    div#left
-                        img#bookPic(src=("" + "./img/" + item.assId + ".png"))
-                    div#right
-                        h2#bookPrice=item.price +"kr"
-                        p#bookStock= "I lager: " +item.stock
-                        if (login)
-                            a(href="/addToCart")
-                                button#addToBasket Add to basket
-                        else
-                            button#addToBasket(disabled="disabled") Login to purchase
-                div#bottom
-                    p#bookDesc1= "Om " + item.productName + ":"
-                    p#bookDesc2= item.description
-                //a(href="" action="") länk
+            div.card
+                div.row
+                    div.col-md-4 
+                        img.card-img-top.img-thumbnail.img-fluid(src=("" + "./img/" + item.assId + ".png"))
+                    div.col-md-8.px-3 
+                        div.card-block.px-3 
+                           h1.card-title=item.productName 
+                            h3=item.price
+                            p.card-text=item.stock
+                            if (login)
+                                a(href="/addToCart")
+                                    button.btn.btn-primary
+                            else
+                                button.btn.btn-primary(disabled="disabled") Login to purchase
+                            p.card-text=item.description
     else
         div.container
             h1 No items!
