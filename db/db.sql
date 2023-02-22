@@ -141,7 +141,7 @@ create table d0018e_store.comment(
 
 insert into d0018e_store.user 
 (first_name,  last_name,  email,                        password) VALUES 
-('admin',     'admin',  'admin@d0018e.com', 'password');
+('admin',     'admin',  'admin@d0018e.com', '$2b$10$YwyBdxMw9QhfKb3VpDG1jeuuA4AuCQBLuB8omOL3k0JAE5UULJ53G');
 
 insert into d0018e_store.shopping_basket 
 (user_id) values 
