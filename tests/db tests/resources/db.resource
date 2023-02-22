@@ -51,9 +51,9 @@ ${newBook1_tit}		Digital Stuff
 ${newBook2_tit}		Introduction To Life
 ${newBook3_tit}		Nightmares For Babies
 ${newBook_pic_path}	./../../views/img/
-${newBook1_pic}		82.png
-${newBook2_pic}		D0015E.png
-${newBook3_pic}		F0060T.png
+${newBook1_pic}		85.png
+${newBook2_pic}		86.png
+${newBook3_pic}		87.png
 ${newBook1}			2,"${newBook1_tit}",160.89,24,"Diggy wiggy biggy piggy"
 ${newBook2}			2,"${newBook2_tit}",299,20,"The most valueable book in the world. It will change your life. Trust us."
 ${newBook3}			3,"${newBook3_tit}",199,14,"Ever heard of lullabies for babies? Here comes the LTU version of it. Nightmares. We guarantee you not only immediate nightmares but also long term PTSD."
