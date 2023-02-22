@@ -149,7 +149,7 @@ insert into d0018e_store.shopping_basket
 
 insert into d0018e_store.subject 
 (name) values 
-('matematik'), ('programmering'), ('fysik');
+('Matematik'), ('Programmering'), ('Fysik');
 
 insert into d0018e_store.asset
 (subject_id,  title,                        price,    amount,   description) values 
@@ -249,7 +249,7 @@ create procedure d0018e_store.add_user
   in par_first_name varchar(15), 
   in par_last_name varchar(15),
   in par_email varchar(50),
-  in par_password char(64)
+  in par_password varchar(20)
 )
   begin
     declare var_user_id bigint; 
@@ -263,6 +263,7 @@ create procedure d0018e_store.add_user
       insert into shopping_basket (user_id) values (var_user_id);
     end if;
   end $$
+  
 
 /*
 example:

@@ -1,6 +1,7 @@
 *** Settings ***
 Documentation     		Custom keywords for DB tests
 Library           		DatabaseLibrary 
+Library					OperatingSystem
 
 *** Variables ***
 ${dbsql-file}	db.sql
@@ -23,7 +24,7 @@ ${orderAss}		order_asset
 ${basketAss}	shopping_basket_asset
 ${comment}		comment
 
-#Procedures and their parameters
+# Procedures and their parameters
 ${addUser}			d0018e_store.add_user 
 ${addUser_admin}	'admin', 'admin', 'admin@d0018e.com', 'password'
 ${user1_mail}		adam@ad.am
@@ -43,6 +44,19 @@ ${addUser_bU}		'basket', 'basketsson', '${bU_mail}', 'baskie'
 ${addToBasket}		d0018e_store.add_item_to_shopping_basket
 ${newOrder}			d0018e_store.create_order 
 ${newAss}			d0018e_store.add_order_asset
+
+# Asset specific stuff
+${toInsertAss}		subject_id,title,price,amount,description
+${newBook1_tit}		Digital Stuff
+${newBook2_tit}		Introduction To Life
+${newBook3_tit}		Nightmares For Babies
+${newBook_pic_path}	./../../views/img/
+${newBook1_pic}		D0011E.png
+${newBook2_pic}		D0015E.png
+${newBook3_pic}		F0060T.png
+${newBook1}			2,"${newBook1_tit}",160.89,24,"Diggy wiggy biggy piggy"
+${newBook2}			2,"${newBook2_tit}",299,20,"The most valueable book in the world. It will change your life. Trust us."
+${newBook3}			3,"${newBook3_tit}",199,14,"Ever heard of lullabies for babies? Here comes the LTU version of it. Nightmares. We guarantee you not only immediate nightmares but also long term PTSD."
 
 
 *** Keywords ***	
@@ -97,3 +111,28 @@ Add Six Users
 	Execute Sql String		CALL ${addUser}(${addUser_p6});
 	${user_counter_aft}=	Set Variable						${user_counter_bef} + 6
 	Row Count Is Equal To X	select * from user					${user_counter_aft}
+	
+Add Three Books
+	Table Must Exist		${asset}
+	${book_counter_bef}=	Row Count							select * from ${asset}
+	Execute Sql String 		insert into ${asset}(${toInsertAss}) values(${newBook1}),(${newBook2}),(${newBook3});
+	${book_counter_expect}=	Evaluate							${book_counter_bef} + 3
+	${book_counter_after}=	Row Count	select * from ${asset}					
+	Should Be Equal As Integers		${book_counter_expect}		${book_counter_after}
+	
+Add Pics To Books
+	Table Must Exist		${asset}
+	${book1_ass_id}=		Query		select asset_id from ${asset} where title="${newBook1_tit}"
+	OperatingSystem.File Should Exist		${newBook_pic_path}${newBook1_pic}
+	Move File				${newBook_pic_path}${newBook1_pic}		${newBook_pic_path}${book1_ass_id[0][0]}.png
+	${book2_ass_id}=		Check If Exists In Database		select asset_id from ${asset} where title="${newBook2_tit}"
+	OperatingSystem.File Should Exist		${newBook_pic_path}${newBook2_pic}
+	Move File				${newBook_pic_path}${newBook2_pic}		${newBook_pic_path}${book2_ass_id[0][0]}.png
+	${book3_ass_id}=		Check If Exists In Database		select asset_id from ${asset} where title="${newBook3_tit}"
+	OperatingSystem.File Should Exist		${newBook_pic_path}${newBook3_pic}
+	Move File				${newBook_pic_path}${newBook3_pic}		${newBook_pic_path}${book3_ass_id[0][0]}.png
+	
+Delete Three Books
+	
+	
+	
