@@ -76,6 +76,7 @@ global.db = db;
 app.get('/', function(req, res) {
 ;
 	var itemList = [];
+	var cats = [];
 	session = req.session;
 	
 	//Get all products
@@ -97,22 +98,70 @@ app.get('/', function(req, res) {
 					//'imgSrc': rows[i].imgSrc,
 					//'category': rows[i].category
 				}
-					// Lägg till hämtad data i en array
-					itemList.push(items);
-					
 
+				itemList.push(items);
 			}
 
-	  	// Rendera index.pug med objekten i listan
-	  	res.render('index', {itemList: itemList, af: session.admin, login: session.loggedIn, message: ""});
+			// Rendera index.pug med objekten i listan
+			//res.render('index', {itemList: itemList, cat: cats, af: session.admin, login: session.loggedIn, message: ""});
 	  	}
 	});
+
+	db.query('SELECT * FROM subject', function(err, row, fields) {
+		if (err) {
+			session.message = "Technical issues, check back later.";
+			res.render('index', {message: session.message});
+			//res.status(500).json({"status_code": 500,"status_message": "internal server error"+ err});
+		} else {
+
+			// Kolla igenom all data i tabellen
+			for (var i = 0; i < row.length; i++) {
+			
+				var category = {
+					subjectId: row[i].subject_id,
+					catName: row[i].name
+				}
+				//console.log('subject added:'+row[i].subject_id+', '+ row[i].name);
+				cats.push(category);
+			}
+			
+			// Rendera index.pug med objekten i listan
+			res.render('index', {itemList: itemList, cat: cats, af: session.admin, login: session.loggedIn, message: ""});
+		}
+	  });
 	
 
 });
 
 // admin, admin@d0018e.com, p4ssw0rd
+app.get('/loginPage', (req, res) =>{
+	var cats = [];
+	session = req.session;
 
+	db.query('SELECT * FROM subject', function(err, row, fields) {
+		if (err) {
+			session.message = "Technical issues, check back later.";
+			res.render('index', {message: session.message});
+			//res.status(500).json({"status_code": 500,"status_message": "internal server error"+ err});
+		} else {
+
+			// Kolla igenom all data i tabellen
+			for (var i = 0; i < row.length; i++) {
+			
+				var category = {
+					subjectId: row[i].subject_id,
+					catName: row[i].name
+				}
+				//console.log('subject added:'+row[i].subject_id+', '+ row[i].name);
+				cats.push(category);
+			}
+			
+			// Rendera index.pug med objekten i listan
+			res.render('loginPage', {cat: cats});
+		}
+	  });
+
+});
 
 //Login with email, password and session
 app.post('/loginUser', (req, res) => {
@@ -120,25 +169,49 @@ app.post('/loginUser', (req, res) => {
 	console.log("Entering login");
 
 	session = req.session;
+	var cats = []
+
+	db.query('SELECT * FROM subject', function(err, row, fields) {
+		if (err) {
+			session.message = "Technical issues, check back later.";
+			res.render('index', {message: session.message});
+			//res.status(500).json({"status_code": 500,"status_message": "internal server error"+ err});
+		} else {
+
+			// Kolla igenom all data i tabellen
+			for (var i = 0; i < row.length; i++) {
+			
+				var category = {
+					subjectId: row[i].subject_id,
+					catName: row[i].name
+				}
+				//console.log('subject added:'+row[i].subject_id+', '+ row[i].name);
+				cats.push(category);
+			}
+			
+			// Rendera index.pug med objekten i listan
+			//res.render('index', {itemList: itemList, cat: cats, af: session.admin, login: session.loggedIn, message: ""});
+		}
+	  });
 
 	db.query('SELECT * FROM user WHERE email=?', [req.body.email], 
 				function(err, row, fields){
 					if(err) {
 						session.uid=null;
 						session.message = "Something went wrong.";
-						res.redirect('loginPage');
+						res.render('loginPage', {cat: cats, message: session.message});
 
 					} else if(typeof row[0] == 'undefined'){
 						session.uid=null;
 						session.message = "Wrong username.";
-						res.render('loginPage', {message: session.message});
+						res.render('loginPage', {cat: cats, message: session.message});
 					}
 					else{
 
 						if(toString(req.body.pw) != toString(row[0].password)){
 								console.log(toString(req.body.pw) +'!='+ row[0].password);
 								session.message = "Wrong password";
-								res.render('loginPage', {message: session.message});
+								res.render('loginPage', {cat: cats, message: session.message});
 								//res.status(500).json({"status_code": 500,"status_message": "internal server error: wrong password"}); //This should be a failed login by username message, not 500
 						} else {
 
@@ -158,9 +231,9 @@ app.post('/loginUser', (req, res) => {
 						}
 							
 					}
-				}
-				
-			)
+				});
+
+
 			//res.render('/loginPage', {message: "Wrong email or password"})
 	});
 
@@ -177,9 +250,12 @@ app.post('/createUser', (req,res)=> {
 	db.query(query, [name, surname, mail, pw], function(err, row, fields){
 					if(err){
 						console.log('db error in create user:'+ err);
-						res.status(500).json({"status_code": 500,"status_message": "internal server error"}); //This should be a failed login by username message, not 500
+						session.message = "User with email " + mail + " already exists.";
+						res.render('loginPage', {message: session.message})
+						//res.status(500).json({"status_code": 500,"status_message": "internal server error"}); //This should be a failed login by username message, not 500
 					} else{
 						console.log('Created user.');
+						session.message = "";
 						res.redirect('/');
 					}
 				}
@@ -215,6 +291,7 @@ app.get('/p', (req, res)=> {
 
 		session = req.session;
 		var items = [];
+		var cats = [];
 		//Get all products
 		db.query('SELECT * FROM asset WHERE asset_id ='+ req.query.product , function(err, row, fields) {
 			if (err) {
@@ -236,9 +313,87 @@ app.get('/p', (req, res)=> {
 				items.push(product);
   
 			// Rendera index.pug med objekten i listan
-			res.render('productPage.pug', {items: items, login: session.loggedIn});
+			//res.render('productPage.pug', {items: items, login: session.loggedIn});
 			}
 	  });
+
+	  db.query('SELECT * FROM subject', function(err, row, fields) {
+		if (err) {
+			session.message = "Technical issues, check back later.";
+			res.render('index', {message: session.message});
+			//res.status(500).json({"status_code": 500,"status_message": "internal server error"+ err});
+		} else {
+
+			// Kolla igenom all data i tabellen
+			for (var i = 0; i < row.length; i++) {
+			
+				var category = {
+					subjectId: row[i].subject_id,
+					catName: row[i].name
+				}
+				console.log('subject added:'+row[i].subject_id+', '+ row[i].name);
+				cats.push(category);
+			}
+			
+			// Rendera index.pug med objekten i listan
+			res.render('productPage', {items: items, cat: cats, af: session.admin, login: session.loggedIn, message: ""});
+		}
+	  });
+});
+
+app.get('/c', (req, res)=> {
+
+	session = req.session;
+	var itemList = [];
+	var cats = [];
+	//Get all products
+	db.query('SELECT * FROM asset WHERE subject_id ='+ req.query.cat , function(err, row, fields) {
+		if (err) {
+			res.status(500).json({"status_code": 500,"status_message": "internal server error"});
+		} else {
+		  //console.log(rows);
+	  		// Kolla igenom all data i tabellen
+			for (var i = 0; i < row.length; i++) {
+			
+				// Skapa ett objekt för datan
+				var items = {
+					'productName': row[i].title,
+					'link': row[i].asset_id,
+					'price': row[i].price,
+					//'imgSrc': rows[i].imgSrc,
+					//'category': rows[i].category
+				}
+
+				itemList.push(items);
+			}
+
+		// Rendera index.pug med objekten i listan
+		//res.render('productPage.pug', {items: items, login: session.loggedIn});
+		}
+  });
+
+  db.query('SELECT * FROM subject', function(err, row, fields) {
+	if (err) {
+		session.message = "Technical issues, check back later.";
+		res.render('index', {message: session.message});
+		//res.status(500).json({"status_code": 500,"status_message": "internal server error"+ err});
+	} else {
+
+		// Kolla igenom all data i tabellen
+		for (var i = 0; i < row.length; i++) {
+		
+			var category = {
+				subjectId: row[i].subject_id,
+				catName: row[i].name
+			}
+			//console.log('subject added:'+row[i].subject_id+', '+ row[i].name);
+			cats.push(category);
+		}
+		session.message = "";
+		// Rendera index.pug med objekten i listan
+		res.render('index', {itemList: itemList, cat: cats, af: session.admin, login: session.loggedIn, message: session.message});
+	}
+  });
 });
 
 //Get logged in users shopping cart
@@ -276,10 +431,33 @@ app.get('/cart', function(req, res) {
 					itemList.push(items);
 			}
 
-	  	// Rendera index.pug med objekten i listan
-	  	res.render('cart', {shoppingCart: [], login: session.loggedIn});
+	  		// Rendera index.pug med objekten i listan
+	  		//res.render('cart', {shoppingCart: [], login: session.loggedIn});
 	  	}
 	});
+
+	db.query('SELECT * FROM subject', function(err, row, fields) {
+		if (err) {
+			session.message = "Technical issues, check back later.";
+			res.render('index', {message: session.message});
+			//res.status(500).json({"status_code": 500,"status_message": "internal server error"+ err});
+		} else {
+	
+			// Kolla igenom all data i tabellen
+			for (var i = 0; i < row.length; i++) {
+			
+				var category = {
+					subjectId: row[i].subject_id,
+					catName: row[i].name
+				}
+				//console.log('subject added:'+row[i].subject_id+', '+ row[i].name);
+				cats.push(category);
+			}
+			
+			// Rendera index.pug med objekten i listan
+			res.render('cart', {shoppingCart: [], login: session.loggedIn, cat: cats, af: session.admin, login: session.loggedIn, message: ""});
+		}
+	  });
 	
 
 });
@@ -338,7 +516,7 @@ app.get('/removeFromCart', function(req, res) {
 
 //app.get("/index", (req,res) => { frontPage(req,res)});
 app.get("/loginUser", (req,res) => { loginUser(req, res)});
-app.get("/loginPage", (req,res) => { getLogin(req,res)});
+//app.get("/loginPage", (req,res) => { getLogin(req,res)});
 app.get("/cart", (req,res) => { getCart(req,res)});
 app.get("/newProduct", (req,res) => { getNP(req,res)});
 
