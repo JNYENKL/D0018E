@@ -44,7 +44,8 @@ app.use(sessions({
 	admin: false, 
 	uid: null,
 	loggedIn: false,
-	userMail: null
+	userMail: null,
+	message: ""
 }));
 
 const execSync = require('child_process').execSync;
@@ -80,7 +81,9 @@ app.get('/', function(req, res) {
 	//Get all products
 	db.query('SELECT * FROM asset', function(err, rows, fields) {
 	  	if (err) {
-	  		res.status(500).json({"status_code": 500,"status_message": "internal server error"+ err});
+			session.message = "Technical issues, check back later.";
+			res.render('index', {message: session.message});
+	  		//res.status(500).json({"status_code": 500,"status_message": "internal server error"+ err});
 	  	} else {
 
 	  		// Kolla igenom all data i tabellen
@@ -101,7 +104,7 @@ app.get('/', function(req, res) {
 			}
 
 	  	// Rendera index.pug med objekten i listan
-	  	res.render('index', {itemList: itemList, af: session.admin, login: session.loggedIn});
+	  	res.render('index', {itemList: itemList, af: session.admin, login: session.loggedIn, message: ""});
 	  	}
 	});
 	
@@ -120,27 +123,31 @@ app.post('/loginUser', (req, res) => {
 
 	db.query('SELECT * FROM user WHERE email=?', [req.body.email], 
 				function(err, row, fields){
-					if(err){
+					if(err) {
 						session.uid=null;
-						
-						//res.status(500).json({"status_code": 500,"status_message": "internal server error: db"}); //This should be a failed login by username message, not 500
-					} 
+						session.message = "Something went wrong.";
+						res.redirect('loginPage');
+
+					} else if(typeof row[0] == 'undefined'){
+						session.uid=null;
+						session.message = "Wrong username.";
+						res.render('loginPage', {message: session.message});
+					}
 					else{
-						console.log(row[0]);
-						//var plain = toString(req.body.pw);
-						console.log(row[0].user_id);
-						console.log(row[0].password); 
-						//var check = bcrypt.compareSync(plain, row[0].password);
 
 						if(toString(req.body.pw) != toString(row[0].password)){
 								console.log(toString(req.body.pw) +'!='+ row[0].password);
-								res.status(500).json({"status_code": 500,"status_message": "internal server error: wrong password"}); //This should be a failed login by username message, not 500
+								session.message = "Wrong password";
+								res.render('loginPage', {message: session.message});
+								//res.status(500).json({"status_code": 500,"status_message": "internal server error: wrong password"}); //This should be a failed login by username message, not 500
 						} else {
 
 							console.log('password correct');
+
 							session.uid = row[0].user_id;
 							session.loggedIn = true;
 							session.userMail = row[0].email;
+							session.message = "";
 
 							console.log("user_id:"+session.uid);
 							if(session.uid == 1){
