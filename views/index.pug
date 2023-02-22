@@ -9,8 +9,8 @@ div.col-md-9
         else
             each item in itemList
                 div.col-md-3
-                    img.img.img-thumbnail(src=("" + "./img/" + item.link + ".png"))
                     a(href='/p?product='+ item.link+'')
+                        img.img.img-thumbnail(src=("" + "./img/" + item.link + ".png"))
                         h4=item.productName
                     p=item.price
 
