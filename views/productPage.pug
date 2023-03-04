@@ -24,10 +24,12 @@ div.col-md-10
                 div.card
                     h5.card-title
                         span
-                            each comment.rating
+                            - var i = 0;
+                            while i < comment.rating
                                 img(src="./img/star-fill.svg")
+                                - i++
                     h6.card-subtitle.mb-2.text-muted=comment.uname
-                    p.card-text
+                    p.card-text=comment.text
         else
             div.card
                 h5.card-title Purchase to leave a review.

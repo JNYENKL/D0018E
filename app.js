@@ -14,11 +14,12 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const sessions = require("express-session");
 
-//Import functions for login and user creation
+//Import all JS functions
 const { loginUser, createUser, getLogin } = require("./routes/login.js");
-
+const { index } = require("./routes/index.js");
 const { getNP } = require("./routes/newProduct.js");
 const { getCart } = require("./routes/shoppingCart.js");
+const { renderWithCats } = require("./functions/categories.js")
 
 //Set view engine
 app.set("view engine", "pug");
@@ -37,13 +38,13 @@ app.use(cookieParser());
 
 //Session setup
 var session;
-const fiveMinutes = 1000 * 60 * 5;
+const fifteenMinutes = 1000 * 60 * 15;
 app.use(
   sessions({
     secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
     saveUninitialized: true,
     cookie: {
-      maxAge: fiveMinutes,
+      maxAge: fifteenMinutes,
     },
     resave: false,
     admin: false,
@@ -56,101 +57,12 @@ app.use(
 
 //Hämta Index-sidan
 app.get("/", function (req, res) {
-  var itemList = [];
-  var cats = [];
-  session = req.session;
-
-  //Get all products
-  db.SSHConnection().then(function (connection) {
-    connection.query("SELECT * FROM asset", function (err, rows, fields) {
-      if (err) {
-        session.message = "Technical issues, check back later.";
-        res.render("index", {
-          message: session.message,
-        });
-        //res.status(500).json({"status_code": 500,"status_message": "internal server error"+ err});
-      } else {
-        // Kolla igenom all data i tabellen
-        for (var i = 0; i < rows.length; i++) {
-          // Skapa ett objekt för datan
-          var items = {
-            productName: rows[i].title,
-            link: rows[i].asset_id,
-            price: rows[i].price,
-            //'imgSrc': rows[i].imgSrc,
-            //'category': rows[i].category
-          };
-
-          itemList.push(items);
-        }
-
-        // Rendera index.pug med objekten i listan
-        //res.render('index', {itemList: itemList, cat: cats, af: session.admin, login: session.loggedIn, message: ""});
-      }
-    });
-
-    connection.query("SELECT * FROM subject", function (err, row, fields) {
-      if (err) {
-        session.message = "Technical issues, check back later.";
-        res.render("index", {
-          message: session.message,
-        });
-        //res.status(500).json({"status_code": 500,"status_message": "internal server error"+ err});
-      } else {
-        // Kolla igenom all data i tabellen
-        for (var i = 0; i < row.length; i++) {
-          var category = {
-            subjectId: row[i].subject_id,
-            catName: row[i].name,
-          };
-          //console.log('subject added:'+row[i].subject_id+', '+ row[i].name);
-          cats.push(category);
-        }
-
-        // Rendera index.pug med objekten i listan
-        res.render("index", {
-          itemList: itemList,
-          cat: cats,
-          af: session.admin,
-          login: session.loggedIn,
-          message: "",
-        });
-      }
-    });
-  });
+	index(req, res);
 });
 
 // admin, admin@d0018e.com, p4ssw0rd
 app.get("/loginPage", (req, res) => {
-  var cats = [];
-  session = req.session;
-
-  db.SSHConnection().then(function (connection) {
-    connection.query("SELECT * FROM subject", function (err, row, fields) {
-      if (err) {
-        session.message = "Technical issues, check back later.";
-        res.render("index", {
-          message: session.message,
-        });
-        //res.status(500).json({"status_code": 500,"status_message": "internal server error"+ err});
-      } else {
-        // Kolla igenom all data i tabellen
-        for (var i = 0; i < row.length; i++) {
-          var category = {
-            subjectId: row[i].subject_id,
-            catName: row[i].name,
-          };
-          //console.log('subject added:'+row[i].subject_id+', '+ row[i].name);
-          cats.push(category);
-        }
-
-        // Rendera index.pug med objekten i listan
-        res.render("loginPage", {
-          cat: cats,
-        });
-      }
-    });
-  });
+  renderWithCats(req, res, db, req.session, "loginPage");
 });
 
 //Login with email, password and session
@@ -243,7 +155,7 @@ app.post("/createUser", (req, res) => {
   var pw = bcrypt.hashSync(req.body.Cpw, saltRounds);
   var cats = [];
 
-  let query = "CALL d0018e_store.add_user(?, ?, ?, ?, @uid)";
+  let query = "CALL d0018e_store.add_user(?, ?, ?, ?)";
 
   db.SSHConnection().then(function (connection) {
     connection.query(
@@ -298,8 +210,7 @@ app.post("/createOrder", (req, res) => {
 app.get("/p", (req, res) => {
   session = req.session;
   var items = [];
-  var commentList = [];
-  var cats = [];
+  var comments = [];
 
   //Get all products
   db.SSHConnection().then(function (connection) {
@@ -335,7 +246,7 @@ app.get("/p", (req, res) => {
 
     //SELECT user_id, order_asset_id, rating, comment_text FROM comment cm JOIN user u USING (user_id) user u
     connection.query(
-      "SELECT * FROM comment WHERE order_asset_id=?",
+      "select rating, comment_text, concat(first_name, ' ', last_name) uname from comment join `user` u using (user_id) join order_asset oa using (order_asset_id) where asset_id=?;",
       req.query.product,
       function (err, row, fields) {
         if (err) {
@@ -345,60 +256,69 @@ app.get("/p", (req, res) => {
           });
           //res.status(500).json({"status_code": 500,"status_message": "internal server error"+ err});
         } else {
+ 
           // Kolla igenom all data i tabellen
           for (var i = 0; i < row.length; i++) {
+            const { uname, rating, comment_text } = row[i];
+
             var comment = {
-              uname: row[i].first_name + " " + row[i].last_name,
-              rating: row[i].rating,
-              text: row[i].comment_text,
+              uname,
+              rating,
+              text: comment_text,
             };
             comments.push(comment);
           }
 
           // Rendera index.pug med objekten i listan
           //res.render('productPage', {items: items, cat: cats, af: session.admin, login: session.loggedIn, message: ""});
-        }
+
+          renderWithCats(req, res, db, session, "productPage", 
+          { items, 
+            af: session.admin,
+            login: session.loggedIn,
+            message: "",
+            comments });
+          }
       }
     );
 
-    connection.query("SELECT * FROM subject", function (err, row, fields) {
-      if (err) {
-        session.message = "Technical issues, check back later.";
-        res.render("index", {
-          message: session.message,
-        });
-        //res.status(500).json({"status_code": 500,"status_message": "internal server error"+ err});
-      } else {
-        // Kolla igenom all data i tabellen
-        for (var i = 0; i < row.length; i++) {
-          var category = {
-            subjectId: row[i].subject_id,
-            catName: row[i].name,
-          };
-          console.log(
-            "subject added:" + row[i].subject_id + ", " + row[i].name
-          );
-          cats.push(category);
-        }
-
-        // Rendera index.pug med objekten i listan
-        res.render("productPage", {
-          items: items,
-          cat: cats,
-          af: session.admin,
-          login: session.loggedIn,
-          message: "",
-          comments: commentList,
-        });
-      }
-    });
+//    connection.query("SELECT * FROM subject", function (err, row, fields) {
+//      if (err) {
+//        session.message = "Technical issues, check back later.";
+//        res.render("index", {
+//          message: session.message,
+//        });
+//        //res.status(500).json({"status_code": 500,"status_message": "internal server error"+ err});
+//      } else {
+//        // Kolla igenom all data i tabellen
+//        for (var i = 0; i < row.length; i++) {
+//          var category = {
+//            subjectId: row[i].subject_id,
+//            catName: row[i].name,
+//          };
+//          console.log(
+//            "subject added:" + row[i].subject_id + ", " + row[i].name
+//          );
+//          cats.push(category);
+//        }
+//
+//        // Rendera index.pug med objekten i listan
+//        res.render("productPage", {
+//          items: items,
+//          cat: cats,
+//          af: session.admin,
+//          login: session.loggedIn,
+//          message: "",
+//          comments,
+//        });
+//      }
+//    });
   });
 });
 
 app.get("/c", (req, res) => {
   session = req.session;
   var itemList = [];
-  var cats = [];
   //Get all products
   db.SSHConnection().then(function (connection) {
     connection.query(
@@ -427,38 +347,48 @@ app.get("/c", (req, res) => {
 
           // Rendera index.pug med objekten i listan
           //res.render('productPage.pug', {items: items, login: session.loggedIn});
+
+        renderWithCats(req, res, db, session, "index", 
+        { itemList, 
+          af: session.admin, 
+          login: session.loggedIn, 
+          message: session.message});
         }
       }
     );
 
-    connection.query("SELECT * FROM subject", function (err, row, fields) {
-      if (err) {
-        session.message = "Technical issues, check back later.";
-        res.render("index", {
-          message: session.message,
-        });
-        //res.status(500).json({"status_code": 500,"status_message": "internal server error"+ err});
-      } else {
-        // Kolla igenom all data i tabellen
-        for (var i = 0; i < row.length; i++) {
-          var category = {
-            subjectId: row[i].subject_id,
-            catName: row[i].name,
-          };
-          //console.log('subject added:'+row[i].subject_id+', '+ row[i].name);
-          cats.push(category);
-        }
-        session.message = "";
-        // Rendera index.pug med objekten i listan
-        res.render("index", {
-          itemList: itemList,
-          cat: cats,
-          af: session.admin,
-          login: session.loggedIn,
-          message: session.message,
-        });
-      }
-    });
+//    connection.query("SELECT * FROM subject", function (err, row, fields) {
+//      if (err) {
+//        session.message = "Technical issues, check back later.";
+//        res.render("index", {
+//          message: session.message,
+//        });
+//        //res.status(500).json({"status_code": 500,"status_message": "internal server error"+ err});
+//      } else {
+//        // Kolla igenom all data i tabellen
+//        for (var i = 0; i < row.length; i++) {
+//          var category = {
+//            subjectId: row[i].subject_id,
+//            catName: row[i].name,
+//          };
+//          //console.log('subject added:'+row[i].subject_id+', '+ row[i].name);
+//          cats.push(category);
+//        }
+//        session.message = "";
+//        // Rendera index.pug med objekten i listan
+//
+//
+//        res.render("index", {
+//          itemList: itemList,
+//          cat: cats,
+//          af: session.admin,
+//          login: session.loggedIn,
+//          message: session.message,
+//        });
+//      }
+//    });
+    
+
   });
 });
 
@@ -508,38 +438,49 @@ app.get("/cart", function (req, res) {
         // Rendera index.pug med objekten i listan
         //res.render('cart', {shoppingCart: [], login: session.loggedIn});
       }
+      
+    renderWithCats(req, res, db, session, "cart", 
+      {
+        shoppingCart: itemList,
+        login: session.loggedIn,
+        af: session.admin,
+        message: "",
+        total: totalPrice,
     });
 
-    connection.query("SELECT * FROM subject", function (err, row, fields) {
-      if (err) {
-        session.message = "Technical issues, check back later.";
-        res.render("index", {
-          message: session.message,
-        });
-        //res.status(500).json({"status_code": 500,"status_message": "internal server error"+ err});
-      } else {
-        // Kolla igenom all data i tabellen
-        for (var i = 0; i < row.length; i++) {
-          var category = {
-            subjectId: row[i].subject_id,
-            catName: row[i].name,
-          };
-          //console.log('subject added:'+row[i].subject_id+', '+ row[i].name);
-          cats.push(category);
-        }
-
-        // Rendera index.pug med objekten i listan
-        res.render("cart", {
-          shoppingCart: itemList,
-          login: session.loggedIn,
-          cat: cats,
-          af: session.admin,
-          login: session.loggedIn,
-          message: "",
-          total: totalPrice,
-        });
-      }
     });
+
+//    connection.query("SELECT * FROM subject", function (err, row, fields) {
+//      if (err) {
+//        session.message = "Technical issues, check back later.";
+//        res.render("index", {
+//          message: session.message,
+//        });
+//        //res.status(500).json({"status_code": 500,"status_message": "internal server error"+ err});
+//      } else {
+//        // Kolla igenom all data i tabellen
+//        for (var i = 0; i < row.length; i++) {
+//          var category = {
+//            subjectId: row[i].subject_id,
+//            catName: row[i].name,
+//          };
+//          //console.log('subject added:'+row[i].subject_id+', '+ row[i].name);
+//          cats.push(category);
+//        }
+//
+//        // Rendera index.pug med objekten i listan
+//        res.render("cart", {
+//          shoppingCart: itemList,
+//          login: session.loggedIn,
+//          cat: cats,
+//          af: session.admin,
+//          login: session.loggedIn,
+//          message: "",
+//          total: totalPrice,
+//        });
+//      }
+//    });
+
   });
 });
 
@@ -598,6 +539,51 @@ app.get("/removeFromCart", function (req, res) {
         res.redirect("cart");
       }
     });
+  });
+});
+
+app.get("/orderSuccess", function (req, res) {
+        renderWithCats(req, res, db, req.session, "orderSuccess");
+});
+
+
+app.get("/createorder", function (req, res) {
+  ses = req.session;
+
+  var user = [[ses.uid]];
+  var productId = [[req.query.product]];
+  //var amount = [[req.body.item.stock]];
+  var email = [[ses.userMail]];
+
+  var add_order_query = "call d0018e_store.create_order(?, @order_id)";
+  var add_order_assets_query = "call d0018e_store.add_order_asset(?, ?, ?)";
+
+  db.SSHConnection().then(function (connection) {
+    connection.query(
+      add_order_query,
+      [email],
+      function (err, rows, fields) {
+        if (err) {
+          console.log("Error in create order");
+          res.status(500).json({
+            status_code: 500,
+            status_message: "internal server error" + err,
+          });
+        } else {
+          connection.query('select @order_id order_id' , function(err, rows, field) {
+            if (err) {
+              console.log("Error in create order");
+              res.status(500).json({
+                status_code: 500,
+                status_message: "internal server error" + err,
+              });
+          }
+            console.log(rows[0].order_id);
+            res.redirect("orderSuccess");
+          })
+        }
+      }
+    );
   });
 });
 
