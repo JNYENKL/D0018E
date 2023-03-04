@@ -1,18 +1,20 @@
 include header.pug
-div.col-md-9
-        if (message.length > 0 )
-            div.alert.alert-warning(role="alert")
-                p=message
-        else if (itemList.length == 0)
-            div.alert.alert-warning(role="alert")
-                p Something went wrong when getting the products.
-        else
-            each item in itemList
-                div.col-md-3
-                    a(href='/p?product='+ item.link+'')
-                        img.img.img-thumbnail(src=("" + "./img/" + item.link + ".png"))
-                        h4=item.productName
-                    p=item.price+"kr"
-
+div.row
+    div.col-md-1
+    div.col-md-10
+            if (message.length > 0 )
+                div.alert.alert-warning(role="alert")
+                    p=message
+            else if (itemList.length == 0)
+                div.alert.alert-warning(role="alert")
+                    p Something went wrong when getting the products.
+            else
+                each item in itemList
+                    div.col-md-3
+                        a(href='/p?product='+ item.link+'')
+                            img.img.img-thumbnail(src=("" + "./img/" + item.link + ".png"))
+                            h4=item.productName
+                        p=item.price+" kr"
+    div.col-md-1
 
 include footer.pug

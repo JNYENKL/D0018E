@@ -11,14 +11,30 @@ div.col-md-10
                            h1.card-title=item.productName 
                             h3=item.price
                             p.card-text=item.stock
-                            if (login)
-                                a(href="/addToCart")
-                                    button.btn.btn-primary
+                            if (login && (parseInt(item.stock) > 0))
+                                a(href="/addtocart?product="+ item.assId +"")
+                                    button.btn.btn-primary Add to cart 
+                                        img(src="./img/basket2-fill.svg")
                             else
-                                button.btn.btn-primary(disabled="disabled") Login to purchase
+                                a(href="/loginPage")
+                                    button.btn.btn-primary Login to purchase
                             p.card-text=item.description
+        if (comments.length > 0)
+            each comment in comments
+                div.card
+                    h5.card-title
+                        span
+                            each comment.rating
+                                img(src="./img/star-fill.svg")
+                    h6.card-subtitle.mb-2.text-muted=comment.uname
+                    p.card-text
+        else
+            div.card
+                h5.card-title Purchase to leave a review.
+
+
     else
-        div.container
-            h1 No items!
+        div.alert.alert-warning(role="alert")
+            p There was an issue loading the product
 
 include footer.pug

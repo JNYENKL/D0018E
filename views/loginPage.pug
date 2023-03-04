@@ -3,37 +3,48 @@ div.col-md-10
     if (typeof message != 'undefined' && message.length > 0)
         div.alert.alert-warning(role="alert")
             p=message
-    div.col-md-6
-        form.inputForm(action='/loginUser', method='POST')
-            p
-            | E-mail:
-            br
-            input(type='text', name='email', value='')
-            br
-            | Password
-            br
-            input(type='text', name='pw', value='')
-            br
-            input.btnInpt(type='submit', value='Login')
+    div.col-md-3
+    div.col-md-4
+        div.card
+            div.card-body
+                div.card-header
+                    h3 Login with email
+                form.inputForm(action='/loginUser', method='POST')
+                    p
+                    | E-mail:
+                    br
+                    input(type='text', name='email', value='' placeholder='name@example.com')
+                    br
+                    | Password
+                    br
+                    input(type='password', name='pw', value='')
+                    br
+                    br
+                    button.btn.btn-success(type='submit') Login
 
-    div.col-md-6
-        form.inputForm(action='/createUser', method='POST')
-            p
-            | Firstname:
-            br
-            input(type='text', name='Cfn', value='')
-            br
-            | Lastname:
-            br
-            input(type='text', name='Cln', value='')
-            br
-            | E-mail:
-            br
-            input(type='text', name='Cemail', value='')
-            br
-            | Password
-            br
-            input(type='text', name='Cpw', value='')
-            br
-            input.btnInpt(type='submit', value='create account')
+    div.col-md-5  
+        div.card
+            div.card-body
+                div.card-header
+                    h3 Create Account
+                form.inputForm(action='/createUser', method='POST')
+                    p
+                    | Firstname:
+                    br
+                    input(type='text', name='Cfn', value='')
+                    br
+                    | Lastname:
+                    br
+                    input(type='text', name='Cln', value='')
+                    br
+                    | E-mail:
+                    br
+                    input(type='text', name='Cemail', value='' placeholder='name@example.com')
+                    br
+                    | Password
+                    br
+                    input(type='text', name='Cpw', value='')
+                    br
+                    br
+                    button.btn.btn-info(type='submit') Go!
 include footer.pug
