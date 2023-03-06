@@ -351,7 +351,7 @@ app.get('/cart', function (req, res) {
 	console.log('uid:' + userID);
 
 	var query =
-		'SELECT title, asset_id, asset_amount, price, total_price from shopping_basket sb join shopping_basket_asset sba using (shopping_basket_id) join asset a using (asset_id) where user_id=?';
+		'SELECT title, asset_id, asset_amount, amount, price, total_price from shopping_basket sb join shopping_basket_asset sba using (shopping_basket_id) join asset a using (asset_id) where user_id=?';
 	//Get all products from the cart
 	db.SSHConnection().then(function (connection) {
 		connection.query(query, [[userID]], function (err, rows, fields) {
@@ -362,11 +362,14 @@ app.get('/cart', function (req, res) {
 				// Kolla igenom all data i tabellen
 				for (let i = 0; i < rows.length; i++) {
 					// Skapa ett objekt för datan
+					const { title, asset_id, price, asset_amount, amount } = rows[i];
+
 					var items = {
-						productName: rows[i].title,
-						link: rows[i].asset_id,
-						price: rows[i].price,
-						amount: rows[i].asset_amount,
+						productName: title,
+						link: asset_id,
+						price,
+						amount_in_cart: asset_amount,
+						amount_in_store: amount,
 						//'totalPrice': totalPrice+rows[i].price
 						//'imgSrc': rows[i].imgSrc,
 						//'category': rows[i].category

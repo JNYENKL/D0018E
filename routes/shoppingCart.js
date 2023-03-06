@@ -23,15 +23,27 @@ module.exports = {
 		//var amount = [[req.body.item.stock]];
 		var email = [[session.userMail]];
 
-		var query = 'CALL d0018e_store.add_item_to_shopping_basket(?, ?, ?)';
+		var add_sba_query =
+			'CALL d0018e_store.add_item_to_shopping_basket(?, ?, ?)';
+		const select_asset_amount_query =
+			'select amount from asset where asset_id=?';
 
 		db.SSHConnection().then(connection => {
 			connection.query(
-				query,
-				[productId, amount, email],
+				select_asset_amount_query,
+				[productId],
 				(err, rows, fields) => {
 					if (err) errorMessage(res, err);
-					else res.redirect(path);
+					else if (rows[0].amount > 0) {
+						connection.query(
+							add_sba_query,
+							[productId, amount, email],
+							(err, rows, fields) => {
+								if (err) errorMessage(res, err);
+							}
+						);
+					}
+					res.redirect(path);
 				}
 			);
 		});
