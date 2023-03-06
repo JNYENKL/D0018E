@@ -1,26 +1,32 @@
 include header.pug
-div.col-md-10
-    if (shoppingCart.length > 0)
-        table.table.table-sm(style="white-space:nowrap;")
-            tbody
-            each item in shoppingCart
+div.row
+    div.col-md-1
+    div.col-md-10
+        if (shoppingCart.length > 0)
+            table.table.table-sm(style="white-space:nowrap;")
+                tbody
+                each item in shoppingCart
+                    tr(scope="row")
+                        th
+                            img.img.img-thumbnail(src=("./img/" + item.link + ".png") style="width:15%;")
+                        td
+                            h4
+                                a(href='/p?product='+ item.link+'')=item.productName
+                        td
+                            p='Antal: '+ item.amount
+                        td
+                            p=item.price + ' kr'
+                        td
+                            a.btn.btn-primary(href='/removeFromCart?product='+ item.link+'') -
+                        
                 tr(scope="row")
-                    th
-                        img.img.img-thumbnail(src=("./img/" + item.link + ".png") style="width:15%;")
                     td
-                        h4
-                            a(href='/p?product='+ item.link+'')=item.productName
-                    td=item.price + ' kr'
-                    td
-                        a.btn.btn-primary(href='/removeFromCart?product='+ item.link+'') -
-                    
-            tr(scope="row")
-                td
-                    p='Summa: '+ total + ' kr'
-        hr
-        a(href="/createorder")
-            button.btnInpt.btn-success Bekräfta beställning
-    else
-        div.container
-            h1 Cart is empty.
+                        p='Summa: '+ total + ' kr'
+            hr
+            a(href="/createorder")
+                button.btnInpt.btn-success Bekräfta beställning
+        else
+            div.container
+                h1 Cart is empty.
+    div.col-md-1
 include footer.pug

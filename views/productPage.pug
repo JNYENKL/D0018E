@@ -1,42 +1,45 @@
 include header.pug
-div.col-md-10
-    if (items.length > 0)
-        each item in items
-            div.card
-                div.row
-                    div.col-md-4 
-                        img.card-img-top.img-thumbnail.img-fluid(src=("" + "./img/" + item.assId + ".png"))
-                    div.col-md-8.px-3 
-                        div.card-block.px-3 
-                           h1.card-title=item.productName 
-                            h3=item.price
-                            p.card-text=item.stock
-                            if (login && (parseInt(item.stock) > 0))
-                                a(href="/addtocart?product="+ item.assId +"")
-                                    button.btn.btn-primary Add to cart 
-                                        img(src="./img/basket2-fill.svg")
-                            else
-                                a(href="/loginPage")
-                                    button.btn.btn-primary Login to purchase
-                            p.card-text=item.description
-        if (comments.length > 0)
-            each comment in comments
+div.row
+    div.col-md-1
+    div.col-md-10
+        if (items.length > 0)
+            each item in items
                 div.card
-                    h5.card-title
-                        span
-                            - var i = 0;
-                            while i < comment.rating
-                                img(src="./img/star-fill.svg")
-                                - i++
-                    h6.card-subtitle.mb-2.text-muted=comment.uname
-                    p.card-text=comment.text
+                    div.row
+                        div.col-md-4 
+                            img.card-img-top.img-thumbnail.img-fluid(src=("" + "./img/" + item.assId + ".png"))
+                        div.col-md-8.px-3 
+                            div.card-block.px-3 
+                            h1.card-title=item.productName 
+                                h3=item.price
+                                p.card-text=item.stock
+                                if (login && (parseInt(item.stock) > 0))
+                                    a(href="/addtocart?product="+ item.assId +"")
+                                        button.btn.btn-primary Add to cart 
+                                            img(src="./img/basket2-fill.svg")
+                                else
+                                    a(href="/loginPage")
+                                        button.btn.btn-primary Login to purchase
+                                p.card-text=item.description
+            if (comments.length > 0)
+                each comment in comments
+                    div.card
+                        h5.card-title
+                            span
+                                - var i = 0;
+                                while i < comment.rating
+                                    img(src="./img/star-fill.svg")
+                                    - i++
+                        h6.card-subtitle.mb-2.text-muted=comment.uname
+                        p.card-text=comment.text
+            else
+                div.card
+                    h5.card-title Purchase to leave a review.
+
+
         else
-            div.card
-                h5.card-title Purchase to leave a review.
-
-
-    else
-        div.alert.alert-warning(role="alert")
-            p There was an issue loading the product
+            div.alert.alert-warning(role="alert")
+                p There was an issue loading the product
+    div.col-md-1
 
 include footer.pug
