@@ -1,0 +1,94 @@
+/*
+#navBar {
+	background: linear-gradient(
+		90deg,
+		rgba(255, 105, 171, 1) 0%,
+		rgba(148, 187, 233, 1) 100%
+	);
+}
+
+.productDiv {
+	height: 10%;
+	width: 15%;
+	background-color: blue;
+}
+.productImg {
+	height: 10%;
+}
+
+#headerText {
+	text-decoration: none;
+	color: black;
+}
+
+#bookPic {
+	border: 1px solid #a58beb;
+	border-radius: 3px;
+	padding: 10px;
+	width: 200px;
+	margin: 10px 10px;
+}
+
+#layout {
+	flex-grow: 1;
+	margin: 10px 10px;
+	padding: 10px;
+}
+
+#up {
+	flex-grow: 1;
+	flex-direction: column;
+}
+
+#middle {
+	padding-top: 20px;
+	flex-grow: 1;
+	display: flex;
+}
+
+#left {
+	flex-grow: 1;
+	flex-direction: row;
+	max-width: 250px;
+}
+
+#right {
+	flex-grow: 1;
+	flex-direction: row;
+	width: 20%;
+	min-width: 200px;
+	padding-left: 50px;
+	margin: 10px 10px;
+}
+
+#bottom {
+	flex-grow: 1;
+	flex-direction: column;
+	padding-top: 50px;
+}
+*/
+
+.h-100 {
+	height: 100% !important;
+}
+
+.d-flex {
+	display: flex !important;
+}
+
+.flex-column {
+	flex-direction: column !important;
+}
+
+.bg-light {
+	background-color: rgba(0, 0, 0, 0.2);
+}
+
+.py-3 {
+	padding-top: 1rem !important;
+	padding-bottom: 1rem !important;
+}
+
+.mt-auto {
+	margin-top: auto !important;
+}

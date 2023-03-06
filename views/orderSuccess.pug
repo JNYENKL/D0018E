@@ -1,5 +1,26 @@
 include header.pug
 div.col-md-10
-    p 
-    | ORDER MADE!
+    if (items.length > 0)
+        p 
+        | ORDER MADE!
+        table.table.table-sm(style="white-space:nowrap;")
+            tbody
+            each item in items
+                tr(scope="row")
+                    th
+                        img.img.img-thumbnail(src=("./img/" + item.asset_id + ".png") style="width:15%;")
+                    td
+                        h4
+                            a(href='/p?product='+ item.asset_id+'')=item.productName
+                    td=item.price + ' kr'
+                    td=item.asset_amount + ' st.'
+                    
+            tr(scope="row")
+                td
+                    p='Summa: '+ totalPrice + ' kr'
+        hr
+    else
+        div.container
+            h1 No order items.
+
 include footer.pug

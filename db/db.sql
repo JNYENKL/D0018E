@@ -399,7 +399,7 @@ create procedure d0018e_store.restore_sba_to_store
     elseif (par_asset_amount = var_sba_asset_amount) then
       delete from shopping_basket_asset where shopping_basket_asset_id=var_sba_id;
     else
-      update shopping_basket_asset set asset_amount=asset_amount-par_asset_amount where shopping_basket_id=var_sba_id;
+      update shopping_basket_asset set asset_amount=asset_amount-par_asset_amount where shopping_basket_asset_id=var_sba_id;
     end if;
 
     update asset set amount=amount+par_asset_amount where asset_id=par_asset_id;

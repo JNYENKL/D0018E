@@ -11,14 +11,17 @@ div.col-md-10
                         h4
                             a(href='/p?product='+ item.link+'')=item.productName
                     td=item.price + ' kr'
+                    td=item.amount + ' st.'
                     td
                         a.btn.btn-primary(href='/removeFromCart?product='+ item.link+'') -
+                    td
+                        a.btn.btn-primary(href='/increaseAmount?product='+ item.link+'') +
                     
             tr(scope="row")
                 td
                     p='Summa: '+ total + ' kr'
         hr
-        a(href="/createorder")
+        a(href="/createOrder")
             button.btnInpt.btn-success Bekräfta beställning
     else
         div.container
