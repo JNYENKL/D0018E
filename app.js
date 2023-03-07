@@ -17,7 +17,7 @@ const sessions = require('express-session');
 //Import all JS functions
 const { loginUser, createUser, getLogin } = require('./routes/login.js');
 const { index } = require('./routes/index.js');
-const { getNP } = require('./routes/newProduct.js');
+
 const { getCart, addAssetToCart } = require('./routes/shoppingCart.js');
 const { renderWithCats } = require('./functions/categories.js');
 const { errorMessage } = require('./functions/errors.js');
@@ -213,6 +213,7 @@ app.get('/p', (req, res) => {
 	session = req.session;
 	var items = [];
 	var comments = [];
+	var ordered = false;
 
 	//Get all products
 	db.SSHConnection().then(function (connection) {
@@ -245,6 +246,27 @@ app.get('/p', (req, res) => {
 				}
 			}
 		);
+		if(session.uid != null){
+			connection.query(
+				'SELECT * FROM `order` WHERE user_id=' + session.uid,
+				function (err, row, fields) {
+					if (err) {
+						res.status(500).json({
+							status_code: 500,
+							status_message: 'internal server error in ordered check'
+						});
+					} else {
+						console.log(row);
+						if(row[0] != []){
+							ordered = true;
+						}
+					
+					}
+				}
+	
+			);
+		}
+
 
 		//SELECT user_id, order_asset_id, rating, comment_text FROM comment cm JOIN user u USING (user_id) user u
 		connection.query(
@@ -253,9 +275,7 @@ app.get('/p', (req, res) => {
 			function (err, row, fields) {
 				if (err) {
 					session.message = 'Technical issues, check back later.';
-					res.render('index', {
-						message: session.message,
-					});
+					res.render('index', {message: session.message});
 					//res.status(500).json({"status_code": 500,"status_message": "internal server error"+ err});
 				} else {
 					// Kolla igenom all data i tabellen
@@ -279,6 +299,7 @@ app.get('/p', (req, res) => {
 						login: session.loggedIn,
 						message: '',
 						comments,
+						ordered
 					});
 				}
 			}
@@ -398,6 +419,53 @@ app.get('/cart', function (req, res) {
 	});
 });
 
+app.post('/addComment', function (req, res) {
+
+	session = req.session;
+	userId = [[session.uid]];
+	productId = [[req.query.product]];
+	commentText = [[req.body.ct]];
+	rating = [[req.body.rating]];
+	var oid;
+
+	//call d0018e_store.add_comment_to_order_asset(1, 1, 5, "nice item");
+	
+	//Get all products from the cart
+	db.SSHConnection().then(function (connection) {
+		
+		var query1 = "select distinct(order_id) from comment join order_asset oa using (order_asset_id) join `order` o using (order_id) where o.user_id=? and asset_id=?"
+		//var query1 = 'SELECT order_id FROM order WHERE user_id=?';
+		connection.query(query1, [userId, productId], function (err, rows, fields) {
+			if (err) {
+				res.status(500).json({
+					status_code: 500,
+					status_message: 'internal server error in q1 comment'
+				});
+			} else {
+				oid = [[rows]];
+				console.log(oid);
+			}
+		});
+
+		var query2 = 'CALL d0018e_store.add_comment_to_order_asset(?, ?, ?, ?)';
+		
+		connection.query(query2, [productId, oid, rating, commentText], function (err, rows, fields) {
+			if (err) {
+				res.status(500).json({
+					status_code: 500,
+					status_message: 'internal server error in q2 comment'
+				});
+			} else {
+				console.log(rows);
+				var path = '/p?product=' + productId;
+				res.redirect(path);
+			}
+		});
+	});
+});
+
+
+
 //IN PROGRESS
 //Add an item to the cart of the logged in user
 app.get('/addToCart', function (req, res) {
@@ -513,6 +581,53 @@ app.get('/createOrder', function (req, res) {
 	});
 });
 
+app.get('/adminPage', function(req,res){
+
+	ses = req.session;
+	orderList = [];
+
+		//Wanted data for displaying in page:
+		//order_id, user_id, order_date, first_name, last_name, email
+		var query = 'SELECT `order`.order_id, `order`.order_date, user.user_id, user.first_name, user.last_name, user.email FROM `order` JOIN user ON `order`.user_id = user.user_id;';
+
+		db.SSHConnection().then(connection => {
+			connection.query(query, function(err, rows, fields){
+			if(err){
+				console.log('Could not get from db in adminPage');
+				res.redirect('/');
+			} else{
+				console.log(rows[0]);
+				for(var i = 0; i< rows.length; i++){
+
+					const { order_id, user_id, order_date, first_name, last_name, email} = rows[i];
+
+					var order = {
+						oid : order_id,
+						uid : user_id,
+						time : order_date,
+						fname: first_name,
+						lname : last_name,
+						mail : email
+					}
+					
+					orderList.push(order);
+				}
+				renderWithCats(req, res, db, session, 'adminPage', {
+					orders: orderList,
+					af: session.admin,
+					login: session.loggedIn,
+					message: session.message,
+				});
+				
+			}
+			
+		});
+
+
+		});
+
+});
+
 app.get('/orderSuccess', function (req, res) {
 	renderWithCats(req, res, db, req.session, 'orderSuccess');
 });
@@ -528,6 +643,8 @@ app.get('/cart', (req, res) => {
 app.get('/newProduct', (req, res) => {
 	getNP(req, res);
 });
+
+
 
 //Sätt views som default-mapp för rendering
 app.use(express.static(__dirname + '/views'));

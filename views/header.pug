@@ -21,7 +21,7 @@ html.h-100
             ul.nav.navbar-nav 
               if (login)
                 li
-                  a(href="/cart", action="getCart()").btn.btn-default Shopping Cart 
+                  a(href="/cart", action="getCart()").btn.btn-default Kundvagn 
                     img(src="./img/cart.svg")
                   
                 li.dropdown
@@ -32,10 +32,10 @@ html.h-100
                       li
                         a.btn.btn-default(href='/c?cat='+ c.subjectId +'')=c.catName
                 li 
-                  a(href="/logout", action="GET").btn.btn-default Logout
+                  a(href="/logout", action="GET").btn.btn-default Logga ut
               else 
                 li
-                  a(href="/loginPage", action="GET").btn.btn-default Login
+                  a(href="/loginPage", action="GET").btn.btn-default Logga in
                 li.dropdown
                   a.dropdown-toggle(href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false") Kategorier
                     span.caret
@@ -45,4 +45,4 @@ html.h-100
                         a.btn.btn-default(href='/c?cat='+ c.subjectId +'')=c.catName
               if (login && af)
                 li
-                  a(href="/newProduct", action="getNP()").btn.btn-default Add Products
+                  a(href="/adminPage").btn.btn-default Admin
