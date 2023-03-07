@@ -92,3 +92,7 @@
 .mt-auto {
 	margin-top: auto !important;
 }
+
+.row {
+	margin: 0;
+}

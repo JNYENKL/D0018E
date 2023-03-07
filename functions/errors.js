@@ -1,7 +1,8 @@
-const errorMessage = (res, err) => {
-	res.status(500).json({
-		status_code: 500,
-		status_message: 'internal server error' + err,
+const errorMessage = (res, session, err) => {
+	console.log(err);
+	session.message = 'Technical issues, check back later.';
+	res.render('index', {
+		message: session.message,
 	});
 };
 

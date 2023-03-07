@@ -1,40 +1,52 @@
+const { errorMessage } = require('./errors');
+
 const renderWithCats = (req, res, db, session, viewName, toRender = {}) => {
-    const cats = [];
+	const cats = [];
 
-    db.SSHConnection().then(function (connection) {
-      connection.query("SELECT subject_id, name FROM subject", function (err, row, fields) {
-        if (err) {
-          session.message = "Technical issues, check back later.";
-          res.render("index", {
-            message: session.message,
-            cat: cats
-          }, );
-          //res.status(500).json({"status_code": 500,"status_message": "internal server error"+ err});
-        } 
-        else {          
-        // Kolla igenom all data i tabellen
-          for (var i = 0; i < row.length; i++) {
-            const { subject_id, name } = row[i];
-          
-            var category = {
-              subjectId: subject_id,
-              catName: name,
-            };
-          //console.log('subject added:'+row[i].subject_id+', '+ row[i].name);
-            cats.push(category);
-          }
+	db.SSHConnection().then(function (connection) {
+		connection.query(
+			'SELECT subject_id, name FROM subject',
+			(err, row, fields) => {
+				if (err) errorMessage(res, err);
+				else {
+					// Kolla igenom all data i tabellen
+					for (var i = 0; i < row.length; i++) {
+						const { subject_id, name } = row[i];
 
-          console.log(toRender);
+						var category = {
+							subjectId: subject_id,
+							catName: name,
+						};
+						//console.log('subject added:'+row[i].subject_id+', '+ row[i].name);
+						cats.push(category);
+					}
 
-          res.render(viewName, {
-            cat: cats,
-            ...toRender
-          });
-        }
-      }); 
-    });
-  };
+					connection.query(
+						'select sum(asset_amount) amount_in_cart from shopping_basket sb join shopping_basket_asset sba using (shopping_basket_id) group by user_id having user_id=?',
+						[session.uid],
+						(err, rows, fields) => {
+							if (err) errorMessage(res, err);
+							else {
+								if (session.loggedIn && typeof rows[0] !== 'undefined') {
+									if (rows[0].amount_in_cart !== 'undefined') {
+										const { amount_in_cart } = rows[0];
+										toRender = { ...toRender, amount_in_cart };
+									}
+								}
 
-  module.exports = {
-    renderWithCats
-  }
+								res.render(viewName, {
+									cat: cats,
+									...toRender,
+								});
+							}
+						}
+					);
+				}
+			}
+		);
+	});
+};
+
+module.exports = {
+	renderWithCats,
+};

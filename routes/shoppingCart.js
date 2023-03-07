@@ -1,3 +1,5 @@
+const { errorMessage } = require('../functions/errors');
+
 class productTest {
 	constructor(_pn, _price, _imgSrc, _cat) {
 		this.pn = _pn;
@@ -15,7 +17,7 @@ const product1 = new productTest(
 );
 shoppingCart = [product1];
 module.exports = {
-	addAssetToCart: (req, res, db, errorMessage, path, amount = 1) => {
+	addAssetToCart: (req, res, db, path, amount = 1) => {
 		session = req.session;
 
 		var user = [[session.uid]];

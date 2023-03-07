@@ -17,7 +17,6 @@ const sessions = require('express-session');
 //Import all JS functions
 const { loginUser, createUser, getLogin } = require('./routes/login.js');
 const { index } = require('./routes/index.js');
-const { getNP } = require('./routes/newProduct.js');
 const { getCart, addAssetToCart } = require('./routes/shoppingCart.js');
 const { renderWithCats } = require('./functions/categories.js');
 const { errorMessage } = require('./functions/errors.js');
@@ -64,40 +63,20 @@ app.get('/', function (req, res) {
 
 // admin, admin@d0018e.com, p4ssw0rd
 app.get('/loginPage', (req, res) => {
-	renderWithCats(req, res, db, req.session, 'loginPage');
+	session = req.session;
+	renderWithCats(req, res, db, req.session, 'loginPage', {
+		af: session.admin,
+		login: session.loggedIn,
+		message: '',
+		referer: req.headers.referer,
+	});
 });
 
 //Login with email, password and session
 app.post('/loginUser', (req, res) => {
-	console.log('Entering login');
-
 	session = req.session;
-	var cats = [];
 
-	db.SSHConnection().then(function (connection) {
-		connection.query('SELECT * FROM subject', function (err, row, fields) {
-			if (err) {
-				session.message = 'Technical issues, check back later.';
-				res.render('index', {
-					message: session.message,
-				});
-				//res.status(500).json({"status_code": 500,"status_message": "internal server error"+ err});
-			} else {
-				// Kolla igenom all data i tabellen
-				for (var i = 0; i < row.length; i++) {
-					var category = {
-						subjectId: row[i].subject_id,
-						catName: row[i].name,
-					};
-					//console.log('subject added:'+row[i].subject_id+', '+ row[i].name);
-					cats.push(category);
-				}
-
-				// Rendera index.pug med objekten i listan
-				//res.render('index', {itemList: itemList, cat: cats, af: session.admin, login: session.loggedIn, message: ""});
-			}
-		});
-
+	db.SSHConnection().then(connection => {
 		connection.query(
 			'SELECT * FROM user WHERE email=?',
 			[req.body.email],
@@ -105,23 +84,20 @@ app.post('/loginUser', (req, res) => {
 				if (err) {
 					session.uid = null;
 					session.message = 'Something went wrong.';
-					res.render('loginPage', {
-						cat: cats,
+					renderWithCats(req, res, db, session, 'loginPage', {
 						message: session.message,
 					});
 				} else if (typeof row[0] == 'undefined') {
 					session.uid = null;
 					session.message = 'Wrong username.';
-					res.render('loginPage', {
-						cat: cats,
+					renderWithCats(req, res, db, session, 'loginPage', {
 						message: session.message,
 					});
 				} else {
 					if (!bcrypt.compareSync(req.body.pw, row[0].password)) {
 						console.log(toString(req.body.pw) + '!=' + row[0].password);
 						session.message = 'Wrong password';
-						res.render('loginPage', {
-							cat: cats,
+						renderWithCats(req, res, db, session, 'loginPage', {
 							message: session.message,
 						});
 						//res.status(500).json({"status_code": 500,"status_message": "internal server error: wrong password"}); //This should be a failed login by username message, not 500
@@ -137,8 +113,8 @@ app.post('/loginUser', (req, res) => {
 						if (session.uid == 1) {
 							session.admin = true;
 						}
-						console.log('here');
-						res.redirect('/');
+						console.log('REFERER: ', req.body.referer);
+						res.redirect(req.body.referer || '/');
 					}
 				}
 			}
@@ -167,9 +143,7 @@ app.post('/createUser', (req, res) => {
 				if (err) {
 					console.log('db error in create user:' + err);
 					session.message = 'User with email ' + mail + ' already exists.';
-					res.render('loginPage', {
-						message: session.message,
-					});
+					renderWithCats(req, res, db, session, "loginPage", { message: session.message });
 					//res.status(500).json({"status_code": 500,"status_message": "internal server error"}); //This should be a failed login by username message, not 500
 				} else {
 					console.log('Created user.');
@@ -213,6 +187,7 @@ app.get('/p', (req, res) => {
 	session = req.session;
 	var items = [];
 	var comments = [];
+	var ordered = false;
 
 	//Get all products
 	db.SSHConnection().then(function (connection) {
@@ -236,8 +211,6 @@ app.get('/p', (req, res) => {
 						description: row[0].description,
 					};
 
-					console.log(row[0].title);
-
 					items.push(product);
 
 					// Rendera index.pug med objekten i listan
@@ -245,19 +218,35 @@ app.get('/p', (req, res) => {
 				}
 			}
 		);
+		if(session.uid != null){
+			connection.query(
+				'SELECT * FROM `order` WHERE user_id=' + session.uid,
+				function (err, row, fields) {
+					if (err) {
+						res.status(500).json({
+							status_code: 500,
+							status_message: 'internal server error in ordered check'
+						});
+					} else {
+						console.log(row);
+						if(row[0] != []){
+							ordered = true;
+						}
+					
+					}
+				}
+	
+			);
+		}
 
 		//SELECT user_id, order_asset_id, rating, comment_text FROM comment cm JOIN user u USING (user_id) user u
 		connection.query(
 			"select rating, comment_text, concat(first_name, ' ', last_name) uname from comment join `user` u using (user_id) join order_asset oa using (order_asset_id) where asset_id=?;",
 			req.query.product,
 			function (err, row, fields) {
-				if (err) {
-					session.message = 'Technical issues, check back later.';
-					res.render('index', {
-						message: session.message,
-					});
-					//res.status(500).json({"status_code": 500,"status_message": "internal server error"+ err});
-				} else {
+				if (err) errorMessage(res, session, err);
+				//res.status(500).json({"status_code": 500,"status_message": "internal server error"+ err});
+				else {
 					// Kolla igenom all data i tabellen
 					for (var i = 0; i < row.length; i++) {
 						const { uname, rating, comment_text } = row[i];
@@ -279,6 +268,8 @@ app.get('/p', (req, res) => {
 						login: session.loggedIn,
 						message: '',
 						comments,
+						currentUrl: req.originalUrl,
+						ordered
 					});
 				}
 			}
@@ -355,7 +346,7 @@ app.get('/cart', function (req, res) {
 	//Get all products from the cart
 	db.SSHConnection().then(function (connection) {
 		connection.query(query, [[userID]], function (err, rows, fields) {
-			if (err) errorMessage(res);
+			if (err) errorMessage(res, session, err);
 			else {
 				console.log(rows);
 				let totalPrice = 0;
@@ -398,14 +389,59 @@ app.get('/cart', function (req, res) {
 	});
 });
 
+app.post('/addComment', function (req, res) {
+
+	session = req.session;
+	userId = [[session.uid]];
+	productId = [[req.query.product]];
+	commentText = [[req.body.ct]];
+	rating = [[req.body.rating]];
+	var oid;
+
+	//call d0018e_store.add_comment_to_order_asset(1, 1, 5, "nice item");
+	
+	//Get all products from the cart
+	db.SSHConnection().then(function (connection) {
+		
+		var query1 = "select distinct(order_id) from comment join order_asset oa using (order_asset_id) join `order` o using (order_id) where o.user_id=? and asset_id=?"
+		//var query1 = 'SELECT order_id FROM order WHERE user_id=?';
+		connection.query(query1, [userId, productId], function (err, rows, fields) {
+			if (err) {
+				res.status(500).json({
+					status_code: 500,
+					status_message: 'internal server error in q1 comment'
+				});
+			} else {
+				oid = [[rows]];
+				console.log(oid);
+			}
+		});
+
+		var query2 = 'CALL d0018e_store.add_comment_to_order_asset(?, ?, ?, ?)';
+		
+		connection.query(query2, [productId, oid, rating, commentText], function (err, rows, fields) {
+			if (err) {
+				res.status(500).json({
+					status_code: 500,
+					status_message: 'internal server error in q2 comment'
+				});
+			} else {
+				console.log(rows);
+				var path = '/p?product=' + productId;
+				res.redirect(path);
+			}
+		});
+	});
+});
+
 //IN PROGRESS
 //Add an item to the cart of the logged in user
 app.get('/addToCart', function (req, res) {
-	addAssetToCart(req, res, db, errorMessage, '/p?product=' + req.query.product);
+	addAssetToCart(req, res, db, '/p?product=' + req.query.product);
 });
 
 app.get('/increaseAmount', function (req, res) {
-	addAssetToCart(req, res, db, errorMessage, 'cart');
+	addAssetToCart(req, res, db, 'cart');
 });
 
 //IN PROGRESS
@@ -423,7 +459,7 @@ app.get('/removeFromCart', function (req, res) {
 			delete_sba_query,
 			[email, parseInt(productId), 1],
 			(err, rows, fields) => {
-				if (err) errorMessage(res, err);
+				if (err) errorMessage(res, session, err);
 				else res.redirect('cart');
 			}
 		);
@@ -448,14 +484,14 @@ app.get('/createOrder', function (req, res) {
 
 	db.SSHConnection().then(connection => {
 		connection.query(add_order_query, [email], (err, rows, fields) => {
-			if (err) errorMessage(res, err);
+			if (err) errorMessage(res, session, err);
 			else {
 				connection.query(
 					'select @order_id order_id',
 					[userId],
 					(err, rows, field) => {
 						if (err) {
-							errorMessage(res, err);
+							errorMessage(res, session, err);
 						} else {
 							orderId = rows[0].order_id;
 						}
@@ -465,7 +501,7 @@ app.get('/createOrder', function (req, res) {
 			}
 
 			connection.query(select_sba_query, [userId], (err, rows, fields) => {
-				if (err) errorMessage(res, err);
+				if (err) errorMessage(res, session, err);
 				else {
 					for (let i = 0; i < rows.length; i++) {
 						const { asset_id, asset_amount, title, price } = rows[i];
@@ -476,7 +512,7 @@ app.get('/createOrder', function (req, res) {
 							add_order_assets_query,
 							[orderId, asset_id, asset_amount],
 							(err, rows, fields) => {
-								if (err) errorMessage(res, err);
+								if (err) errorMessage(res, session, err);
 							}
 						);
 
@@ -494,7 +530,7 @@ app.get('/createOrder', function (req, res) {
 						select_order_total_price_query,
 						[orderId],
 						(err, rows, fields) => {
-							if (err) errorMessage(res, err);
+							if (err) errorMessage(res, session, err);
 							else {
 								totalPrice = rows[0].total_price;
 								renderWithCats(req, res, db, session, 'orderSuccess', {
@@ -511,6 +547,54 @@ app.get('/createOrder', function (req, res) {
 			});
 		});
 	});
+});
+
+
+app.get('/adminPage', function(req,res){
+
+	ses = req.session;
+	orderList = [];
+
+		//Wanted data for displaying in page:
+		//order_id, user_id, order_date, first_name, last_name, email
+		var query = 'SELECT `order`.order_id, `order`.order_date, user.user_id, user.first_name, user.last_name, user.email FROM `order` JOIN user ON `order`.user_id = user.user_id;';
+
+		db.SSHConnection().then(connection => {
+			connection.query(query, function(err, rows, fields){
+			if(err){
+				console.log('Could not get from db in adminPage');
+				res.redirect('/');
+			} else{
+				console.log(rows[0]);
+				for(var i = 0; i< rows.length; i++){
+
+					const { order_id, user_id, order_date, first_name, last_name, email} = rows[i];
+
+					var order = {
+						oid : order_id,
+						uid : user_id,
+						time : order_date,
+						fname: first_name,
+						lname : last_name,
+						mail : email
+					}
+					
+					orderList.push(order);
+				}
+				renderWithCats(req, res, db, session, 'adminPage', {
+					orders: orderList,
+					af: session.admin,
+					login: session.loggedIn,
+					message: session.message,
+				});
+				
+			}
+			
+		});
+
+
+		});
+
 });
 
 app.get('/orderSuccess', function (req, res) {

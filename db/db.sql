@@ -239,7 +239,9 @@ create procedure d0018e_store.add_user
 
     select user_id into var_user_id from `user` where lower(email)=lower(par_email); 
     if var_user_id is not null then
-      insert into shopping_basket (user_id) values (var_user_id);
+      insert into shopping_basket (user_id, total_price) values (var_user_id, 0);
+    else
+      signal sqlstate '45000' set message_text = 'error: something went wrong while creating a user';
     end if;
 	
   end $$
