@@ -1,0 +1,27 @@
+include header.pug 
+div.row
+    div.col-md-1 
+    div.col-md-10
+        table.table 
+            thead
+                tr 
+                    th(scope="col") User ID
+                    th(scope="col") First name
+                    th(scope="col") Last name
+                    th(scope="col") E-mail
+            tbody 
+                if (users.length > 0)
+                    each user in users 
+                        tr
+                            td=user.uid
+                            td=user.fname 
+                            td=user.lname 
+                            td=user.mail 
+                else 
+                    tr 
+                        th(scope="row")
+                        td 
+                        td 
+                        td 
+                        td 
+    div.col-md-1

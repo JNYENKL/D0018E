@@ -1,0 +1,30 @@
+include header.pug 
+div.row
+    div.col-md-1 
+    div.col-md-10
+        table.table 
+            thead
+                tr 
+                    th(scope="col") Order ID
+                    th(scope="col") First name
+                    th(scope="col") Last name
+                    th(scope="col") E-mail
+                    th(scope="col") Timestamp 
+            tbody 
+                if (orders.length > 0)
+                    each order in orders 
+                        tr
+                            td=order.oid
+                            td=order.fname 
+                            td=order.lname 
+                            td=order.mail 
+                            td=order.time
+                else 
+                    tr 
+                        th(scope="row")
+                        td No orders
+                        td 
+                        td 
+                        td 
+                        td
+    div.col-md-1

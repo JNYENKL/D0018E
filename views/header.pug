@@ -32,6 +32,8 @@ html.h-100
                     each c in cat
                       li
                         a.btn.btn-default(href='/c?cat='+ c.subjectId +'')=c.catName
+                li
+                  a(href="/orderHistory", action="GET").btn.btn-default Orderhistorik
                 li 
                   a(href="/logout", action="GET").btn.btn-default Logga ut
               else 
@@ -45,5 +47,11 @@ html.h-100
                       li
                         a.btn.btn-default(href='/c?cat='+ c.subjectId +'')=c.catName
               if (login && af)
-                li
-                  a(href="/adminPage").btn.btn-default Admin
+                li.dropdown
+                  a.dropdown-toggle(href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false") Admin verktyg
+                    span.caret
+                  ul.dropdown-menu
+                    li
+                      a(href="/adminPage").btn.btn-default All orderhistorik
+                    li
+                      a(href="/users").btn.btn-default Användare

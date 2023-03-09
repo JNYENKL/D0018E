@@ -1,4 +1,5 @@
-const { errorMessage } = require('../functions/errors');
+const { internalError } = require('../functions/errors');
+const { errorMessage } = require('../functions/renders');
 
 class productTest {
 	constructor(_pn, _price, _imgSrc, _cat) {
@@ -35,17 +36,17 @@ module.exports = {
 				select_asset_amount_query,
 				[productId],
 				(err, rows, fields) => {
-					if (err) errorMessage(res, err);
+					if (err) internalError(res);
 					else if (rows[0].amount > 0) {
 						connection.query(
 							add_sba_query,
 							[productId, amount, email],
 							(err, rows, fields) => {
-								if (err) errorMessage(res, err);
+								if (err) internalError(res, err);
+								else res.redirect(path);
 							}
 						);
 					}
-					res.redirect(path);
 				}
 			);
 		});

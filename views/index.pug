@@ -4,9 +4,9 @@ div.row
         if (message.length > 0 )
             div.alert.alert-warning(role="alert")
                 p=message
-        else if (itemList.length == 0)
+        if (itemList.length == 0)
             div.alert.alert-warning(role="alert")
-                p Something went wrong when getting the products.
+                p Inga produkter hittades.
         else
             each item in itemList
                 div.col-md-3

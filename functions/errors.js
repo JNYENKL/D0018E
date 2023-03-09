@@ -1,11 +1,14 @@
-const errorMessage = (res, session, err) => {
-	console.log(err);
-	session.message = 'Technical issues, check back later.';
-	res.render('index', {
-		message: session.message,
+const internalError = (
+	res,
+	statusCode = 500,
+	message = 'internal server error'
+) => {
+	res.status(statusCode).json({
+		status_code: statusCode,
+		status_message: message,
 	});
 };
 
 module.exports = {
-	errorMessage,
+	internalError,
 };

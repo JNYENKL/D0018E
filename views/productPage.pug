@@ -1,36 +1,37 @@
 include header.pug
 div.col-md-1
 div.col-md-10
-    if (items.length > 0)
-        each item in items
-            div.card
-                div.row
-                    div.col-md-4 
-                        img.card-img-top.img-thumbnail.img-fluid(src=("" + "./img/" + item.assId + ".png"))
-                    div.col-md-8.px-3 
-                        div.card-block.px-3 
-                           h1.card-title=item.productName 
-                            h3=item.price
-                            p.card-text=item.stock
-                            if (parseInt(item.stock) > 0)    
-                                if (login)
-                                    a(href="/addToCart?product="+ item.assId +"")
-                                        button.btn.btn-primary Köp 
-                                            img(src="./img/basket2-fill.svg")
-                                else
-                                    a(href="/loginPage")
-                                        button.btn.btn-primary Login to purchase
-                                        input(type="hidden" name="referer" value=currentUrl)
-                                        #{currentUrl}
-                            else
-                                button.btn.btn-primary(disabled) Slut i lager
-                            p.card-text=item.description
+    if (message.length > 0 )
+        div.alert.alert-warning(role="alert")
+            p=message
+    div.card
+        div.row
+            div.col-md-4 
+                img.card-img-top.img-thumbnail.img-fluid(src=("" + "./img/" + item.assId + ".png"))
+            div.col-md-8.px-3 
+                div.card-block.px-3 
+                    h1.card-title=item.productName 
+                    h3=item.price
+                    p.card-text=item.stock
+                    if (parseInt(item.stock) > 0)    
+                        if (login)
+                            a(href="/addToCart?product="+ item.assId +"")
+                                button.btn.btn-primary Lägg till varukorgen
+                                    img(src="./img/basket2-fill.svg")
+                        else
+                            a(href="/loginPage")
+                                button.btn.btn-primary Logga in för att köpa
+                                input(type="hidden" name="referer" value=currentUrl)
+                                #{currentUrl}
+                    else
+                        button.btn.btn-primary(disabled) Slut i lager
+                    p.card-text=item.description
         if (ordered)
             div.card
                 div.card-body
                     div.card-header
                         h3 Lämna omdöme
-                    form.inputForm(action='/addComment', method='POST')
+                    form.inputForm(action='/addComment?product='+item.assId, method='POST')
                         br
                         select(name="rating")
                             option(value="1") ☆
@@ -58,9 +59,5 @@ div.col-md-10
                                 - i++
                     h6.card-subtitle.mb-2.text-muted=comment.uname
                     p.card-text=comment.text
-    else
-        div.alert.alert-warning(role="alert")
-            p Tekniska problem, försök senare
-    div.col-md-1
 
 include footer.pug
