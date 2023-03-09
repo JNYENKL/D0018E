@@ -3,7 +3,7 @@ Documentation     		Custom keywords for GUI tests
 Library           		OperatingSystem
 Library					BuiltIn
 Library					Process
-Library					SeleniumLibrary
+Library					SeleniumLibrary        run_on_failure=Nothing
 Resource				./../db tests/resources/vm.resource
 Resource				./../db tests/resources/db.resource
 
@@ -40,10 +40,12 @@ Run App
 	
 Start Website
     Open Browser		${noWebsite}		${browser}
+	Set Window Size    2000    1200
+	Set Window Position    0    0
 	Go To				${website}
+	Wait Until Page Contains		${mathbook}
 	
 Look For Matematik For Nyborjare
-	Wait Until Page Contains		${mathbook}
 	Click Element					${mathbook_elem}
 	Wait Until Page Contains		${mathbook2}
 	

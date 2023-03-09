@@ -1,4 +1,5 @@
 include header.pug
+    script(src="/js/productPageEvents.js")
 div.col-md-1
 div.col-md-10
     if (message.length > 0 )
@@ -11,39 +12,43 @@ div.col-md-10
             div.col-md-8.px-3 
                 div.card-block.px-3 
                     h1.card-title=item.productName 
-                    h3=item.price
-                    p.card-text=item.stock
+                    h3 #{item.price} kr
+                    p.card-text #{item.stock} i lager
                     if (parseInt(item.stock) > 0)    
                         if (login)
-                            a(href="/addToCart?product="+ item.assId +"")
-                                button.btn.btn-primary Lägg till varukorgen
+                            a#addToCartLink(href="/addToCart?product="+ item.assId +"")
+                                button#addToCartButton.btn.btn-primary Lägg till varukorgen
                                     img(src="./img/basket2-fill.svg")
                         else
                             a(href="/loginPage")
                                 button.btn.btn-primary Logga in för att köpa
                                 input(type="hidden" name="referer" value=currentUrl)
-                                #{currentUrl}
                     else
                         button.btn.btn-primary(disabled) Slut i lager
                     p.card-text=item.description
         if (ordered)
-            div.card
-                div.card-body
-                    div.card-header
-                        h3 Lämna omdöme
-                    form.inputForm(action='/addComment?product='+item.assId, method='POST')
-                        br
-                        select(name="rating")
-                            option(value="1") ☆
-                            option(value="2") ☆☆
-                            option(value="3") ☆☆☆
-                            option(value="4") ☆☆☆☆
-                            option(value="5") ☆☆☆☆☆
-                        br
-                        textarea(name="ct" rows='3' cols="50")
-                        br
-                        br
-                        button.btn.btn-success(type='submit') Skicka
+            if (!commented)
+                div.card
+                    div.card-body
+                        div.card-header
+                            h3 Lämna omdöme
+                        form.inputForm(action='/addComment?product='+item.assId, method='POST')
+                            br
+                            select(name="rating")
+                                option(value="1") ☆
+                                option(value="2") ☆☆
+                                option(value="3") ☆☆☆
+                                option(value="4") ☆☆☆☆
+                                option(value="5") ☆☆☆☆☆
+                            br
+                            textarea(name="ct" rows='3' cols="50")
+                            br
+                            br
+                            button.btn.btn-success(type='submit') Skicka
+            else
+                div.card
+                    h5.card-title Du har redan lämnat ett omdöme.
+
         else
             div.card
                 h5.card-title Köp för att lämna ett omdöme.

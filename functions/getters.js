@@ -125,8 +125,8 @@ const getProductWithId = (res, db, productId) => {
 						const { title, price, amount, description } = rows[0];
 						resolve({
 							productName: title,
-							price: price + ' kr',
-							stock: amount + ' in stock',
+							price,
+							stock: amount,
 							assId: productId,
 							description,
 						});
@@ -228,12 +228,31 @@ const hasOrdered = (res, db, userId, productId) => {
 						reject('error during fetching of comments');
 						return;
 					} else if (typeof rows[0] !== 'undefined') {
-						console.log('times ordered: ', rows[0].times_ordered);
-						console.log('user id: ', userId);
-						console.log('product id: ', productId);
 						if (rows[0].times_ordered > 0) ordered = true;
 					}
 					resolve(ordered);
+				}
+			);
+		});
+	});
+};
+
+const hasCommented = (res, db, userId, productId) => {
+	return new Promise((resolve, reject) => {
+		db.SSHConnection().then(connection => {
+			connection.query(
+				'select count(comment_id) times_commented from comment c join order_asset using (order_asset_id) where user_id=? and asset_id=?',
+				[userId, productId],
+				(err, rows, fields) => {
+					let commented = false;
+					if (err) {
+						internalError(res, 500);
+						reject('error during fetching of comments');
+						return;
+					} else if (typeof rows[0] !== 'undefined') {
+						if (rows[0].times_commented > 0) commented = true;
+					}
+					resolve(commented);
 				}
 			);
 		});
@@ -250,4 +269,5 @@ module.exports = {
 	getProductsInCart,
 	getTotalPriceInCart,
 	hasOrdered,
+	hasCommented,
 };

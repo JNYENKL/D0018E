@@ -29,6 +29,8 @@ const {
 	renderProductsWithSubject,
 } = require('./functions/renders');
 
+const { internalError } = require('./functions/errors');
+
 const { title } = require('process');
 
 //Set view engine
@@ -46,6 +48,7 @@ app.use(
 app.use(errorhandler());
 app.use(cookieParser());
 app.use('/css', express.static('css'));
+app.use('/js', express.static('js'));
 
 //Session setup
 var session;
@@ -73,7 +76,9 @@ app.get('/', function (req, res) {
 
 // admin, admin@d0018e.com, p4ssw0rd
 app.get('/loginPage', (req, res) => {
-	renderWithCats(req, res, db, req.session, undefined, 'loginPage');
+	renderWithCats(req, res, db, req.session, undefined, 'loginPage', {
+		referer: req.headers.referer,
+	});
 });
 
 //Login with email, password and session
@@ -92,9 +97,6 @@ app.post('/loginUser', (req, res) => {
 					if (!bcrypt.compareSync(req.body.pw, row[0].password))
 						renderLoginError(req, res, db, session, 'Wrong password.');
 					else {
-						console.log('password correct');
-						console.log('referer', req.body.referer);
-
 						const { user_id, email } = row[0];
 
 						session.uid = user_id;
@@ -102,7 +104,6 @@ app.post('/loginUser', (req, res) => {
 						session.userMail = email;
 						session.message = '';
 
-						console.log('user_id:' + session.uid);
 						if (session.uid == 1) {
 							session.admin = true;
 						}
@@ -122,9 +123,36 @@ app.post('/createUser', (req, res) => {
 	var name = [[req.body.Cfn]];
 	var surname = [[req.body.Cln]];
 	var mail = [[req.body.Cemail]];
-	var session = req.session;
+	session = req.session;
 	var pw = bcrypt.hashSync(req.body.Cpw, saltRounds);
 	var cats = [];
+
+	const checkForEmptyValues = values => {
+		for (let key in values) {
+			if (!values[key].trim()) {
+				renderLoginError(req, res, db, session, `Invalid ${key}`);
+			}
+		}
+	};
+
+	checkForEmptyValues({
+		name: name[0][0],
+		surname: surname[0][0],
+		mail: mail[0][0],
+		pw: pw[0][0],
+	});
+
+	const validateEmail = email => {
+		return String(email)
+			.toLowerCase()
+			.match(
+				/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+			);
+	};
+
+	if (!validateEmail(mail[0][0])) {
+		renderLoginError('Invalid email');
+	}
 
 	let query = 'CALL d0018e_store.add_user(?, ?, ?, ?)';
 
@@ -153,7 +181,6 @@ app.post('/createUser', (req, res) => {
 			function (err, rows, fields) {
 				if (err) renderIndexWithErrorMessage(req, res, db, session);
 				else {
-					console.log('Created user.');
 					//session.message = "";
 					res.redirect('/loginPage');
 				}
@@ -245,35 +272,47 @@ app.post('/addComment', function (req, res) {
 					) {
 						const { order_id, order_asset_id } = rows[0];
 						const query2 =
-							'select asset_id from comment c join order_asset oa using (order_asset_id) where order_asset_id=?';
+							'select count(comment_id) times_commented from comment c join order_asset using (order_asset_id) where user_id=? and asset_id=?';
 
-						connection.query(query2, [order_asset_id], (err, rows, fields) => {
-							if (err) internalError(res, 500, 'internal server error on q2');
-							else if (typeof rows[0] !== 'undefined')
-								renderProductPage(
-									req,
-									res,
-									db,
-									session,
-									productId,
-									`You have already rated this product (productID: ${productId})`
-								);
-							else {
-								let query3 =
-									'call d0018e_store.add_comment_to_order_asset(?, ?, ?, ?);';
-								connection.query(
-									query3,
-									[productId, order_id, rating, commentText],
-									(err, rows, fields) => {
-										if (err)
-											internalError(res, 500, 'internal server error on q3');
-										else {
-											res.redirect(`/p?product=${productId}`);
+						connection.query(
+							query2,
+							[userId, productId],
+							(err, rows, fields) => {
+								if (err) internalError(res, 500, 'internal server error on q2');
+								else if (typeof rows[0] !== 'undefined') {
+									if (rows[0].times_commented !== 'undefined') {
+										if (rows[0].times_commented > 0) {
+											renderProductPage(
+												req,
+												res,
+												db,
+												session,
+												productId,
+												`You have already rated this product (productID: ${productId})`
+											);
+										} else {
+											let query3 =
+												'call d0018e_store.add_comment_to_order_asset(?, ?, ?, ?);';
+											connection.query(
+												query3,
+												[productId, order_id, rating, commentText],
+												(err, rows, fields) => {
+													if (err)
+														internalError(
+															res,
+															500,
+															'internal server error on q3'
+														);
+													else {
+														res.redirect(`/p?product=${productId}`);
+													}
+												}
+											);
 										}
 									}
-								);
+								}
 							}
-						});
+						);
 					}
 				}
 			}
@@ -353,8 +392,6 @@ app.get('/createOrder', function (req, res) {
 					for (let i = 0; i < rows.length; i++) {
 						const { asset_id, asset_amount, title, price } = rows[i];
 
-						console.log('order-id: ', orderId);
-
 						connection.query(
 							add_order_assets_query,
 							[orderId, asset_id, asset_amount],
@@ -405,29 +442,28 @@ app.get('/createOrder', function (req, res) {
 });
 
 app.get('/adminPage', function (req, res) {
-	ses = req.session;
+	session = req.session;
 	orderList = [];
 
 	//Wanted data for displaying in page:
 	//order_id, user_id, order_date, first_name, last_name, email
 	var query =
-		'SELECT `order`.order_id, `order`.order_date, user.user_id, user.first_name, user.last_name, user.email FROM `order` JOIN user ON `order`.user_id = user.user_id;';
+		'select order_id, order_date, user_id, first_name, last_name, email, total_price from `order` join `user` using (user_id)';
 
 	db.SSHConnection().then(connection => {
 		connection.query(query, function (err, rows, fields) {
 			if (err) {
-				console.log('Could not get from db in adminPage');
-				res.redirect('/');
+				internalError(res);
 			} else {
-				console.log(rows[0]);
 				for (var i = 0; i < rows.length; i++) {
 					const {
 						order_id,
-						user_id,
 						order_date,
+						user_id,
 						first_name,
 						last_name,
 						email,
+						total_price,
 					} = rows[i];
 
 					var order = {
@@ -437,15 +473,13 @@ app.get('/adminPage', function (req, res) {
 						fname: first_name,
 						lname: last_name,
 						mail: email,
+						total_price,
 					};
 
 					orderList.push(order);
 				}
 				renderWithCats(req, res, db, session, undefined, 'adminPage', {
 					orders: orderList,
-					af: session.admin,
-					login: session.loggedIn,
-					message: session.message,
 				});
 			}
 		});
@@ -453,22 +487,20 @@ app.get('/adminPage', function (req, res) {
 });
 
 app.get('/orderHistory', function (req, res) {
-	ses = req.session;
+	session = req.session;
 
 	orderList = [];
 
 	//Wanted data for displaying in page:
 	//order_id, user_id, order_date, first_name, last_name, email
 	var query =
-		'select order_date, order_id, first_name, last_name, email from `order` o join `user` u using (user_id) where user_id=?';
+		'select order_date, order_id, first_name, last_name, email, total_price from `order` o join `user` u using (user_id) where user_id=?';
 
 	db.SSHConnection().then(connection => {
-		connection.query(query, [ses.uid], function (err, rows, fields) {
+		connection.query(query, [session.uid], function (err, rows, fields) {
 			if (err) {
-				console.log('Could not get from db');
 				res.redirect('/');
 			} else {
-				console.log(rows[0]);
 				for (var i = 0; i < rows.length; i++) {
 					const {
 						order_id,
@@ -476,22 +508,20 @@ app.get('/orderHistory', function (req, res) {
 						first_name,
 						last_name,
 						email,
+						total_price,
 					} = rows[i];
 
-					var order = {
+					orderList.push({
 						oid: order_id,
 						time: order_date,
 						fname: first_name,
 						lname: last_name,
 						mail: email,
-					};
-
-					orderList.push(order);
+						total_price,
+					});
 				}
 				renderWithCats(req, res, db, session, undefined, 'orderHistory', {
 					orders: orderList,
-					af: session.admin,
-					login: session.loggedIn,
 					message: session.message,
 				});
 			}
@@ -500,7 +530,7 @@ app.get('/orderHistory', function (req, res) {
 });
 
 app.get('/users', function (req, res) {
-	ses = req.session;
+	session = req.session;
 	userList = [];
 
 	//Wanted data for displaying in page:
@@ -511,17 +541,10 @@ app.get('/users', function (req, res) {
 	db.SSHConnection().then(connection => {
 		connection.query(query, function (err, rows, fields) {
 			if (err) {
-				console.log('Could not get from db in adminPage');
 				res.redirect('/');
 			} else {
-				console.log(rows[0]);
 				for (var i = 0; i < rows.length; i++) {
-					const {						
-						user_id,
-						first_name,
-						last_name,
-						email,
-					} = rows[i];
+					const { user_id, first_name, last_name, email } = rows[i];
 
 					var users = {
 						uid: user_id,
@@ -545,18 +568,6 @@ app.get('/users', function (req, res) {
 
 app.get('/orderSuccess', function (req, res) {
 	renderWithCats(req, res, db, req.session, undefined, 'orderSuccess');
-});
-
-//app.get("/index", (req,res) => { frontPage(req,res)});
-app.get('/loginUser', (req, res) => {
-	loginUser(req, res);
-});
-//app.get("/loginPage", (req,res) => { getLogin(req,res)});
-app.get('/cart', (req, res) => {
-	getCart(req, res);
-});
-app.get('/newProduct', (req, res) => {
-	getNP(req, res);
 });
 
 //Sätt views som default-mapp för rendering

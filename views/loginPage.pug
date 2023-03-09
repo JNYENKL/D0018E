@@ -11,16 +11,17 @@ div.col-md-10
                     h3 Logga in med e-post
                 form.inputForm(action='/loginUser', method='POST')
                     p
-                    | E-mail:
+                    | E-post:
                     br
                     input(type='text', name='email', value='' placeholder='name@example.com')
                     br
-                    | Password
+                    | Lösenord
                     br
                     input(type='password', name='pw', value='')
                     br
                     br
-                    button.btn.btn-success(type='submit') Login
+                    button.btn.btn-success(type='submit') Logga in
+                    input(type="hidden" name="referer" value=referer)
 
     div.col-md-5  
         div.card
@@ -29,22 +30,22 @@ div.col-md-10
                     h3 Skapa användare
                 form.inputForm(action='/createUser', method='POST')
                     p
-                    | Firstname:
+                    | Förnamn:
                     br
                     input(type='text', name='Cfn', value='')
                     br
-                    | Lastname:
+                    | Efternamn:
                     br
                     input(type='text', name='Cln', value='')
                     br
-                    | E-mail:
+                    | E-post:
                     br
                     input(type='text', name='Cemail', value='' placeholder='name@example.com')
                     br
-                    | Password
+                    | Lösenord
                     br
                     input(type='password', name='Cpw', value='')
                     br
                     br
-                    button.btn.btn-info(type='submit') Go!
+                    button.btn.btn-info(type='submit') Skapa
 include footer.pug

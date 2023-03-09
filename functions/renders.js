@@ -7,6 +7,7 @@ const {
 	getProductsInCart,
 	getTotalPriceInCart,
 	hasOrdered,
+	hasCommented,
 	getAllProductsWithSubjectId,
 } = require('./getters');
 
@@ -36,11 +37,14 @@ const renderWithCats = async (
 	viewName,
 	toRender = {}
 ) => {
-	const cats = await getAllCats(res, db);
+	let cats = await getAllCats(res, db);
 	let amountInBasket = 0;
-	if (session.loggedIn) {
+
+	if (session.loggedIn)
 		amountInBasket = await getAmountInBasket(res, db, session.uid);
-	}
+
+	if (typeof cats === 'undefined') cats = [];
+	if (typeof amountInBasket === 'undefined') amountInBasket = 0;
 
 	renderWithProps(req, res, session, message, viewName, {
 		cat: cats,
@@ -88,10 +92,12 @@ const renderProductPage = async (
 	const item = await getProductWithId(res, db, productId);
 	const comments = await getCommentsForProduct(res, db, productId);
 	const ordered = await hasOrdered(res, db, session.uid, productId);
+	const commented = await hasCommented(res, db, session.uid, productId);
 	renderWithCats(req, res, db, session, message, viewName, {
 		item,
 		comments,
 		ordered,
+		commented,
 		...toRender,
 	});
 };

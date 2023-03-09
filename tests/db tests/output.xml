@@ -1,188 +1,190 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 6.0.2 (Python 3.11.0 on win32)" generated="20230307 22:53:11.623" rpa="false" schemaversion="3">
+<robot generator="Robot 6.0.2 (Python 3.11.0 on win32)" generated="20230309 23:58:16.036" rpa="false" schemaversion="3">
 <suite id="s1" name="Connect" source="C:\Users\kruci\Desktop\d0018e\D0018E\tests\db tests\connect.robot">
 <test id="s1-t1" name="Initialize Connection" line="9">
 <kw name="Set Log Level" library="BuiltIn" type="SETUP">
 <arg>TRACE</arg>
 <doc>Sets the log threshold to the specified level and returns the old level.</doc>
-<msg timestamp="20230307 22:53:12.522" level="INFO">Log level changed from INFO to TRACE.</msg>
-<msg timestamp="20230307 22:53:12.522" level="TRACE">Return: 'INFO'</msg>
-<status status="PASS" starttime="20230307 22:53:12.522" endtime="20230307 22:53:12.522"/>
+<msg timestamp="20230309 23:58:16.510" level="INFO">Log level changed from INFO to TRACE.</msg>
+<msg timestamp="20230309 23:58:16.510" level="TRACE">Return: 'INFO'</msg>
+<status status="PASS" starttime="20230309 23:58:16.510" endtime="20230309 23:58:16.510"/>
 </kw>
 <kw name="Disconnect from VM" library="vm">
-<msg timestamp="20230307 22:53:12.523" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230309 23:58:16.511" level="TRACE">Arguments: [  ]</msg>
 <kw name="Close All Connections" library="SSHLibrary">
 <doc>Closes all open connections.</doc>
-<msg timestamp="20230307 22:53:12.523" level="TRACE">Arguments: [  ]</msg>
-<msg timestamp="20230307 22:53:12.523" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230307 22:53:12.523" endtime="20230307 22:53:12.523"/>
+<msg timestamp="20230309 23:58:16.512" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230309 23:58:16.512" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:16.512" endtime="20230309 23:58:16.512"/>
 </kw>
-<msg timestamp="20230307 22:53:12.523" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230307 22:53:12.523" endtime="20230307 22:53:12.523"/>
+<msg timestamp="20230309 23:58:16.512" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:16.511" endtime="20230309 23:58:16.512"/>
 </kw>
 <kw name="Disconnect from VM" library="vm">
-<msg timestamp="20230307 22:53:12.524" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230309 23:58:16.513" level="TRACE">Arguments: [  ]</msg>
 <kw name="Close All Connections" library="SSHLibrary">
 <doc>Closes all open connections.</doc>
-<msg timestamp="20230307 22:53:12.524" level="TRACE">Arguments: [  ]</msg>
-<msg timestamp="20230307 22:53:12.524" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230307 22:53:12.524" endtime="20230307 22:53:12.524"/>
+<msg timestamp="20230309 23:58:16.513" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230309 23:58:16.513" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:16.513" endtime="20230309 23:58:16.513"/>
 </kw>
-<msg timestamp="20230307 22:53:12.524" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230307 22:53:12.524" endtime="20230307 22:53:12.524"/>
+<msg timestamp="20230309 23:58:16.513" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:16.512" endtime="20230309 23:58:16.513"/>
 </kw>
 <kw name="Disconnect from VM" library="vm">
-<msg timestamp="20230307 22:53:12.525" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230309 23:58:16.514" level="TRACE">Arguments: [  ]</msg>
 <kw name="Close All Connections" library="SSHLibrary">
 <doc>Closes all open connections.</doc>
-<msg timestamp="20230307 22:53:12.525" level="TRACE">Arguments: [  ]</msg>
-<msg timestamp="20230307 22:53:12.526" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230307 22:53:12.525" endtime="20230307 22:53:12.526"/>
+<msg timestamp="20230309 23:58:16.514" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230309 23:58:16.514" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:16.514" endtime="20230309 23:58:16.514"/>
 </kw>
-<msg timestamp="20230307 22:53:12.526" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230307 22:53:12.525" endtime="20230307 22:53:12.526"/>
+<msg timestamp="20230309 23:58:16.514" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:16.513" endtime="20230309 23:58:16.514"/>
 </kw>
 <kw name="Disconnect from VM" library="vm">
-<msg timestamp="20230307 22:53:12.526" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230309 23:58:16.515" level="TRACE">Arguments: [  ]</msg>
 <kw name="Close All Connections" library="SSHLibrary">
 <doc>Closes all open connections.</doc>
-<msg timestamp="20230307 22:53:12.527" level="TRACE">Arguments: [  ]</msg>
-<msg timestamp="20230307 22:53:12.527" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230307 22:53:12.527" endtime="20230307 22:53:12.527"/>
+<msg timestamp="20230309 23:58:16.515" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230309 23:58:16.515" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:16.515" endtime="20230309 23:58:16.515"/>
 </kw>
-<msg timestamp="20230307 22:53:12.527" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230307 22:53:12.526" endtime="20230307 22:53:12.527"/>
+<msg timestamp="20230309 23:58:16.516" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:16.515" endtime="20230309 23:58:16.516"/>
 </kw>
 <kw name="Disconnect from VM" library="vm">
-<msg timestamp="20230307 22:53:12.528" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230309 23:58:16.516" level="TRACE">Arguments: [  ]</msg>
 <kw name="Close All Connections" library="SSHLibrary">
 <doc>Closes all open connections.</doc>
-<msg timestamp="20230307 22:53:12.528" level="TRACE">Arguments: [  ]</msg>
-<msg timestamp="20230307 22:53:12.528" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230307 22:53:12.528" endtime="20230307 22:53:12.528"/>
+<msg timestamp="20230309 23:58:16.516" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230309 23:58:16.516" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:16.516" endtime="20230309 23:58:16.517"/>
 </kw>
-<msg timestamp="20230307 22:53:12.528" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230307 22:53:12.527" endtime="20230307 22:53:12.528"/>
+<msg timestamp="20230309 23:58:16.517" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:16.516" endtime="20230309 23:58:16.517"/>
 </kw>
 <kw name="Disconnect from VM" library="vm">
-<msg timestamp="20230307 22:53:12.529" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230309 23:58:16.517" level="TRACE">Arguments: [  ]</msg>
 <kw name="Close All Connections" library="SSHLibrary">
 <doc>Closes all open connections.</doc>
-<msg timestamp="20230307 22:53:12.529" level="TRACE">Arguments: [  ]</msg>
-<msg timestamp="20230307 22:53:12.529" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230307 22:53:12.529" endtime="20230307 22:53:12.529"/>
+<msg timestamp="20230309 23:58:16.517" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230309 23:58:16.517" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:16.517" endtime="20230309 23:58:16.517"/>
 </kw>
-<msg timestamp="20230307 22:53:12.529" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230307 22:53:12.528" endtime="20230307 22:53:12.529"/>
+<msg timestamp="20230309 23:58:16.518" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:16.517" endtime="20230309 23:58:16.518"/>
 </kw>
 <kw name="Disconnect from VM" library="vm">
-<msg timestamp="20230307 22:53:12.530" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230309 23:58:16.518" level="TRACE">Arguments: [  ]</msg>
 <kw name="Close All Connections" library="SSHLibrary">
 <doc>Closes all open connections.</doc>
-<msg timestamp="20230307 22:53:12.530" level="TRACE">Arguments: [  ]</msg>
-<msg timestamp="20230307 22:53:12.530" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230307 22:53:12.530" endtime="20230307 22:53:12.530"/>
+<msg timestamp="20230309 23:58:16.518" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230309 23:58:16.518" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:16.518" endtime="20230309 23:58:16.518"/>
 </kw>
-<msg timestamp="20230307 22:53:12.530" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230307 22:53:12.529" endtime="20230307 22:53:12.530"/>
+<msg timestamp="20230309 23:58:16.518" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:16.518" endtime="20230309 23:58:16.518"/>
 </kw>
 <kw name="Disconnect from VM" library="vm">
-<msg timestamp="20230307 22:53:12.531" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230309 23:58:16.519" level="TRACE">Arguments: [  ]</msg>
 <kw name="Close All Connections" library="SSHLibrary">
 <doc>Closes all open connections.</doc>
-<msg timestamp="20230307 22:53:12.531" level="TRACE">Arguments: [  ]</msg>
-<msg timestamp="20230307 22:53:12.531" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230307 22:53:12.531" endtime="20230307 22:53:12.531"/>
+<msg timestamp="20230309 23:58:16.519" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230309 23:58:16.519" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:16.519" endtime="20230309 23:58:16.519"/>
 </kw>
-<msg timestamp="20230307 22:53:12.531" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230307 22:53:12.530" endtime="20230307 22:53:12.531"/>
+<msg timestamp="20230309 23:58:16.519" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:16.519" endtime="20230309 23:58:16.519"/>
 </kw>
 <kw name="Disconnect from VM" library="vm">
-<msg timestamp="20230307 22:53:12.532" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230309 23:58:16.520" level="TRACE">Arguments: [  ]</msg>
 <kw name="Close All Connections" library="SSHLibrary">
 <doc>Closes all open connections.</doc>
-<msg timestamp="20230307 22:53:12.532" level="TRACE">Arguments: [  ]</msg>
-<msg timestamp="20230307 22:53:12.532" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230307 22:53:12.532" endtime="20230307 22:53:12.532"/>
+<msg timestamp="20230309 23:58:16.520" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230309 23:58:16.520" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:16.520" endtime="20230309 23:58:16.520"/>
 </kw>
-<msg timestamp="20230307 22:53:12.532" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230307 22:53:12.532" endtime="20230307 22:53:12.532"/>
+<msg timestamp="20230309 23:58:16.520" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:16.520" endtime="20230309 23:58:16.521"/>
 </kw>
 <kw name="Disconnect from VM" library="vm">
-<msg timestamp="20230307 22:53:12.533" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230309 23:58:16.521" level="TRACE">Arguments: [  ]</msg>
 <kw name="Close All Connections" library="SSHLibrary">
 <doc>Closes all open connections.</doc>
-<msg timestamp="20230307 22:53:12.533" level="TRACE">Arguments: [  ]</msg>
-<msg timestamp="20230307 22:53:12.533" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230307 22:53:12.533" endtime="20230307 22:53:12.533"/>
+<msg timestamp="20230309 23:58:16.521" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230309 23:58:16.521" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:16.521" endtime="20230309 23:58:16.521"/>
 </kw>
-<msg timestamp="20230307 22:53:12.533" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230307 22:53:12.532" endtime="20230307 22:53:12.533"/>
+<msg timestamp="20230309 23:58:16.521" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:16.521" endtime="20230309 23:58:16.522"/>
 </kw>
 <kw name="Disconnect from VM" library="vm">
-<msg timestamp="20230307 22:53:12.534" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230309 23:58:16.522" level="TRACE">Arguments: [  ]</msg>
 <kw name="Close All Connections" library="SSHLibrary">
 <doc>Closes all open connections.</doc>
-<msg timestamp="20230307 22:53:12.534" level="TRACE">Arguments: [  ]</msg>
-<msg timestamp="20230307 22:53:12.534" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230307 22:53:12.534" endtime="20230307 22:53:12.534"/>
+<msg timestamp="20230309 23:58:16.522" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230309 23:58:16.522" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:16.522" endtime="20230309 23:58:16.522"/>
 </kw>
-<msg timestamp="20230307 22:53:12.534" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230307 22:53:12.533" endtime="20230307 22:53:12.534"/>
+<msg timestamp="20230309 23:58:16.523" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:16.522" endtime="20230309 23:58:16.523"/>
 </kw>
 <kw name="Disconnect from VM" library="vm">
-<msg timestamp="20230307 22:53:12.535" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230309 23:58:16.524" level="TRACE">Arguments: [  ]</msg>
 <kw name="Close All Connections" library="SSHLibrary">
 <doc>Closes all open connections.</doc>
-<msg timestamp="20230307 22:53:12.535" level="TRACE">Arguments: [  ]</msg>
-<msg timestamp="20230307 22:53:12.535" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230307 22:53:12.535" endtime="20230307 22:53:12.535"/>
+<msg timestamp="20230309 23:58:16.524" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230309 23:58:16.525" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:16.524" endtime="20230309 23:58:16.525"/>
 </kw>
-<msg timestamp="20230307 22:53:12.536" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230307 22:53:12.534" endtime="20230307 22:53:12.536"/>
+<msg timestamp="20230309 23:58:16.525" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:16.523" endtime="20230309 23:58:16.525"/>
 </kw>
 <kw name="Disconnect from VM" library="vm">
-<msg timestamp="20230307 22:53:12.537" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230309 23:58:16.526" level="TRACE">Arguments: [  ]</msg>
 <kw name="Close All Connections" library="SSHLibrary">
 <doc>Closes all open connections.</doc>
-<msg timestamp="20230307 22:53:12.537" level="TRACE">Arguments: [  ]</msg>
-<msg timestamp="20230307 22:53:12.537" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230307 22:53:12.537" endtime="20230307 22:53:12.537"/>
+<msg timestamp="20230309 23:58:16.526" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230309 23:58:16.526" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:16.526" endtime="20230309 23:58:16.526"/>
 </kw>
-<msg timestamp="20230307 22:53:12.538" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230307 22:53:12.536" endtime="20230307 22:53:12.538"/>
+<msg timestamp="20230309 23:58:16.526" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:16.526" endtime="20230309 23:58:16.526"/>
 </kw>
 <kw name="Connect to VM" library="vm">
-<msg timestamp="20230307 22:53:12.539" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230309 23:58:16.527" level="TRACE">Arguments: [  ]</msg>
 <kw name="Set Log Level" library="BuiltIn">
 <arg>NONE</arg>
 <doc>Sets the log threshold to the specified level and returns the old level.</doc>
-<msg timestamp="20230307 22:53:12.539" level="TRACE">Arguments: [ 'NONE' ]</msg>
-<status status="PASS" starttime="20230307 22:53:12.539" endtime="20230307 22:53:12.541"/>
+<msg timestamp="20230309 23:58:16.527" level="TRACE">Arguments: [ 'NONE' ]</msg>
+<status status="PASS" starttime="20230309 23:58:16.527" endtime="20230309 23:58:16.528"/>
 </kw>
 <kw name="Get Value From User" library="Dialogs">
 <var>${SSHPassword}</var>
 <arg>SSH password:</arg>
 <arg>hidden=yes</arg>
 <doc>Pauses execution and asks user to input a value.</doc>
-<status status="FAIL" starttime="20230307 22:53:12.542" endtime="20230307 22:53:18.640"/>
+<status status="PASS" starttime="20230309 23:58:16.529" endtime="20230309 23:58:17.680"/>
 </kw>
 <kw name="Open Connection" library="SSHLibrary">
 <arg>${SSHHost}</arg>
 <arg>port=${SSHPort}</arg>
 <doc>Opens a new SSH connection to the given ``host`` and ``port``.</doc>
-<status status="NOT RUN" starttime="20230307 22:53:18.640" endtime="20230307 22:53:18.640"/>
+<status status="PASS" starttime="20230309 23:58:17.681" endtime="20230309 23:58:17.681"/>
 </kw>
 <kw name="Login" library="SSHLibrary">
 <arg>${SSHUser}</arg>
 <arg>${SSHPassword}</arg>
 <doc>Logs into the SSH server with the given ``username`` and ``password``.</doc>
-<status status="NOT RUN" starttime="20230307 22:53:18.640" endtime="20230307 22:53:18.640"/>
+<status status="PASS" starttime="20230309 23:58:17.682" endtime="20230309 23:58:21.538"/>
 </kw>
 <kw name="Set Log Level" library="BuiltIn">
 <arg>TRACE</arg>
 <doc>Sets the log threshold to the specified level and returns the old level.</doc>
-<status status="NOT RUN" starttime="20230307 22:53:18.640" endtime="20230307 22:53:18.640"/>
+<msg timestamp="20230309 23:58:21.539" level="INFO">Log level changed from NONE to TRACE.</msg>
+<msg timestamp="20230309 23:58:21.539" level="TRACE">Return: 'NONE'</msg>
+<status status="PASS" starttime="20230309 23:58:21.538" endtime="20230309 23:58:21.539"/>
 </kw>
 <kw name="Create Local Ssh Tunnel" library="SSHLibrary">
 <arg>${localPort}</arg>
@@ -191,24 +193,53 @@
 <doc>The keyword uses the existing connection to set up local port forwarding
 (the openssh -L option) from a local port through a tunneled
 connection to a destination reachable from the SSH server machine.</doc>
-<status status="NOT RUN" starttime="20230307 22:53:18.640" endtime="20230307 22:53:18.640"/>
+<msg timestamp="20230309 23:58:21.539" level="TRACE">Arguments: [ '33306' | '127.0.0.1' | 3306 ]</msg>
+<msg timestamp="20230309 23:58:21.540" level="INFO">Now forwarding port 33306 to 127.0.0.1:3306 ...</msg>
+<msg timestamp="20230309 23:58:21.540" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:21.539" endtime="20230309 23:58:21.540"/>
 </kw>
-<status status="FAIL" starttime="20230307 22:53:12.538" endtime="20230307 22:53:18.641"/>
+<msg timestamp="20230309 23:58:21.540" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:16.527" endtime="20230309 23:58:21.540"/>
 </kw>
 <kw name="Log" library="BuiltIn">
 <arg>\n\nConnection to VM established!</arg>
 <arg>console=yes</arg>
 <doc>Logs the given message with the given level.</doc>
-<status status="NOT RUN" starttime="20230307 22:53:18.644" endtime="20230307 22:53:18.644"/>
+<msg timestamp="20230309 23:58:21.541" level="TRACE">Arguments: [ '\n\nConnection to VM established!' | console=True ]</msg>
+<msg timestamp="20230309 23:58:21.541" level="INFO">
+
+Connection to VM established!</msg>
+<msg timestamp="20230309 23:58:21.542" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:21.541" endtime="20230309 23:58:21.542"/>
 </kw>
 <kw name="Connect to DB" library="db">
-<status status="NOT RUN" starttime="20230307 22:53:18.645" endtime="20230307 22:53:18.645"/>
+<msg timestamp="20230309 23:58:21.543" level="TRACE">Arguments: [  ]</msg>
+<kw name="Connect To Database" library="DatabaseLibrary">
+<arg>pymysql</arg>
+<arg>${DBName}</arg>
+<arg>${DBUser}</arg>
+<arg>${DBPassword}</arg>
+<arg>${DBHost}</arg>
+<arg>${DBPort}</arg>
+<doc>Loads the DB API 2.0 module given `dbapiModuleName` then uses it to
+connect to the database using `dbName`, `dbUsername`, and `dbPassword`.</doc>
+<msg timestamp="20230309 23:58:21.543" level="TRACE">Arguments: [ 'pymysql' | 'd0018e_store' | 'root' | '' | '127.0.0.1' | '33306' ]</msg>
+<msg timestamp="20230309 23:58:21.581" level="INFO">Connecting using : pymysql.connect(db=d0018e_store, user=root, passwd=, host=127.0.0.1, port=33306, charset=None) </msg>
+<msg timestamp="20230309 23:58:21.848" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:21.543" endtime="20230309 23:58:21.848"/>
+</kw>
+<msg timestamp="20230309 23:58:21.848" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:21.542" endtime="20230309 23:58:21.848"/>
 </kw>
 <kw name="Log" library="BuiltIn">
 <arg>\nConnection to DB established!</arg>
 <arg>console=yes</arg>
 <doc>Logs the given message with the given level.</doc>
-<status status="NOT RUN" starttime="20230307 22:53:18.646" endtime="20230307 22:53:18.646"/>
+<msg timestamp="20230309 23:58:21.850" level="TRACE">Arguments: [ '\nConnection to DB established!' | console=True ]</msg>
+<msg timestamp="20230309 23:58:21.850" level="INFO">
+Connection to DB established!</msg>
+<msg timestamp="20230309 23:58:21.850" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:21.849" endtime="20230309 23:58:21.850"/>
 </kw>
 <tag>AddBooks</tag>
 <tag>Addusers</tag>
@@ -219,108 +250,156 @@ connection to a destination reachable from the SSH server machine.</doc>
 <tag>Tables</tag>
 <tag>UpdateDB</tag>
 <tag>UserBasketRefusal</tag>
-<status status="FAIL" starttime="20230307 22:53:12.521" endtime="20230307 22:53:18.647">No value provided by user.</status>
+<status status="PASS" starttime="20230309 23:58:16.509" endtime="20230309 23:58:21.851"/>
 </test>
 <test id="s1-t2" name="Update and re-run DB" line="29">
 <kw name="Set Log Level" library="BuiltIn" type="SETUP">
 <arg>TRACE</arg>
 <doc>Sets the log threshold to the specified level and returns the old level.</doc>
-<msg timestamp="20230307 22:53:18.650" level="INFO">Log level changed from NONE to TRACE.</msg>
-<msg timestamp="20230307 22:53:18.650" level="TRACE">Return: 'NONE'</msg>
-<status status="PASS" starttime="20230307 22:53:18.650" endtime="20230307 22:53:18.650"/>
+<msg timestamp="20230309 23:58:21.853" level="TRACE">Arguments: [ 'TRACE' ]</msg>
+<msg timestamp="20230309 23:58:21.853" level="INFO">Log level changed from TRACE to TRACE.</msg>
+<msg timestamp="20230309 23:58:21.853" level="TRACE">Return: 'TRACE'</msg>
+<status status="PASS" starttime="20230309 23:58:21.853" endtime="20230309 23:58:21.853"/>
 </kw>
 <kw name="Update DB file" library="db">
-<msg timestamp="20230307 22:53:18.651" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230309 23:58:21.854" level="TRACE">Arguments: [  ]</msg>
 <kw name="Put File" library="SSHLibrary">
 <arg>${dbsql-path}</arg>
 <doc>Uploads file(s) from the local machine to the remote machine.</doc>
-<msg timestamp="20230307 22:53:18.652" level="TRACE">Arguments: [ './../../db/db.sql' ]</msg>
-<msg timestamp="20230307 22:53:18.653" level="FAIL">No open connection.</msg>
-<msg timestamp="20230307 22:53:18.705" level="DEBUG">Traceback (most recent call last):
-  File "C:\Python311\Lib\site-packages\SSHLibrary\library.py", line 1764, in put_file
-    return self._run_command(self.current.put_file, source,
-                             ^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Python311\Lib\site-packages\robot\utils\connectioncache.py", line 169, in __getattr__
-    self.raise_error()
-  File "C:\Python311\Lib\site-packages\robot\utils\connectioncache.py", line 172, in raise_error
-    raise RuntimeError(self.message)
-RuntimeError: No open connection.</msg>
-<status status="FAIL" starttime="20230307 22:53:18.652" endtime="20230307 22:53:18.705"/>
+<msg timestamp="20230309 23:58:21.854" level="TRACE">Arguments: [ './../../db/db.sql' ]</msg>
+<msg timestamp="20230309 23:58:21.854" level="DEBUG">[chan 1] Max packet in: 32768 bytes</msg>
+<msg timestamp="20230309 23:58:21.899" level="INFO">[chan 1] Opened sftp connection (server version 3)</msg>
+<msg timestamp="20230309 23:58:21.900" level="DEBUG">[chan 1] normalize(b'.')</msg>
+<msg timestamp="20230309 23:58:21.914" level="DEBUG">[chan 1] stat(b'/home/karruc-9/')</msg>
+<msg timestamp="20230309 23:58:21.928" level="DEBUG">[chan 1] stat(b'/')</msg>
+<msg timestamp="20230309 23:58:21.943" level="DEBUG">[chan 1] stat(b'/home')</msg>
+<msg timestamp="20230309 23:58:21.957" level="DEBUG">[chan 1] stat(b'/home/karruc-9')</msg>
+<msg timestamp="20230309 23:58:21.971" level="DEBUG">[chan 1] stat(b'/home/karruc-9')</msg>
+<msg timestamp="20230309 23:58:21.986" level="DEBUG">[chan 1] stat(b'/home/karruc-9//db.sql')</msg>
+<msg timestamp="20230309 23:58:21.999" level="DEBUG">[chan 1] open(b'/home/karruc-9//db.sql', 'wb')</msg>
+<msg timestamp="20230309 23:58:22.015" level="DEBUG">[chan 1] open(b'/home/karruc-9//db.sql', 'wb') -&gt; 00000000</msg>
+<msg timestamp="20230309 23:58:22.016" level="DEBUG">[chan 1] close(00000000)</msg>
+<msg timestamp="20230309 23:58:22.044" level="INFO">'.\..\..\db\db.sql' -&gt; '/home/karruc-9//db.sql'</msg>
+<msg timestamp="20230309 23:58:22.044" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:21.854" endtime="20230309 23:58:22.044"/>
 </kw>
 <kw name="File Should Exist" library="SSHLibrary">
 <arg>${dbsql-file}</arg>
 <doc>Fails if the given ``path`` does NOT point to an existing file.</doc>
-<status status="NOT RUN" starttime="20230307 22:53:18.706" endtime="20230307 22:53:18.706"/>
+<msg timestamp="20230309 23:58:22.045" level="WARN">Keyword 'File Should Exist' found both from a custom library 'SSHLibrary' and a standard library 'OperatingSystem'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'SSHLibrary.File Should Exist' or 'OperatingSystem.File Should Exist'.</msg>
+<msg timestamp="20230309 23:58:22.046" level="TRACE">Arguments: [ 'db.sql' ]</msg>
+<msg timestamp="20230309 23:58:22.046" level="DEBUG">[chan 1] stat(b'db.sql')</msg>
+<msg timestamp="20230309 23:58:22.061" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:22.045" endtime="20230309 23:58:22.061"/>
 </kw>
-<status status="FAIL" starttime="20230307 22:53:18.651" endtime="20230307 22:53:18.706"/>
+<msg timestamp="20230309 23:58:22.061" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:21.853" endtime="20230309 23:58:22.061"/>
 </kw>
 <kw name="Log" library="BuiltIn">
 <arg>\ndb.sql updated!</arg>
 <arg>console=yes</arg>
 <doc>Logs the given message with the given level.</doc>
-<status status="NOT RUN" starttime="20230307 22:53:18.708" endtime="20230307 22:53:18.708"/>
+<msg timestamp="20230309 23:58:22.062" level="TRACE">Arguments: [ '\ndb.sql updated!' | console=True ]</msg>
+<msg timestamp="20230309 23:58:22.062" level="INFO">
+db.sql updated!</msg>
+<msg timestamp="20230309 23:58:22.062" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:22.062" endtime="20230309 23:58:22.062"/>
 </kw>
 <kw name="Run DB file" library="db">
-<status status="NOT RUN" starttime="20230307 22:53:18.708" endtime="20230307 22:53:18.709"/>
+<msg timestamp="20230309 23:58:22.063" level="TRACE">Arguments: [  ]</msg>
+<kw name="Execute Command" library="SSHLibrary">
+<var>${rc}</var>
+<arg>mysql &lt; db.sql</arg>
+<arg>return_rc=true</arg>
+<arg>sudo=true</arg>
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<msg timestamp="20230309 23:58:22.064" level="TRACE">Arguments: [ 'mysql &lt; db.sql' | return_rc=True | sudo=True ]</msg>
+<msg timestamp="20230309 23:58:22.064" level="INFO">Executing command 'sudo mysql &lt; db.sql'.</msg>
+<msg timestamp="20230309 23:58:22.064" level="DEBUG">[chan 2] Max packet in: 32768 bytes</msg>
+<msg timestamp="20230309 23:58:49.281" level="INFO">Command exited with return code 0.</msg>
+<msg timestamp="20230309 23:58:49.281" level="TRACE">Return: ['', 0]</msg>
+<msg timestamp="20230309 23:58:49.281" level="INFO">${rc} = ['', 0]</msg>
+<status status="PASS" starttime="20230309 23:58:22.064" endtime="20230309 23:58:49.281"/>
+</kw>
+<kw name="Should Be Equal As Integers" library="BuiltIn">
+<arg>${rc[1]}</arg>
+<arg>0</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<msg timestamp="20230309 23:58:49.282" level="TRACE">Arguments: [ 0 | '0' ]</msg>
+<msg timestamp="20230309 23:58:49.282" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<msg timestamp="20230309 23:58:49.283" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:49.281" endtime="20230309 23:58:49.283"/>
+</kw>
+<msg timestamp="20230309 23:58:49.283" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:22.063" endtime="20230309 23:58:49.283"/>
 </kw>
 <kw name="Log" library="BuiltIn">
 <arg>\ndb.sql executed!</arg>
 <arg>console=yes</arg>
 <doc>Logs the given message with the given level.</doc>
-<status status="NOT RUN" starttime="20230307 22:53:18.709" endtime="20230307 22:53:18.710"/>
+<msg timestamp="20230309 23:58:49.284" level="TRACE">Arguments: [ '\ndb.sql executed!' | console=True ]</msg>
+<msg timestamp="20230309 23:58:49.284" level="INFO">
+db.sql executed!</msg>
+<msg timestamp="20230309 23:58:49.284" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:49.284" endtime="20230309 23:58:49.284"/>
 </kw>
 <tag>UpdateDB</tag>
-<status status="FAIL" starttime="20230307 22:53:18.648" endtime="20230307 22:53:18.711">No open connection.</status>
+<status status="PASS" starttime="20230309 23:58:21.852" endtime="20230309 23:58:49.285"/>
 </test>
 <test id="s1-t3" name="Disconnect" line="65">
 <kw name="Set Log Level" library="BuiltIn" type="SETUP">
 <arg>TRACE</arg>
 <doc>Sets the log threshold to the specified level and returns the old level.</doc>
-<msg timestamp="20230307 22:53:18.716" level="TRACE">Arguments: [ 'TRACE' ]</msg>
-<msg timestamp="20230307 22:53:18.716" level="INFO">Log level changed from TRACE to TRACE.</msg>
-<msg timestamp="20230307 22:53:18.716" level="TRACE">Return: 'TRACE'</msg>
-<status status="PASS" starttime="20230307 22:53:18.716" endtime="20230307 22:53:18.716"/>
+<msg timestamp="20230309 23:58:49.287" level="TRACE">Arguments: [ 'TRACE' ]</msg>
+<msg timestamp="20230309 23:58:49.287" level="INFO">Log level changed from TRACE to TRACE.</msg>
+<msg timestamp="20230309 23:58:49.287" level="TRACE">Return: 'TRACE'</msg>
+<status status="PASS" starttime="20230309 23:58:49.287" endtime="20230309 23:58:49.287"/>
 </kw>
 <kw name="Disconnect from VM" library="vm">
-<msg timestamp="20230307 22:53:18.717" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230309 23:58:49.288" level="TRACE">Arguments: [  ]</msg>
 <kw name="Close All Connections" library="SSHLibrary">
 <doc>Closes all open connections.</doc>
-<msg timestamp="20230307 22:53:18.717" level="TRACE">Arguments: [  ]</msg>
-<msg timestamp="20230307 22:53:18.718" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230307 22:53:18.717" endtime="20230307 22:53:18.718"/>
+<msg timestamp="20230309 23:58:49.288" level="TRACE">Arguments: [  ]</msg>
+<msg timestamp="20230309 23:58:49.399" level="DEBUG">[chan 1] EOF sent (1)</msg>
+<msg timestamp="20230309 23:58:49.400" level="DEBUG">[chan 0] EOF sent (0)</msg>
+<msg timestamp="20230309 23:58:49.401" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:49.288" endtime="20230309 23:58:49.401"/>
 </kw>
-<msg timestamp="20230307 22:53:18.718" level="TRACE">Return: None</msg>
-<status status="PASS" starttime="20230307 22:53:18.717" endtime="20230307 22:53:18.718"/>
+<msg timestamp="20230309 23:58:49.401" level="TRACE">Return: None</msg>
+<status status="PASS" starttime="20230309 23:58:49.288" endtime="20230309 23:58:49.401"/>
 </kw>
 <tag>Admin</tag>
 <tag>Connection</tag>
 <tag>Procedures</tag>
 <tag>Tables</tag>
 <tag>UpdateDB</tag>
-<status status="PASS" starttime="20230307 22:53:18.714" endtime="20230307 22:53:18.718"/>
+<status status="PASS" starttime="20230309 23:58:49.286" endtime="20230309 23:58:49.402"/>
 </test>
 <doc>Connecting to the DB</doc>
-<status status="FAIL" starttime="20230307 22:53:11.626" endtime="20230307 22:53:18.721"/>
+<status status="PASS" starttime="20230309 23:58:16.039" endtime="20230309 23:58:49.404"/>
 </suite>
 <statistics>
 <total>
-<stat pass="1" fail="2" skip="0">All Tests</stat>
+<stat pass="3" fail="0" skip="0">All Tests</stat>
 </total>
 <tag>
-<stat pass="0" fail="1" skip="0">AddBooks</stat>
-<stat pass="0" fail="1" skip="0">Addusers</stat>
-<stat pass="1" fail="1" skip="0">Admin</stat>
-<stat pass="1" fail="1" skip="0">Connection</stat>
-<stat pass="0" fail="1" skip="0">DeleteBooks</stat>
-<stat pass="1" fail="1" skip="0">Procedures</stat>
-<stat pass="1" fail="1" skip="0">Tables</stat>
-<stat pass="1" fail="2" skip="0">UpdateDB</stat>
-<stat pass="0" fail="1" skip="0">UserBasketRefusal</stat>
+<stat pass="1" fail="0" skip="0">AddBooks</stat>
+<stat pass="1" fail="0" skip="0">Addusers</stat>
+<stat pass="2" fail="0" skip="0">Admin</stat>
+<stat pass="2" fail="0" skip="0">Connection</stat>
+<stat pass="1" fail="0" skip="0">DeleteBooks</stat>
+<stat pass="2" fail="0" skip="0">Procedures</stat>
+<stat pass="2" fail="0" skip="0">Tables</stat>
+<stat pass="3" fail="0" skip="0">UpdateDB</stat>
+<stat pass="1" fail="0" skip="0">UserBasketRefusal</stat>
 </tag>
 <suite>
-<stat pass="1" fail="2" skip="0" id="s1" name="Connect">Connect</stat>
+<stat pass="3" fail="0" skip="0" id="s1" name="Connect">Connect</stat>
 </suite>
 </statistics>
 <errors>
+<msg timestamp="20230309 23:58:22.045" level="WARN">Keyword 'File Should Exist' found both from a custom library 'SSHLibrary' and a standard library 'OperatingSystem'. The custom keyword is used. To select explicitly, and to get rid of this warning, use either 'SSHLibrary.File Should Exist' or 'OperatingSystem.File Should Exist'.</msg>
 </errors>
 </robot>

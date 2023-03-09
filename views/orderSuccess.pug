@@ -2,7 +2,7 @@ include header.pug
 div.col-md-10
     if (items.length > 0)
         p 
-        | ORDER MADE!
+        | Beställningen har genomförts.
         table.table.table-sm(style="white-space:nowrap;")
             tbody
             each item in items
@@ -21,6 +21,6 @@ div.col-md-10
         hr
     else
         div.container
-            h1 No order items.
-
+            h1 Inga produkter i ordern.
+            
 include footer.pug
