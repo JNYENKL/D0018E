@@ -2,6 +2,7 @@
 
 ## App
 In order to successfully load the page, navigate to the root folder, open a terminal and type `npm start`. If it does not work, make sure you have nodeJS and npm installed.
+In case of bcrypt giving errors due to different OS than the one of the authors, check [this link](https://stackoverflow.com/questions/60962219/error-bcrypt-lib-node-is-not-a-valid-win32-application)
 
 
 ## Tests
@@ -32,4 +33,3 @@ Note that in order to run the tests you must have installed:
 ### How to run
 In order to run a db test, double click the bat file related to it.
 To run a gui test, you must first first do the steps mentioned above in App, then double click the bat.
-In case of bcrypt giving errors due to different OS than the one of the authors, check [this link](https://stackoverflow.com/questions/60962219/error-bcrypt-lib-node-is-not-a-valid-win32-application)
