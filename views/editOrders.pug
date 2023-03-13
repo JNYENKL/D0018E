@@ -1,0 +1,68 @@
+include header.pug 
+div.row
+    div.col-md-1 
+    if (login && af)
+        div.col-md-10
+            form.input-form
+                h3 Ändra beställning
+                p="Beställnings id: "+ order.id
+                p="Användarens id: "+ order.uid
+                p="Beställt av: "+ order.fname +" "+ order.lname
+                p="Datum: "+ order.time
+                hl 
+                h4 Produkter
+                    table.table.table-sm(style="white-space:nowrap;")
+                        tbody
+                        each item in products
+                            tr(scope="row")
+                                th
+                                    img.img.img-thumbnail(src=("./img/" + item.id + ".png") style="width:15%;")
+                                td=item.ti
+                                td=item.pr+ ' kr'
+                                td
+                                    textarea(name="ta", cols="30", rows="5" readonly style="overflow-y:scroll;")=item.desc
+                                td=item.am + ' st.'
+
+                                td
+                                    a.btn.btn-danger(href='/deleteProduct?product='+ item.id+'') Delete
+                
+
+            table.table 
+                thead
+                    tr 
+                        th(scope="col") Order ID
+                        th(scope="col") Användarens ID
+                        th(scope="col") Förnamn
+                        th(scope="col") Efternamn
+                        th(scope="col") E-post
+                        th(scope="col") Order datum 
+                        th(scope="col") Total pris
+                        th(scope="col") Status 
+                tbody 
+                    if (orders.length > 0)
+                        each order in orders 
+                            tr
+                                td=order.oid
+                                td=order.uid
+                                td=order.fname 
+                                td=order.lname 
+                                td=order.mail 
+                                td=order.time
+                                td=order.total_price
+                                td=order.status
+                                if (order.status == '0')
+                                    td
+                                        a.btn.btn-success(href="/processOrder?oid="+order.oid+"") Hantera order
+                                else 
+                                    td 
+                                        a.btn.btn-success(href="") Order hanterad.
+                                        
+                    else 
+                        tr 
+                            th(scope="row")
+                            td Inga ordrar
+                            td 
+                            td 
+                            td 
+                            td 
+                            td

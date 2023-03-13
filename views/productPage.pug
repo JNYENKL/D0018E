@@ -1,5 +1,4 @@
 include header.pug
-    script(src="/js/productPageEvents.js")
 div.col-md-1
 div.col-md-10
     if (message.length > 0 )
@@ -64,5 +63,7 @@ div.col-md-10
                                 - i++
                     h6.card-subtitle.mb-2.text-muted=comment.uname
                     p.card-text=comment.text
+                    if (af)
+                        a(href="") Delete
 
 include footer.pug

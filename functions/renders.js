@@ -28,6 +28,20 @@ const renderWithProps = async (
 	});
 };
 
+const renderLoginPage = async (
+	req,
+	res,
+	db,
+	session,
+	message = '',
+	viewName = 'loginPage',
+	toRender = {}
+) => {
+	renderWithCats(req, res, db, session, message, viewName, {
+		...toRender,
+	});
+};
+
 const renderWithCats = async (
 	req,
 	res,
@@ -152,6 +166,22 @@ const renderLoginError = (
 	renderWithCats(req, res, db, session, message, viewName, toRender);
 };
 
+const renderUpdateProducts = async (
+	req,
+	res,
+	db,
+	session,
+	message = '',
+	viewName = 'updateProduct',
+	toRender = {}
+) => {
+	const item = await getProductWithId(res, db, req.query.product);
+	renderWithCats(req, res, db, session, message, viewName, {
+		item,
+		...toRender,
+	});
+}
+
 module.exports = {
 	renderWithProps,
 	renderWithCats,
@@ -161,4 +191,6 @@ module.exports = {
 	renderProductPage,
 	renderLoginError,
 	renderCart,
+	renderUpdateProducts,
+	renderLoginPage
 };

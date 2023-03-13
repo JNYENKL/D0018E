@@ -114,7 +114,7 @@ const getProductWithId = (res, db, productId) => {
 	return new Promise((resolve, reject) => {
 		db.SSHConnection().then(connection => {
 			connection.query(
-				'select title, price, amount, description from asset where asset_id=?',
+				'select subject_id, title, price, amount, description from asset where asset_id=?',
 				[productId],
 				(err, rows, fields) => {
 					if (err) {
@@ -122,8 +122,9 @@ const getProductWithId = (res, db, productId) => {
 						reject('error during fetching of product');
 						return;
 					} else if (typeof rows[0] !== 'undefined') {
-						const { title, price, amount, description } = rows[0];
+						const { subject_id, title, price, amount, description } = rows[0];
 						resolve({
+							subjectID : subject_id,
 							productName: title,
 							price,
 							stock: amount,

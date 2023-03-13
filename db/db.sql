@@ -7,6 +7,7 @@ create table d0018e_store.user(
   last_name   varchar(15)             not null,
   email       varchar(50)   unique    not null,
   password    varchar(70)             not null,
+  blocked     boolean                 not null,
 
   constraint pk_user primary key(user_id),
 
@@ -17,6 +18,8 @@ create table d0018e_store.user(
   constraint user_email_blank check (email <> ''),
   constraint user_password_blank check (password <> '')
 );
+
+alter table d0018e_store.user alter blocked set default false;
 
 create table d0018e_store.shopping_basket(
   shopping_basket_id    serial,
@@ -37,6 +40,7 @@ create table d0018e_store.`order`(
   shopping_basket_id    bigint            unsigned    not null,
   order_date            datetime                      not null,
   total_price           double            unsigned    not null,
+  processed             tinyint(1)                    not null,
 
   constraint pk_order primary key(order_id),
 
@@ -52,6 +56,7 @@ create table d0018e_store.`order`(
 );
 
 alter table d0018e_store.`order` alter total_price set default 0;
+alter table d0018e_store.`order` alter processed set default 0;
 
 create table d0018e_store.subject(
   subject_id        serial,
@@ -146,7 +151,7 @@ create table d0018e_store.comment(
 */
 
 insert into d0018e_store.user 
-(first_name,  last_name,  email,                        password) VALUES 
+(first_name,  last_name,  email,            password) VALUES 
 ('admin',     'admin',  'admin@d0018e.com', '$2b$10$YwyBdxMw9QhfKb3VpDG1jeuuA4AuCQBLuB8omOL3k0JAE5UULJ53G');
 
 insert into d0018e_store.shopping_basket 

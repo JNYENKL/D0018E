@@ -1,0 +1,61 @@
+include header.pug
+div.row
+    div.col-md-1 
+    if (login && af)
+        div.col-md-10
+            if (typeof message != 'undefined' && message.length > 0)
+                div.alert.alert-warning(role="alert")
+                    p=message
+            div.col-md-3
+            div.col-md-4
+                div.card
+                    div.card-body
+                        div.card-header
+                            h3 Redigera produkt
+                        form.inputForm(action='/updateProduct?product='+ item.assId +'', method='POST')
+                            p
+                            | Produktnamn:
+                            br
+                            input(type='text', name='pn', value=""+ item.productName +"")
+                            br
+                            | Pris:
+                            br
+                            input(type='number', name='pr', value=""+ item.price +"")
+                            br
+                            | Antal i lager:
+                            br
+                            input(type='number', name='am', value=""+ item.stock +"") 
+                            br
+                            | Kategori:
+                            br
+                            if (item.subjectID == '1')
+                                select(name='sub')
+                                    option(value="1" selected) Matematik
+                                    option(value="2") Programmering
+                                    option(value="3") Fysik
+                            if (item.subjectID == '2')
+                                select(name='sub')
+                                    option(value="1") Matematik
+                                    option(value="2" selected) Programmering
+                                    option(value="3") Fysik
+                            if (item.subjectID == '3')
+                                select(name='sub')
+                                    option(value="1") Matematik
+                                    option(value="2") Programmering
+                                    option(value="3" selected) Fysik
+                            br
+                            | Beskrivning:
+                            br
+                            textarea(name="desc", cols="100", rows="10")=item.description 
+                            br
+                            | Bild:
+                            br
+                            input(type='file', name='img', value='')
+                            br
+                            button.btn.btn-success(type='submit') Skicka
+                            input(type="hidden" name="referer" value=referer)
+                        br
+
+        div.col-md-1
+
+include footer.pug

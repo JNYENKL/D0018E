@@ -8,22 +8,41 @@ div.row
                     tr 
                         th(scope="col") Order ID
                         th(scope="col") Användarens ID
+                        th(scope="col") Status
                         th(scope="col") Förnamn
                         th(scope="col") Efternamn
                         th(scope="col") E-post
                         th(scope="col") Order datum 
-                        th(scope="col") Total pris 
+                        th(scope="col") Total pris
                 tbody 
                     if (orders.length > 0)
                         each order in orders 
                             tr
                                 td=order.oid
                                 td=order.uid
+                                td
+                                    form.inputForm(action='/updateOrder?oid=' + order.oid, method='POST')
+                                        -
+                                            var options = [
+                                                {value: '0', text: 'Mottagen'},
+                                                {value: '1', text: 'Packad'},
+                                                {value: '2', text: 'Skickad'},
+                                                {value: '3', text: 'Avbruten'}
+                                            ];
+                                            
+                                        select(name="selOrd")
+                                            each obj in options
+                                                if (order.status === obj.value)
+                                                    option(value= obj.value, selected)= obj.text
+                                                else
+                                                    option(value= obj.value)= obj.text
+                                        button.btn.btn-success(type='submit') Ok
                                 td=order.fname 
                                 td=order.lname 
                                 td=order.mail 
                                 td=order.time
-                                td=order.total_price
+                                td=order.total_price      
+                                        
                     else 
                         tr 
                             th(scope="row")

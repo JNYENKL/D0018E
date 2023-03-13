@@ -7,6 +7,7 @@ div.row
                 thead
                     tr 
                         th(scope="col") Order ID
+                        th(scope="col") Status
                         th(scope="col") Förnamn
                         th(scope="col") Efternamn
                         th(scope="col") E-post
@@ -17,6 +18,13 @@ div.row
                         each order in orders 
                             tr
                                 td=order.oid
+                                td
+                                    case order.status
+                                        when 0: p Mottagen
+                                        when 1: p Packad
+                                        when 2: p Skickad
+                                        when 3: p Avbruten
+                                        default: p DB Error! 
                                 td=order.fname 
                                 td=order.lname 
                                 td=order.mail 
