@@ -41,7 +41,7 @@ Create User A
 
 #Create User B With Existing Email
 #    [Tags]               TC4, createUserFail
-#    Run Keyword And Expect Error    *        Create User "${userB_fname}" "${userB_email}" "${userA_email}" "${userB_pw}"
+#    Run Keyword And Expect Error    *        Create User "${userB_fname}" "${userB_lname}" "${userA_email}" "${userB_pw}"
 
 Create User B
     [Tags]               TC5, createUser, userB
@@ -129,6 +129,7 @@ Once Again Logout User B
 Login Admin And Check All Order History
     [Tags]               TC20, login, orderHistory, admin
     Login User "${admin_email}" "${admin_pw}"
+    Check All Order History And Expect One
 
 Admin View Of Users
     [Tags]               TC21, userList, admin

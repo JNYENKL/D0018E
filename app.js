@@ -119,7 +119,8 @@ app.post('/loginUser', (req, res) => {
 					session.message = '';
 
 					if (session.uid == 1) session.admin = true;
-
+					
+					if (req.body.referer === 'http://localhost:3000/createUser') req.body.referer = null;
 					res.redirect(req.body.referer || '/');
 				}
 			}

@@ -40,7 +40,7 @@ Run App
 	
 Start Website
     Open Browser		${noWebsite}		${browser}
-	Set Window Size    2000    1200
+	Set Window Size    1200    800
 	Set Window Position    0    0
 	Go To				${website}
 	Wait Until Page Contains		${mathbook}

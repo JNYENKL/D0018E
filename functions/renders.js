@@ -51,14 +51,11 @@ const renderWithCats = async (
 	viewName,
 	toRender = {}
 ) => {
-	let cats = await getAllCats(res, db);
+	const cats = await getAllCats(res, db);
 	let amountInBasket = 0;
-
-	if (session.loggedIn)
+	if (session.loggedIn) {
 		amountInBasket = await getAmountInBasket(res, db, session.uid);
-
-	if (typeof cats === 'undefined') cats = [];
-	if (typeof amountInBasket === 'undefined') amountInBasket = 0;
+	}
 
 	renderWithProps(req, res, session, message, viewName, {
 		cat: cats,

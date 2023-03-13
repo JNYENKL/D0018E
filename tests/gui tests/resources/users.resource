@@ -105,6 +105,8 @@ Add To Basket And Login "${user_email}" "${user_pw}"
     Wait Until Element Is Visible    ${loginToBuy_btn}
     Click Element                    ${loginToBuy_btn}
     Login Itself "${user_email}" "${user_pw}"
+#    Wait Until Element Is Visible    ${algo_book}
+#    Click Element                    ${algo_book}
     Wait Until Element Is Visible    ${addToBasket_btn}
     Wait Until Element Is Visible    ${inStock_xpath}
     Element Text Should Be    ${inStock_xpath}    16 i lager
@@ -237,4 +239,4 @@ Check All Buttons In Nav Bar
 Go To Github Repo
     Wait Until Element Is Visible    ${github}
     Click Element                    ${github}
-    Wait Until Page Contains         Get product updates, company news, and more.
+    Wait Until Page Contains         In order to successfully load the page
