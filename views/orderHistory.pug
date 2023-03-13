@@ -1,0 +1,32 @@
+include header.pug 
+div.row
+    div.col-md-1 
+    if (login)
+        div.col-md-10
+            table.table 
+                thead
+                    tr 
+                        th(scope="col") Order ID
+                        th(scope="col") Förnamn
+                        th(scope="col") Efternamn
+                        th(scope="col") E-post
+                        th(scope="col") Order datum 
+                        th(scope="col") Total pris
+                tbody 
+                    if (orders.length > 0)
+                        each order in orders 
+                            tr
+                                td=order.oid
+                                td=order.fname 
+                                td=order.lname 
+                                td=order.mail 
+                                td=order.time
+                                td=order.total_price
+                    else 
+                        tr 
+                            th(scope="row")
+                            td Inga ordrar
+                            td 
+                            td 
+                            td 
+                            td

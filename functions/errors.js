@@ -1,10 +1,14 @@
-const errorMessage = (res, err) => {
-	res.status(500).json({
-		status_code: 500,
-		status_message: 'internal server error' + err,
+const internalError = (
+	res,
+	statusCode = 500,
+	message = 'internal server error'
+) => {
+	res.status(statusCode).json({
+		status_code: statusCode,
+		status_message: message,
 	});
 };
 
 module.exports = {
-	errorMessage,
+	internalError,
 };

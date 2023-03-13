@@ -1,3 +1,6 @@
+const { internalError } = require('../functions/errors');
+const { errorMessage } = require('../functions/renders');
+
 class productTest {
 	constructor(_pn, _price, _imgSrc, _cat) {
 		this.pn = _pn;
@@ -15,7 +18,7 @@ const product1 = new productTest(
 );
 shoppingCart = [product1];
 module.exports = {
-	addAssetToCart: (req, res, db, errorMessage, path, amount = 1) => {
+	addAssetToCart: (req, res, db, path, amount = 1) => {
 		session = req.session;
 
 		var user = [[session.uid]];
@@ -33,17 +36,17 @@ module.exports = {
 				select_asset_amount_query,
 				[productId],
 				(err, rows, fields) => {
-					if (err) errorMessage(res, err);
+					if (err) internalError(res);
 					else if (rows[0].amount > 0) {
 						connection.query(
 							add_sba_query,
 							[productId, amount, email],
 							(err, rows, fields) => {
-								if (err) errorMessage(res, err);
+								if (err) internalError(res, err);
+								else res.redirect(path);
 							}
 						);
 					}
-					res.redirect(path);
 				}
 			);
 		});
@@ -52,36 +55,5 @@ module.exports = {
 	//Render cart page
 	getCart: (req, res) => {
 		res.render('cart.pug', { shoppingCart: shoppingCart });
-	} /*,
-
-    getUserCart: (req, res) =>{
-        const db = mysql.createConnection ({
-            host: '127.0.0.1',
-            port: 33306,
-            user: 'root',
-            password: '',
-            database: 'D0018E'
-        });
-        
-        db.connect();
-        
-        db.query('SELECT * FROM USERS WHERE Uname '+ " userName "+'', function (error, rows, fields) {
-            if (error) throw error;
-
-            for (var i = 0; i < rows.length; i++) {
-			
-				// Skapa ett objekt för datan
-				var items = {
-					'productName': rows[i].productName,
-					'price': rows[i].price,
-					'imgSrc': rows[i].imgSrc,
-					'category': rows[i].category
-				}
-					// Lägg till hämtad data i en array
-					itemList.push(items);
-			}
-            });
-        
-            db.end();
-    },*/,
+	},
 };

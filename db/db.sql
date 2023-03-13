@@ -6,11 +6,16 @@ create table d0018e_store.user(
   first_name  varchar(15)             not null,
   last_name   varchar(15)             not null,
   email       varchar(50)   unique    not null,
-  password    varchar(70)                not null,
+  password    varchar(70)             not null,
 
   constraint pk_user primary key(user_id),
 
-  constraint `user.email` check (`email` regexp "^[a-za-z0-9][a-za-z0-9.!#$%&'*+-/=?^_`{|}~]*?[a-za-z0-9._-]?@[a-za-z0-9][a-za-z0-9._-]*?[a-za-z0-9]?\\.[a-za-z]{2,63}$")
+  constraint user_email_format check (`email` regexp "^[a-za-z0-9][a-za-z0-9.!#$%&'*+-/=?^_`{|}~]*?[a-za-z0-9._-]?@[a-za-z0-9][a-za-z0-9._-]*?[a-za-z0-9]?\\.[a-za-z]{2,63}$"),
+
+  constraint user_fname_blank check (first_name <> ''),
+  constraint user_lname_blank check (last_name <> ''),
+  constraint user_email_blank check (email <> ''),
+  constraint user_password_blank check (password <> '')
 );
 
 create table d0018e_store.shopping_basket(
@@ -214,7 +219,7 @@ create procedure d0018e_store.update_order_total_price
       );
 
     update `order` set total_price=var_total_price where order_id=par_order_id;
-    
+
   end $$
 
 /*
@@ -233,15 +238,21 @@ create procedure d0018e_store.add_user
   begin
     declare var_user_id bigint; 
 
+    declare exit handler for sqlexception, sqlwarning
+    begin
+      rollback;
+      resignal;
+    end;
+
+    start transaction;
+
     insert into `user` 
     (first_name,      last_name,      email,              password) values
     (par_first_name,  par_last_name,  lower(par_email),   par_password);
 
-    select user_id into var_user_id from `user` where lower(email)=lower(par_email); 
-    if var_user_id is not null then
-      insert into shopping_basket (user_id) values (var_user_id);
-    end if;
-	
+    insert into shopping_basket (user_id, total_price) values (last_insert_id(), 0);
+    
+    commit;
   end $$
   
 
@@ -262,7 +273,7 @@ create procedure d0018e_store.add_item_to_shopping_basket
     declare var_shopping_basket_id bigint;
 	  declare var_shopping_basket_asset_id bigint;
 	  declare var_store_asset_amount bigint;
-    
+
     set var_user_id := (select user_id from `user` u where lower(email)=lower(par_email));
     set var_shopping_basket_id := (select shopping_basket_id from shopping_basket where user_id=var_user_id);
 	  set var_shopping_basket_asset_id := (select shopping_basket_asset_id 
@@ -289,7 +300,7 @@ create procedure d0018e_store.add_item_to_shopping_basket
 	  end if;
 
     update asset set amount=amount-par_asset_amount where asset_id=par_asset_id; 
-	
+
   end $$
 
 /*
@@ -306,21 +317,28 @@ create procedure d0018e_store.create_order
   begin
     declare var_user_id bigint;
     declare var_shopping_basket_id bigint;
-    declare var_order_id bigint;
+
+    declare exit handler for sqlexception, sqlwarning, not found
+    begin
+      rollback;
+      resignal;
+    end;
+
+    start transaction;
 
     select u.user_id into var_user_id from `user` u where lower(email)=lower(par_email);
     
     select shopping_basket_id into var_shopping_basket_id from shopping_basket sb
     where sb.user_id=var_user_id; 
 
-    if var_user_id is not null and var_shopping_basket_id is not null then
-      insert into `order` 
-      (user_id,       shopping_basket_id,       order_date) values
-      (var_user_id,   var_shopping_basket_id,   now());
+    insert into `order` 
+    (user_id,       shopping_basket_id,       order_date) values
+    (var_user_id,   var_shopping_basket_id,   now());
     
-      set par_order_id := (select order_id from `order` o order by order_date desc limit 1);
+    commit;
 
-    end if;
+    set par_order_id := last_insert_id();
+
   end $$
 
 /*
@@ -391,7 +409,7 @@ create procedure d0018e_store.restore_sba_to_store
     join shopping_basket sb using (shopping_basket_id) 
     where user_id=var_user_id and asset_id=par_asset_id);
     set var_sba_asset_amount := (select asset_amount from shopping_basket_asset where shopping_basket_asset_id=var_sba_id);
-    
+
     if var_sba_id is null then
       signal sqlstate '45000' set message_text = 'error: item does not exist in the shopping cart';
     elseif (par_asset_amount > var_sba_asset_amount) then
@@ -403,7 +421,7 @@ create procedure d0018e_store.restore_sba_to_store
     end if;
 
     update asset set amount=amount+par_asset_amount where asset_id=par_asset_id;
-    
+
   end $$
 
 /*

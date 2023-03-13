@@ -1,0 +1,36 @@
+include header.pug 
+div.row
+    div.col-md-1 
+    div.col-md-10
+        table.table 
+            thead
+                tr 
+                    th(scope="col") User ID
+                    th(scope="col") First name
+                    th(scope="col") Last name
+                    th(scope="col") E-mail
+                    th(scope="col") 
+            tbody 
+                if (users.length > 0)
+                    each user in users 
+                        tr
+                            td=user.uid
+                            td=user.fname 
+                            td=user.lname 
+                            td=user.mail
+                            if (user.uid > 1 && !user.block)
+                                td
+                                    a.btn.btn-danger(href="/removeUser?uid="+user.uid+"") Ta bort
+                            if (user.block)
+                                td Blockerad 
+                            else 
+                                td
+                else 
+                    tr 
+                        th(scope="row")
+                        td 
+                        td 
+                        td 
+                        td 
+                        td
+    div.col-md-1

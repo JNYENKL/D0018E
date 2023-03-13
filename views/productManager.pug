@@ -1,0 +1,64 @@
+include header.pug
+div.row
+    div.col-md-10
+        if (typeof message != 'undefined' && message.length > 0)
+            div.alert.alert-warning(role="alert")
+                p=message
+        div.col-md-3
+        div.col-md-4
+            div.card
+                div.card-body
+                    div.card-header
+                        h3 Ny produkt
+                    form.inputForm(action='/newProduct', method='POST')
+                        p
+                        | Produktnamn:
+                        br
+                        input(type='text', name='pn', value='')
+                        br
+                        | Pris:
+                        br
+                        input(type='number', name='pr', value='')
+                        br
+                        | Antal i lager:
+                        br
+                        input(type='number', name='am', value='')
+                        br
+                        | Kategori:
+                        br
+                        select(name='sub')
+                            option(value="1") Fysik
+                            option(value="2") Matematik
+                            option(value="3") Programmering
+                        br
+                        | Beskrivning:
+                        br
+                        textarea(name="desc", cols="100", rows="10") 
+                        br
+                        | Bild:
+                        br
+                        input(type='file', name='img', value='')
+                        br
+                        button.btn.btn-success(type='submit') Skicka
+                        input(type="hidden" name="referer" value=referer)
+                    br
+                    
+                if (allProducts.length > 0)
+                    table.table.table-sm(style="white-space:nowrap;")
+                        tbody
+                        each item in allProducts
+                            tr(scope="row")
+                                th
+                                    img.img.img-thumbnail(src=("./img/" + item.id + ".png") style="width:15%;")
+                                td=item.ti
+                                td=item.pr+ ' kr'
+                                td
+                                    textarea(name="ta", cols="30", rows="5" readonly style="overflow-y:scroll;")=item.desc
+                                td=item.am + ' st.'
+                                td
+                                    a.btn.btn-info(href='/updateProduct?product='+ item.id+'') Edit
+                                td
+                                    a.btn.btn-danger(href='/deleteProduct?product='+ item.id+'') Delete
+    div.col-md-1
+
+include footer.pug
