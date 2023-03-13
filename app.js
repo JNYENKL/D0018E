@@ -552,7 +552,7 @@ app.post('/updateProduct', function(req, res){
 
 app.get('/deleteProduct', function(req, res){
 	session = req.session;
-	prodctId = [[req.query.product]];
+	var productId = [[req.query.product]];
 	
 
 	var query = 'DELETE FROM asset WHERE asset_id=?';
