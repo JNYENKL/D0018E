@@ -80,6 +80,11 @@ Create User "${user_fname}" "${user_lname}" "${user_email}" "${user_pw}"
 	Table Must Exist				    user    
 	Check If Exists In Database			select user_id from user where email = '${user_email}'
 
+Try To Create User With Existing Email "${user_fname}" "${user_lname}" "${user_email}" "${user_pw}" 
+    Create User "${user_fname}" "${user_lname}" "${user_email}" "${user_pw}" 
+	Check If Exists In Database			select user_id from user where first_name = '${user_fname}'
+
+
 Login User "${user_email}" "${user_pw}"
     Wait Until Element Is Visible    ${login_page}
 	Click Element                     ${login_page}
@@ -174,6 +179,14 @@ Check Order History And Expect Zero
     Click Element                    ${orderHistory_page}
     Wait Until Page Contains        Inga ordrar
 
+Check All Order History "${user_email}"
+    Wait Until Element Is Visible    ${admin_dropdown}
+    Click Element                    ${admin_dropdown}
+    Wait Until Element Is Visible    ${allOrderHistory_page}
+    Click Element                    ${allOrderHistory_page}
+    Wait Until Page Contains         ${user_email}
+
+
 Check All Order History And Expect One
     Wait Until Element Is Visible    ${admin_dropdown}
     Click Element                    ${admin_dropdown}
@@ -237,4 +250,4 @@ Check All Buttons In Nav Bar
 Go To Github Repo
     Wait Until Element Is Visible    ${github}
     Click Element                    ${github}
-    Wait Until Page Contains         Get product updates, company news, and more.
+    Wait Until Page Contains         In order to successfully load the page
